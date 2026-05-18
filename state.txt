@@ -1,0 +1,62 @@
+﻿# Base+ State
+
+Atualizado em: 2026-05-18
+
+## Estado atual
+
+- Base+ 1.0.0 preparada como fundacao administrativa reutilizavel.
+- Backend Spring Boot funcional.
+- Frontend React/Vite funcional.
+- Auth JWT, refresh token e logout implementados.
+- Troca de senha inicial implementada.
+- Conta do usuario, preferencias, avatar e sessoes implementados.
+- CRUD de usuarios implementado.
+- CRUD de roles/perfis implementado.
+- CRUD de permissions/permissoes implementado.
+- Branding implementado com configuracoes e upload de assets.
+- Auditoria implementada com consulta de logs.
+- Health checks implementados.
+- Avatar do menu de conta refinado com moldura visual, halo e indicador online.
+- Padrao de novos modulos definido com CRUD Compacto e CRUD Completo em `MODULE_TEMPLATE.md`.
+- Kit visual padrao da marca Base+ organizado em `brand/`, `baseplus-frontend/public/brand/` e `BRAND_GUIDE.md`.
+- Kit operacional repetivel criado com `docs/`, `TASK_PROMPT.md` e `scripts/check-project.ps1`.
+- Git inicializado na raiz do projeto.
+- Validacao frontend aprovada com `npm run build`.
+- Validacao backend aprovada com 105 testes.
+- Autorizacao por permission definida como granular obrigatoria; roles agrupam permissions, mas nao substituem permissions exigidas.
+- Primeira versao do modelo de dois perfis implementada:
+  - Perfil funcional agrupa permissions.
+  - Perfil organizacional agrupa escopos parametrizaveis.
+  - Tipos/unidades organizacionais sao dados configuraveis, nao fixos por codigo.
+- CRUD compacto de Estrutura Organizacional implementado em `/app/organizacao`:
+  - Tipos organizacionais.
+  - Unidades organizacionais.
+  - Criacao, edicao, listagem, filtros e exclusao controlada.
+- Documento de release criado em `docs/release-1.0.md`.
+- Versoes formais ajustadas para `1.0.0` no backend e frontend.
+
+## Ambiente
+
+- Backend: `http://localhost:8080`
+- Frontend: `http://localhost:5173`
+- Perfil dev: H2 em memoria
+- Admin dev: `admin@baseplus.com` / `Baseplus@123`
+
+## Ultima etapa concluida
+
+- Base+ 1.0.0 preparada com versoes, documentacao de release e validacao completa aprovada.
+
+## Proxima etapa recomendada
+
+- Criar o primeiro modulo real de negocio, como Empresas, usando CRUD Completo.
+- Aplicar validacao de escopo organizacional no primeiro modulo de negocio que possuir dados por empresa, filial, equipe ou outro contexto parametrizado.
+- Fazer o primeiro commit/tag do pacote base quando a revisao estiver aprovada: `v1.0.0`.
+- Criar `.env.example` se o projeto passar a usar variaveis de ambiente locais.
+- Separar `app-icons-source.png` em icones individuais se eles forem usados como favicon/app icon final.
+- Revisar estrategia de banco: H2 em dev, PostgreSQL persistente e Flyway.
+
+## Atencoes
+
+- `Promptbaseplus.txt` foi preservado como documento legado de contexto original.
+- A raiz `C:\dev\baseplus` foi inicializada como repositorio Git, mas ainda nao ha commit inicial.
+- Evitar versionar logs, `target`, `dist`, `node_modules` e uploads locais.

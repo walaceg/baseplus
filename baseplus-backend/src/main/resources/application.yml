@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: baseplus-backend
+  profiles:
+    default: dev
+  flyway:
+    enabled: false
+
+jwt:
+  secret: ${JWT_SECRET:baseplus-dev-secret-change-before-production-2026}
+
+server:
+  port: 8080

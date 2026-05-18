@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: baseplus-postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: ${DB_NAME:-baseplus}
+      POSTGRES_USER: ${DB_USER:-baseplus}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-baseplus}
+    volumes:
+      - baseplus_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-baseplus} -d ${DB_NAME:-baseplus}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  baseplus_postgres_data:

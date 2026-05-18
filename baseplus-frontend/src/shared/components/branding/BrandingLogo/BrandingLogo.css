@@ -1,0 +1,133 @@
+.bp-branding-logo {
+  --branding-logo-media-size: 40px;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+  color: var(--color-text);
+}
+
+.bp-branding-logo--sm {
+  --branding-logo-media-size: 28px;
+  gap: var(--space-2);
+}
+
+.bp-branding-logo--md {
+  --branding-logo-media-size: 40px;
+}
+
+.bp-branding-logo--lg {
+  --branding-logo-media-size: 56px;
+  gap: var(--space-4);
+}
+
+.bp-branding-logo--xl {
+  --branding-logo-media-size: 72px;
+  gap: var(--space-4);
+}
+
+.bp-branding-logo--mark {
+  display: inline-grid;
+}
+
+.bp-branding-logo__media {
+  position: relative;
+  flex: none;
+  width: var(--branding-logo-media-size);
+  height: var(--branding-logo-media-size);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--color-border) 76%, transparent);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--color-surface) 92%, transparent);
+  box-shadow: var(--shadow-sm);
+}
+
+.bp-branding-logo--mark .bp-branding-logo__media {
+  border-radius: var(--radius-md);
+}
+
+.bp-branding-logo__image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: var(--space-1);
+  background: color-mix(in srgb, var(--color-surface) 88%, transparent);
+}
+
+.bp-branding-logo__placeholder {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--color-surface-muted) 88%, transparent), color-mix(in srgb, var(--color-surface) 96%, transparent)),
+    linear-gradient(90deg, transparent, color-mix(in srgb, var(--color-primary-muted) 14%, transparent), transparent);
+}
+
+.bp-branding-logo__fallback {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  color: var(--color-primary-text);
+  font-size: 0.96rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.bp-branding-logo__content {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.bp-branding-logo__name,
+.bp-branding-logo__subtitle {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bp-branding-logo__name {
+  color: var(--color-text);
+  font-size: 14px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.bp-branding-logo__subtitle {
+  color: var(--color-text-muted);
+  font-size: 13px;
+  line-height: 1.35;
+  white-space: nowrap;
+}
+
+.bp-branding-logo--lg .bp-branding-logo__name {
+  font-size: 16px;
+}
+
+.bp-branding-logo--lg .bp-branding-logo__subtitle {
+  font-size: 14px;
+}
+
+.bp-branding-logo--xl .bp-branding-logo__name {
+  font-size: 18px;
+}
+
+.bp-branding-logo--xl .bp-branding-logo__subtitle {
+  font-size: 15px;
+}
+
+.bp-branding-logo--stacked {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.bp-branding-logo--stacked .bp-branding-logo__content {
+  gap: 4px;
+}

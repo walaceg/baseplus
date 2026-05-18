@@ -1,0 +1,105 @@
+.bp-organization-page {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.bp-organization-grid {
+  display: grid;
+  grid-template-columns: minmax(320px, 0.9fr) minmax(420px, 1.4fr);
+  gap: var(--space-4);
+  align-items: start;
+}
+
+.bp-organization-section {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.bp-organization-section__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.bp-organization-section__header h2 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.bp-organization-section__header p {
+  margin: var(--space-1) 0 0;
+  color: var(--color-text-muted);
+  font-size: 13px;
+}
+
+.bp-organization-toolbar {
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) minmax(220px, 280px);
+  gap: var(--space-3);
+  align-items: end;
+}
+
+.bp-organization-cell {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.bp-organization-cell__icon {
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  border: 1px solid color-mix(in srgb, var(--color-primary) 28%, var(--color-border));
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--color-primary) 10%, var(--color-surface));
+  color: var(--color-primary);
+}
+
+.bp-organization-cell strong,
+.bp-organization-cell span {
+  min-width: 0;
+  display: block;
+  overflow-wrap: anywhere;
+}
+
+.bp-organization-cell span {
+  color: var(--color-text-muted);
+  font-size: 13px;
+}
+
+.bp-organization-switch {
+  min-height: var(--control-height);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-text);
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.bp-organization-switch input {
+  accent-color: var(--color-primary);
+}
+
+@media (max-width: 1080px) {
+  .bp-organization-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .bp-organization-section__header,
+  .bp-organization-toolbar {
+    grid-template-columns: 1fr;
+  }
+
+  .bp-organization-section__header {
+    display: grid;
+  }
+}

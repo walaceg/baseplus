@@ -1,0 +1,94 @@
+package com.baseplus.modules.usuario.config;
+
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
+import org.springframework.context.annotation.Profile;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
+
+import com.baseplus.modules.auth.domain.Permission;
+import com.baseplus.modules.auth.domain.Role;
+import com.baseplus.modules.auth.repository.PermissionRepository;
+import com.baseplus.modules.auth.repository.RoleRepository;
+import com.baseplus.modules.usuario.domain.Usuario;
+import com.baseplus.modules.usuario.service.UsuarioService;
+
+@Component
+@Profile("dev")
+public class UsuarioSeed implements ApplicationRunner {
+
+    public static final String ADMIN_EMAIL = "admin@baseplus.com";
+    public static final String ADMIN_PASSWORD = "Baseplus@123";
+    private static final String[][] DEFAULT_PERMISSIONS = {
+            {"ADMIN_ACCESS", "Acesso administrativo inicial."},
+            {"DASHBOARD_VIEW", "Visualizar dashboard."},
+            {"USERS_VIEW", "Visualizar usuarios."},
+            {"USERS_CREATE", "Criar usuarios."},
+            {"USERS_EDIT", "Editar usuarios."},
+            {"USERS_DELETE", "Remover usuarios."},
+            {"USERS_RESET_PASSWORD", "Redefinir senha de usuarios."},
+            {"ROLES_VIEW", "Visualizar perfis."},
+            {"ROLES_CREATE", "Criar perfis."},
+            {"ROLES_EDIT", "Editar perfis."},
+            {"ROLES_DELETE", "Remover perfis."},
+            {"ROLES_MANAGE_PERMISSIONS", "Gerenciar permissoes de perfis."},
+            {"ROLES_MANAGE_USERS", "Gerenciar usuarios vinculados a perfis."},
+            {"ROLES_MANAGE_ORGANIZATION_SCOPES", "Gerenciar escopos organizacionais de perfis."},
+            {"PERMISSIONS_VIEW", "Visualizar permissoes."},
+            {"PERMISSIONS_CREATE", "Criar permissoes."},
+            {"PERMISSIONS_EDIT", "Editar permissoes."},
+            {"PERMISSIONS_DELETE", "Remover permissoes."},
+            {"ORGANIZATION_UNITS_VIEW", "Visualizar estrutura organizacional."},
+            {"ORGANIZATION_UNITS_CREATE", "Criar estrutura organizacional."},
+            {"ORGANIZATION_UNITS_EDIT", "Editar estrutura organizacional."},
+            {"ORGANIZATION_UNITS_DELETE", "Excluir estrutura organizacional."},
+            {"BRANDING_VIEW", "Visualizar branding."},
+            {"BRANDING_EDIT", "Editar branding."},
+            {"BRANDING_UPLOAD_ASSETS", "Enviar assets de branding."},
+            {"AUDIT_VIEW", "Visualizar auditoria."},
+            {"AUDIT_EXPORT", "Exportar auditoria."}
+    };
+
+    private final UsuarioService usuarioService;
+    private final PasswordEncoder passwordEncoder;
+    private final RoleRepository roleRepository;
+    private final PermissionRepository permissionRepository;
+
+    public UsuarioSeed(
+            UsuarioService usuarioService,
+            PasswordEncoder passwordEncoder,
+            RoleRepository roleRepository,
+            PermissionRepository permissionRepository
+    ) {
+        this.usuarioService = usuarioService;
+        this.passwordEncoder = passwordEncoder;
+        this.roleRepository = roleRepository;
+        this.permissionRepository = permissionRepository;
+    }
+
+    @Override
+    public void run(ApplicationArguments args) {
+        Role adminRole = roleRepository.findByName("ADMIN")
+                .orElseGet(() -> roleRepository.save(new Role("ADMIN", "Administrador do sistema.")));
+        adminRole.setAtivo(true);
+        adminRole.setSistema(true);
+        adminRole.setType(com.baseplus.modules.auth.domain.RoleType.SYSTEM);
+        for (String[] permissionData : DEFAULT_PERMISSIONS) {
+            Permission permission = permissionRepository.findByName(permissionData[0])
+                    .orElseGet(() -> permissionRepository.save(new Permission(permissionData[0], permissionData[1])));
+            adminRole.addPermission(permission);
+        }
+        adminRole = roleRepository.save(adminRole);
+
+        Usuario admin = usuarioService.buscarPorEmail(ADMIN_EMAIL)
+                .orElseGet(() -> new Usuario(
+                        "Administrador Base+",
+                        ADMIN_EMAIL,
+                        passwordEncoder.encode(ADMIN_PASSWORD),
+                        true
+                ));
+        admin.setTrocarSenhaPrimeiroAcesso(false);
+        admin.addRole(adminRole);
+        usuarioService.salvar(admin);
+    }
+}

@@ -1,0 +1,64 @@
+.bp-permissions-page {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.bp-permissions-page__header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.bp-permissions-page__header h1,
+.bp-permission-locked h1 {
+  margin: 0 0 var(--space-2);
+}
+
+.bp-permissions-page__header p,
+.bp-permission-locked p {
+  margin: 0;
+  color: var(--color-text-muted);
+}
+
+.bp-permissions-page__message {
+  margin: 0;
+  color: var(--color-success);
+}
+
+.bp-permissions-page__error {
+  margin: 0;
+  color: var(--color-danger);
+}
+
+.bp-permissions-page__empty {
+  margin: 0;
+  color: var(--color-text-muted);
+}
+
+.bp-permission-cell {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.bp-permission-cell strong,
+.bp-permission-cell span {
+  display: block;
+}
+
+.bp-permission-cell span {
+  color: var(--color-text-muted);
+  font-size: 13px;
+}
+
+.bp-permission-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.bp-permission-locked {
+  display: grid;
+  gap: var(--space-3);
+}

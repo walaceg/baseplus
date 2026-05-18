@@ -1,0 +1,31 @@
+﻿# OS/editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.iml
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+logs/
+
+# Backend
+baseplus-backend/target/
+baseplus-backend/uploads/
+baseplus-backend/logs/
+
+# Frontend
+baseplus-frontend/node_modules/
+baseplus-frontend/dist/
+
+# Temporary files
+*.tmp
+*.bak
+
+# Local source/drop folders
+imagens uteis/
