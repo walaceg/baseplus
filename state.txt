@@ -1,10 +1,10 @@
 ﻿# Base+ State
 
-Atualizado em: 2026-05-18
+Atualizado em: 2026-05-25
 
 ## Estado atual
 
-- Base+ 1.0.0 preparada como fundacao administrativa reutilizavel.
+- Base+ 1.0.1 preparada como fundacao administrativa reutilizavel.
 - Backend Spring Boot funcional.
 - Frontend React/Vite funcional.
 - Auth JWT, refresh token e logout implementados.
@@ -33,7 +33,8 @@ Atualizado em: 2026-05-18
   - Unidades organizacionais.
   - Criacao, edicao, listagem, filtros e exclusao controlada.
 - Documento de release criado em `docs/release-1.0.md`.
-- Versoes formais ajustadas para `1.0.0` no backend e frontend.
+- Versoes formais ajustadas para `1.0.1` no backend e frontend.
+- Sequencia de migrations Flyway corrigida, sem duplicidade de versao `V9`.
 
 ## Ambiente
 
@@ -44,13 +45,13 @@ Atualizado em: 2026-05-18
 
 ## Ultima etapa concluida
 
-- Base+ 1.0.0 preparada com versoes, documentacao de release e validacao completa aprovada.
+- Base+ 1.0.1 preparada com correcao da sequencia Flyway e validacao completa aprovada.
 
 ## Proxima etapa recomendada
 
 - Criar o primeiro modulo real de negocio, como Empresas, usando CRUD Completo.
 - Aplicar validacao de escopo organizacional no primeiro modulo de negocio que possuir dados por empresa, filial, equipe ou outro contexto parametrizado.
-- Fazer o primeiro commit/tag do pacote base quando a revisao estiver aprovada: `v1.0.0`.
+- Evoluir novos modulos a partir da versao publicada `v1.0.1`.
 - Criar `.env.example` se o projeto passar a usar variaveis de ambiente locais.
 - Separar `app-icons-source.png` em icones individuais se eles forem usados como favicon/app icon final.
 - Revisar estrategia de banco: H2 em dev, PostgreSQL persistente e Flyway.
@@ -58,5 +59,5 @@ Atualizado em: 2026-05-18
 ## Atencoes
 
 - `Promptbaseplus.txt` foi preservado como documento legado de contexto original.
-- A raiz `C:\dev\baseplus` foi inicializada como repositorio Git, mas ainda nao ha commit inicial.
+- O repositorio Git possui release inicial publica `v1.0.0`; a correcao Flyway foi publicada em `v1.0.1`.
 - Evitar versionar logs, `target`, `dist`, `node_modules` e uploads locais.

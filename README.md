@@ -1,6 +1,6 @@
 ﻿# Base+
 
-Versao atual: `1.0.0`
+Versao atual: `1.0.1`
 
 Base+ e uma plataforma corporativa modular para construcao de aplicacoes administrativas e sistemas de negocio.
 

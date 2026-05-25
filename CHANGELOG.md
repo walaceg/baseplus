@@ -2,6 +2,14 @@
 
 Todas as mudancas relevantes do projeto devem ser registradas neste arquivo.
 
+## 2026-05-25
+
+### Corrigido
+
+- Base+ publicada como versao `1.0.1`.
+- Corrigida a duplicidade de versao das migrations Flyway, renomeando `V9__normalize_user_preferences_defaults.sql` para `V13__normalize_user_preferences_defaults.sql`.
+- Backend e frontend versionados como `1.0.1`.
+
 ## 2026-05-18
 
 ### Release
