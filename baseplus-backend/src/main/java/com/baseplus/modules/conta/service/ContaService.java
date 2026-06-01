@@ -217,6 +217,7 @@ public class ContaService {
         Long usuarioId = getUsuarioId(authentication);
         return usuarioService.buscarPorId(usuarioId)
                 .filter(Usuario::isAtivo)
+                .filter(usuario -> !usuario.isBloqueado())
                 .orElseThrow(() -> new BusinessException("Acesso nao autorizado.", HttpStatus.UNAUTHORIZED, List.of("Usuario autenticado nao encontrado.")));
     }
 

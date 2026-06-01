@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.baseplus.modules.usuario.domain.Usuario;
+import com.baseplus.modules.auth.repository.PermissionRepository;
 import com.baseplus.modules.usuario.service.UsuarioService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -39,6 +40,9 @@ class UsuarioControllerTest {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private PermissionRepository permissionRepository;
 
     @Test
     void shouldBlockUsuariosWithoutToken() throws Exception {
@@ -321,6 +325,62 @@ class UsuarioControllerTest {
     }
 
     @Test
+    void shouldRejectExistingAccessTokenAfterUsuarioIsBlocked() throws Exception {
+        String adminToken = loginAndGetToken("admin@baseplus.com", "Baseplus@123");
+        Long usuarioId = criarUsuario(adminToken, "bloqueio.token@baseplus.com");
+        Long roleId = criarRoleComPermissao(adminToken, "usuarios_bloqueio", "USERS_VIEW");
+        vincularRole(adminToken, usuarioId, "bloqueio.token@baseplus.com", roleId);
+        String userToken = loginAndGetToken("bloqueio.token@baseplus.com", "Baseplus@456");
+
+        mockMvc.perform(get("/usuarios")
+                        .header("Authorization", "Bearer " + userToken))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(put("/usuarios/{id}", usuarioId)
+                        .header("Authorization", "Bearer " + adminToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "nome": "Usuario Bloqueado",
+                                  "email": "bloqueio.token@baseplus.com",
+                                  "ativo": true,
+                                  "bloqueado": true,
+                                  "trocarSenhaPrimeiroAcesso": false,
+                                  "roleIds": [%d]
+                                }
+                                """.formatted(roleId)))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(get("/usuarios")
+                        .header("Authorization", "Bearer " + userToken))
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.message").value("Acesso nao autorizado."));
+    }
+
+    @Test
+    void shouldApplyPermissionRemovalToExistingAccessToken() throws Exception {
+        String adminToken = loginAndGetToken("admin@baseplus.com", "Baseplus@123");
+        Long usuarioId = criarUsuario(adminToken, "permissao.token@baseplus.com");
+        Long permissionId = permissionRepository.findByName("USERS_VIEW").orElseThrow().getId();
+        Long roleId = criarRoleComPermissao(adminToken, "usuarios_visualizacao", "USERS_VIEW");
+        vincularRole(adminToken, usuarioId, "permissao.token@baseplus.com", roleId);
+        String userToken = loginAndGetToken("permissao.token@baseplus.com", "Baseplus@456");
+
+        mockMvc.perform(get("/usuarios")
+                        .header("Authorization", "Bearer " + userToken))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(delete("/roles/{id}/permissions/{permissionId}", roleId, permissionId)
+                        .header("Authorization", "Bearer " + adminToken))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(get("/usuarios")
+                        .header("Authorization", "Bearer " + userToken))
+                .andExpect(status().isForbidden())
+                .andExpect(jsonPath("$.message").value("Acesso negado."));
+    }
+
+    @Test
     void shouldResetUsuarioPasswordAdministratively() throws Exception {
         String token = loginAndGetToken("admin@baseplus.com", "Baseplus@123");
         Long usuarioId = criarUsuario(token, "resetar.senha@baseplus.com");
@@ -480,6 +540,44 @@ class UsuarioControllerTest {
                 .getContentAsString();
 
         return objectMapper.readTree(content).path("data").path("id").asLong();
+    }
+
+    private Long criarRoleComPermissao(String token, String name, String permissionName) throws Exception {
+        Long permissionId = permissionRepository.findByName(permissionName).orElseThrow().getId();
+        String content = mockMvc.perform(post("/roles")
+                        .header("Authorization", "Bearer " + token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "name": "%s",
+                                  "description": "Role de autorizacao",
+                                  "ativo": true,
+                                  "permissionIds": [%d]
+                                }
+                                """.formatted(name, permissionId)))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        return objectMapper.readTree(content).path("data").path("id").asLong();
+    }
+
+    private void vincularRole(String token, Long usuarioId, String email, Long roleId) throws Exception {
+        mockMvc.perform(put("/usuarios/{id}", usuarioId)
+                        .header("Authorization", "Bearer " + token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "nome": "Usuario Autorizado",
+                                  "email": "%s",
+                                  "ativo": true,
+                                  "bloqueado": false,
+                                  "trocarSenhaPrimeiroAcesso": false,
+                                  "roleIds": [%d]
+                                }
+                                """.formatted(email, roleId)))
+                .andExpect(status().isOk());
     }
 
     private String loginAndGetToken(String email, String password) throws Exception {

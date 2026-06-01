@@ -1,6 +1,7 @@
 package com.baseplus.core.storage;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -29,11 +30,7 @@ public class LocalFileStorageService implements FileStorageService {
         }
 
         String contentType = normalizeContentType(file.getContentType());
-        if (!isSupportedImageContentType(contentType)) {
-            throw new BusinessException("Arquivo invalido.", HttpStatus.BAD_REQUEST, java.util.List.of("O arquivo deve ser PNG, JPG, JPEG, SVG ou ICO."));
-        }
-
-        String extension = resolveExtension(file.getOriginalFilename(), contentType);
+        String extension = resolveValidatedExtension(file, contentType);
         Path directory = ROOT_DIR.resolve(normalizeSubdirectory(subdirectory)).normalize();
         ensureWithinRoot(directory);
 
@@ -77,42 +74,50 @@ public class LocalFileStorageService implements FileStorageService {
         return contentType == null ? "" : contentType.trim().toLowerCase(Locale.ROOT);
     }
 
-    private boolean isSupportedImageContentType(String contentType) {
-        return "image/png".equals(contentType)
-                || "image/jpeg".equals(contentType)
-                || "image/jpg".equals(contentType)
-                || "image/svg+xml".equals(contentType)
-                || "image/svg".equals(contentType)
-                || "image/x-icon".equals(contentType)
-                || "image/vnd.microsoft.icon".equals(contentType);
-    }
-
-    private String resolveExtension(String originalFilename, String contentType) {
-        String filenameExtension = resolveExtensionFromFilename(originalFilename);
-        if (filenameExtension != null) {
-            return filenameExtension;
+    private String resolveValidatedExtension(MultipartFile file, String contentType) {
+        byte[] header;
+        try (InputStream inputStream = file.getInputStream()) {
+            header = inputStream.readNBytes(12);
+        } catch (IOException exception) {
+            throw invalidImageFile();
         }
 
-        return switch (contentType) {
-            case "image/png" -> ".png";
-            case "image/jpeg", "image/jpg" -> ".jpg";
-            case "image/svg+xml", "image/svg" -> ".svg";
-            case "image/x-icon", "image/vnd.microsoft.icon" -> ".ico";
-            default -> throw new BusinessException("Arquivo invalido.", HttpStatus.BAD_REQUEST, java.util.List.of("O arquivo deve ser PNG, JPG, JPEG, SVG ou ICO."));
-        };
-    }
-
-    private String resolveExtensionFromFilename(String originalFilename) {
-        if (originalFilename == null || !originalFilename.contains(".")) {
-            return null;
+        if ("image/png".equals(contentType) && startsWith(header, new int[] {0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A})) {
+            return ".png";
         }
 
-        String extension = originalFilename.substring(originalFilename.lastIndexOf('.')).trim().toLowerCase(Locale.ROOT);
-        return switch (extension) {
-            case ".png", ".jpg", ".jpeg", ".svg" -> extension.equals(".jpeg") ? ".jpg" : extension;
-            case ".ico" -> extension;
-            default -> null;
-        };
+        if (("image/jpeg".equals(contentType) || "image/jpg".equals(contentType))
+                && startsWith(header, new int[] {0xFF, 0xD8, 0xFF})) {
+            return ".jpg";
+        }
+
+        if (("image/x-icon".equals(contentType) || "image/vnd.microsoft.icon".equals(contentType))
+                && startsWith(header, new int[] {0x00, 0x00, 0x01, 0x00})) {
+            return ".ico";
+        }
+
+        throw invalidImageFile();
+    }
+
+    private boolean startsWith(byte[] bytes, int[] signature) {
+        if (bytes.length < signature.length) {
+            return false;
+        }
+
+        for (int index = 0; index < signature.length; index++) {
+            if ((bytes[index] & 0xFF) != signature[index]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private BusinessException invalidImageFile() {
+        return new BusinessException(
+                "Arquivo invalido.",
+                HttpStatus.BAD_REQUEST,
+                java.util.List.of("O arquivo deve ser uma imagem PNG, JPG, JPEG ou ICO valida.")
+        );
     }
 
     private void ensureWithinRoot(Path path) {

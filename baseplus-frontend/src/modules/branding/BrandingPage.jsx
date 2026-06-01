@@ -143,12 +143,12 @@ export function BrandingPage() {
       return false;
     }
 
-    if (['image/png', 'image/jpeg', 'image/svg+xml'].includes(file.type)) {
+    if (['image/png', 'image/jpeg'].includes(file.type)) {
       return true;
     }
 
     const name = file.name.toLowerCase();
-    return name.endsWith('.png') || name.endsWith('.jpg') || name.endsWith('.jpeg') || name.endsWith('.svg');
+    return name.endsWith('.png') || name.endsWith('.jpg') || name.endsWith('.jpeg');
   }
 
   function isSupportedCompactLogoFile(file) {
@@ -160,12 +160,12 @@ export function BrandingPage() {
       return false;
     }
 
-    if (['image/png', 'image/jpeg', 'image/svg+xml', 'image/x-icon', 'image/vnd.microsoft.icon'].includes(file.type)) {
+    if (['image/png', 'image/jpeg', 'image/x-icon', 'image/vnd.microsoft.icon'].includes(file.type)) {
       return true;
     }
 
     const name = file.name.toLowerCase();
-    return name.endsWith('.png') || name.endsWith('.jpg') || name.endsWith('.jpeg') || name.endsWith('.svg') || name.endsWith('.ico');
+    return name.endsWith('.png') || name.endsWith('.jpg') || name.endsWith('.jpeg') || name.endsWith('.ico');
   }
 
   function isSupportedBackgroundFile(file) {
@@ -197,7 +197,7 @@ export function BrandingPage() {
     }
 
     if (!isSupportedLogoFile(file)) {
-      setError('Use PNG, JPG, JPEG ou SVG para a logo.');
+      setError('Use PNG, JPG ou JPEG para a logo.');
       return;
     }
 
@@ -233,7 +233,7 @@ export function BrandingPage() {
     }
 
     if (!isSupportedCompactLogoFile(file)) {
-      setError('Use PNG, JPG, JPEG ou SVG para a logo reduzida.');
+      setError('Use PNG, JPG ou JPEG para a logo reduzida.');
       return;
     }
 
@@ -293,7 +293,7 @@ export function BrandingPage() {
     }
 
     if (!isSupportedFaviconFile(file)) {
-      setError('Use PNG, JPG, JPEG, SVG ou ICO para o favicon.');
+      setError('Use PNG, JPG, JPEG ou ICO para o favicon.');
       return;
     }
 
@@ -329,7 +329,7 @@ export function BrandingPage() {
     }
 
     if (!isSupportedLogoFile(file)) {
-      setError('Use PNG, JPG, JPEG ou SVG para a logo do login.');
+      setError('Use PNG, JPG ou JPEG para a logo do login.');
       return;
     }
 
@@ -601,7 +601,7 @@ export function BrandingPage() {
 
               <input
                 ref={logoUploadRef}
-                accept="image/png,image/jpeg,image/svg+xml"
+                accept="image/png,image/jpeg"
                 className="bp-branding-file-input"
                 type="file"
                 onChange={handleLogoUpload}
@@ -631,7 +631,7 @@ export function BrandingPage() {
               </div>
 
               <p className="bp-branding-asset-hint">
-                PNG, JPG, JPEG ou SVG. A logo enviada também atualiza o favicon enquanto não houver favicon dedicado.
+                PNG, JPG ou JPEG. A logo enviada também atualiza o favicon enquanto não houver favicon dedicado.
               </p>
 
               <div className="bp-branding-ghost-grid bp-branding-ghost-grid--compact bp-branding-ghost-grid--background">
@@ -684,7 +684,7 @@ export function BrandingPage() {
 
               <input
                 ref={compactLogoUploadRef}
-                accept="image/png,image/jpeg,image/svg+xml"
+                accept="image/png,image/jpeg"
                 className="bp-branding-file-input"
                 type="file"
                 onChange={handleCompactLogoUpload}
@@ -704,7 +704,7 @@ export function BrandingPage() {
               </div>
 
               <p className="bp-branding-asset-hint">
-                PNG, JPG, JPEG ou SVG. A marca reduzida é usada pela sidebar recolhida e pela topbar compacta.
+                PNG, JPG ou JPEG. A marca reduzida é usada pela sidebar recolhida e pela topbar compacta.
               </p>
             </Card.Body>
           </Card>
@@ -741,7 +741,7 @@ export function BrandingPage() {
 
               <input
                 ref={loginLogoUploadRef}
-                accept="image/png,image/jpeg,image/svg+xml"
+                accept="image/png,image/jpeg"
                 className="bp-branding-file-input"
                 type="file"
                 onChange={handleLoginLogoUpload}
@@ -764,7 +764,7 @@ export function BrandingPage() {
               </div>
 
               <p className="bp-branding-asset-hint">
-                PNG, JPG, JPEG ou SVG. Use quando o login precisar de composição diferente da navegação interna.
+                PNG, JPG ou JPEG. Use quando o login precisar de composição diferente da navegação interna.
               </p>
             </Card.Body>
           </Card>
@@ -807,7 +807,7 @@ export function BrandingPage() {
 
               <input
                 ref={faviconUploadRef}
-                accept="image/png,image/jpeg,image/svg+xml,image/x-icon,.ico"
+                accept="image/png,image/jpeg,image/x-icon,.ico"
                 className="bp-branding-file-input"
                 type="file"
                 onChange={handleFaviconUpload}

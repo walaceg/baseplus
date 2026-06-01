@@ -27,6 +27,17 @@ Perfil dev:
 
 - H2 em memoria.
 - Flyway desativado no `application-dev.yml`.
+- Segredo JWT local padrao e usuario seed conhecidos; use somente em desenvolvimento local.
+
+## Segredo JWT fora de desenvolvimento
+
+Em qualquer perfil diferente de `dev`, defina `JWT_SECRET` antes de iniciar o backend. O valor deve ser longo, aleatorio e mantido fora do repositorio.
+
+```powershell
+$env:JWT_SECRET = '<segredo-aleatorio-seguro>'
+$env:SPRING_PROFILES_ACTIVE = 'prod'
+mvn spring-boot:run
+```
 
 ## Frontend
 
@@ -76,4 +87,3 @@ mvn test
 cd C:\dev\baseplus\baseplus-frontend
 npm run build
 ```
-

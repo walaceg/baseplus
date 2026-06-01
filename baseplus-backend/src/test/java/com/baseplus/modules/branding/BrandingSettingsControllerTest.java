@@ -233,7 +233,7 @@ class BrandingSettingsControllerTest {
                 "file",
                 "logo-baseplus.png",
                 MediaType.IMAGE_PNG_VALUE,
-                new byte[] {1, 2, 3, 4}
+                validPng()
         );
 
         mockMvc.perform(multipart("/branding/logo")
@@ -251,9 +251,9 @@ class BrandingSettingsControllerTest {
         String token = loginAndGetToken();
         MockMultipartFile file = new MockMultipartFile(
                 "file",
-                "compact-logo.svg",
-                "image/svg+xml",
-                "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'></svg>".getBytes()
+                "compact-logo.png",
+                MediaType.IMAGE_PNG_VALUE,
+                validPng()
         );
 
         mockMvc.perform(multipart("/branding/compact-logo")
@@ -273,7 +273,7 @@ class BrandingSettingsControllerTest {
                 "file",
                 "favicon.ico",
                 "image/x-icon",
-                new byte[] {1, 2, 3, 4}
+                validIcon()
         );
 
         mockMvc.perform(multipart("/branding/favicon")
@@ -323,13 +323,31 @@ class BrandingSettingsControllerTest {
     }
 
     @Test
+    void shouldRejectSvgBrandingLogoUpload() throws Exception {
+        String token = loginAndGetToken();
+        MockMultipartFile file = new MockMultipartFile(
+                "file",
+                "logo.svg",
+                "image/svg+xml",
+                "<svg xmlns='http://www.w3.org/2000/svg'></svg>".getBytes()
+        );
+
+        mockMvc.perform(multipart("/branding/logo")
+                        .file(file)
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.success").value(false))
+                .andExpect(jsonPath("$.message").value("Arquivo invalido."));
+    }
+
+    @Test
     void shouldUploadBrandingLoginBackgroundAndReturnUpdatedSettings() throws Exception {
         String token = loginAndGetToken();
         MockMultipartFile file = new MockMultipartFile(
                 "file",
                 "background-login.jpg",
                 MediaType.IMAGE_JPEG_VALUE,
-                new byte[] {1, 2, 3, 4}
+                validJpeg()
         );
 
         mockMvc.perform(multipart("/branding/login-background")
@@ -390,7 +408,7 @@ class BrandingSettingsControllerTest {
                 "file",
                 "granular-logo.png",
                 MediaType.IMAGE_PNG_VALUE,
-                new byte[] {1, 2, 3, 4}
+                validPng()
         );
 
         mockMvc.perform(multipart("/branding/logo")
@@ -456,5 +474,17 @@ class BrandingSettingsControllerTest {
                 .getContentAsString();
 
         return objectMapper.readTree(content).path("data").path("token").asText();
+    }
+
+    private byte[] validPng() {
+        return new byte[] {(byte) 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A};
+    }
+
+    private byte[] validJpeg() {
+        return new byte[] {(byte) 0xFF, (byte) 0xD8, (byte) 0xFF, (byte) 0xE0};
+    }
+
+    private byte[] validIcon() {
+        return new byte[] {0x00, 0x00, 0x01, 0x00};
     }
 }

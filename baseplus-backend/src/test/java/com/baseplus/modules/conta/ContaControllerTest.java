@@ -4,6 +4,8 @@ import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.startsWith;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
@@ -11,6 +13,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -370,7 +376,7 @@ class ContaControllerTest {
                 "file",
                 "avatar.png",
                 MediaType.IMAGE_PNG_VALUE,
-                new byte[] {1, 2, 3}
+                validPng()
         );
 
         mockMvc.perform(multipart("/conta/foto").file(file))
@@ -386,25 +392,46 @@ class ContaControllerTest {
                 "file",
                 "avatar.png",
                 MediaType.IMAGE_PNG_VALUE,
-                new byte[] {1, 2, 3}
+                validPng()
         );
 
-        mockMvc.perform(multipart("/conta/foto")
+        String uploadContent = mockMvc.perform(multipart("/conta/foto")
                         .file(file)
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.data.avatarUrl").value(startsWith("/uploads/")))
                 .andExpect(jsonPath("$.message").value("Avatar atualizado com sucesso."))
-                .andExpect(jsonPath("$.errors").value(empty()));
+                .andExpect(jsonPath("$.errors").value(empty()))
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
 
-        mockMvc.perform(delete("/conta/foto")
-                        .header("Authorization", "Bearer " + token))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.data.avatarUrl").doesNotExist())
-                .andExpect(jsonPath("$.message").value("Avatar removido com sucesso."))
-                .andExpect(jsonPath("$.errors").value(empty()));
+        String avatarUrl = objectMapper.readTree(uploadContent).path("data").path("avatarUrl").asText();
+        Path uploadedFile = Paths.get("uploads")
+                .resolve(avatarUrl.substring("/uploads/".length()))
+                .toAbsolutePath()
+                .normalize();
+        assertTrue(Files.exists(uploadedFile));
+        mockMvc.perform(get(avatarUrl))
+                .andExpect(status().isOk());
+
+        try {
+            mockMvc.perform(delete("/conta/foto")
+                            .header("Authorization", "Bearer " + token))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.success").value(true))
+                    .andExpect(jsonPath("$.data.avatarUrl").doesNotExist())
+                    .andExpect(jsonPath("$.message").value("Avatar removido com sucesso."))
+                    .andExpect(jsonPath("$.errors").value(empty()));
+
+            assertFalse(Files.exists(uploadedFile));
+            mockMvc.perform(get(avatarUrl))
+                    .andExpect(status().isNotFound())
+                    .andExpect(jsonPath("$.message").value("Recurso nao encontrado."));
+        } finally {
+            Files.deleteIfExists(uploadedFile);
+        }
     }
 
     @Test
@@ -423,6 +450,57 @@ class ContaControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.success").value(false))
                 .andExpect(jsonPath("$.message").value("Arquivo invalido."));
+    }
+
+    @Test
+    void shouldRejectSvgAvatarUpload() throws Exception {
+        String token = loginAndGetToken();
+        MockMultipartFile file = new MockMultipartFile(
+                "file",
+                "avatar.svg",
+                "image/svg+xml",
+                "<svg xmlns='http://www.w3.org/2000/svg'></svg>".getBytes()
+        );
+
+        mockMvc.perform(multipart("/conta/foto")
+                        .file(file)
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.success").value(false))
+                .andExpect(jsonPath("$.message").value("Arquivo invalido."));
+    }
+
+    @Test
+    void shouldRejectSvgPayloadDisguisedAsPng() throws Exception {
+        String token = loginAndGetToken();
+        MockMultipartFile file = new MockMultipartFile(
+                "file",
+                "avatar.png",
+                MediaType.IMAGE_PNG_VALUE,
+                "<svg xmlns='http://www.w3.org/2000/svg'></svg>".getBytes()
+        );
+
+        mockMvc.perform(multipart("/conta/foto")
+                        .file(file)
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.success").value(false))
+                .andExpect(jsonPath("$.message").value("Arquivo invalido."));
+    }
+
+    @Test
+    void shouldNotServeStoredSvgFilesFromUploads() throws Exception {
+        Path storedSvg = Paths.get("uploads", "security-test", "legacy.svg").toAbsolutePath().normalize();
+        Files.createDirectories(storedSvg.getParent());
+        Files.writeString(storedSvg, "<svg xmlns='http://www.w3.org/2000/svg'></svg>");
+
+        try {
+            mockMvc.perform(get("/uploads/security-test/legacy.svg"))
+                    .andExpect(status().isNotFound())
+                    .andExpect(jsonPath("$.message").value("Recurso nao encontrado."));
+        } finally {
+            Files.deleteIfExists(storedSvg);
+        }
     }
 
     @Test
@@ -513,5 +591,9 @@ class ContaControllerTest {
                 .getContentAsString();
 
         return objectMapper.readTree(content);
+    }
+
+    private byte[] validPng() {
+        return new byte[] {(byte) 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A};
     }
 }

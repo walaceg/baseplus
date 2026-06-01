@@ -333,10 +333,8 @@ public class BrandingSettingsService {
         String contentType = file.getContentType() == null ? "" : file.getContentType().trim().toLowerCase(Locale.ROOT);
         if (!"image/png".equals(contentType)
                 && !"image/jpeg".equals(contentType)
-                && !"image/jpg".equals(contentType)
-                && !"image/svg+xml".equals(contentType)
-                && !"image/svg".equals(contentType)) {
-            throw new BusinessException("Arquivo invalido.", HttpStatus.BAD_REQUEST, List.of("O arquivo deve ser PNG, JPG, JPEG ou SVG."));
+                && !"image/jpg".equals(contentType)) {
+            throw new BusinessException("Arquivo invalido.", HttpStatus.BAD_REQUEST, List.of("O arquivo deve ser PNG, JPG ou JPEG."));
         }
     }
 

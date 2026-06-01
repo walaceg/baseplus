@@ -14,6 +14,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.baseplus.modules.auth.service.JwtService;
+import com.baseplus.modules.usuario.domain.Usuario;
+import com.baseplus.modules.usuario.service.UsuarioService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -30,6 +32,9 @@ class HealthAdminAuthorizationTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Autowired
+    private UsuarioService usuarioService;
+
     @Test
     void shouldBlockAdminHealthWithoutToken() throws Exception {
         mockMvc.perform(get("/health/admin"))
@@ -40,7 +45,7 @@ class HealthAdminAuthorizationTest {
 
     @Test
     void shouldReturnForbiddenWhenTokenHasNoAdminRole() throws Exception {
-        String tokenWithoutRoles = jwtService.generateToken("1");
+        String tokenWithoutRoles = createTokenForUsuarioWithoutAccess("sem.admin.role@baseplus.com");
 
         mockMvc.perform(get("/health/admin")
                         .header("Authorization", "Bearer " + tokenWithoutRoles))
@@ -74,7 +79,7 @@ class HealthAdminAuthorizationTest {
 
     @Test
     void shouldReturnForbiddenWhenTokenHasNoAdminAccessPermission() throws Exception {
-        String tokenWithoutPermissions = jwtService.generateToken("1", java.util.List.of("ADMIN"));
+        String tokenWithoutPermissions = createTokenForUsuarioWithoutAccess("sem.admin.access@baseplus.com");
 
         mockMvc.perform(get("/health/permission")
                         .header("Authorization", "Bearer " + tokenWithoutPermissions))
@@ -114,5 +119,10 @@ class HealthAdminAuthorizationTest {
 
         JsonNode json = objectMapper.readTree(content);
         return json.path("data").path("token").asText();
+    }
+
+    private String createTokenForUsuarioWithoutAccess(String email) {
+        Usuario usuario = usuarioService.salvar(new Usuario("Usuario Sem Acesso", email, "nao-utilizada", true));
+        return jwtService.generateToken(usuario.getId().toString());
     }
 }

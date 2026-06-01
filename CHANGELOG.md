@@ -2,6 +2,23 @@
 
 Todas as mudancas relevantes do projeto devem ser registradas neste arquivo.
 
+## 2026-05-26
+
+### Seguranca
+
+- Removido o segredo JWT de desenvolvimento da configuracao base da aplicacao.
+- `JWT_SECRET` passa a ser obrigatorio fora do perfil `dev`, impedindo que ambientes produtivos herdem o segredo conhecido usado localmente.
+- Adicionado teste automatizado para preservar a separacao entre segredo externo e fallback exclusivo de desenvolvimento.
+- Documentada a obrigatoriedade de fornecer segredo externo forte em perfis nao locais.
+- Uploads passam a aceitar apenas imagens raster/icone com assinatura valida (`PNG`, `JPG`/`JPEG` ou `ICO`), recusando SVG e arquivos disfarçados.
+- Arquivos SVG legados sob `/uploads/**` deixam de ser servidos publicamente; recursos ausentes passam a retornar `404`.
+- Exclusao fisica de avatar passa a ser verificada por teste automatizado.
+- Access tokens passam a ser revalidados contra o usuario atual a cada requisicao autenticada.
+- Usuarios inativos/bloqueados deixam de autenticar mesmo com token ainda nao expirado.
+- Roles e permissions efetivas passam a ser recalculadas a partir do banco, refletindo remocao de permissao em tokens ja emitidos.
+- Login passa a bloquear automaticamente o usuario apos 5 tentativas consecutivas com senha invalida.
+- Reset administrativo de senha permanece como fluxo de desbloqueio e zera tentativas invalidas.
+
 ## 2026-05-25
 
 ### Corrigido

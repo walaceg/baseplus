@@ -28,6 +28,7 @@ import com.baseplus.modules.usuario.service.UsuarioService;
 public class AuthService {
 
     private static final int MIN_PASSWORD_LENGTH = 8;
+    private static final int MAX_INVALID_LOGIN_ATTEMPTS = 5;
 
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
@@ -71,6 +72,9 @@ public class AuthService {
 
         if (!passwordEncoder.matches(request.password(), usuario.getSenha())) {
             usuario.registrarLoginInvalido();
+            if (usuario.getTentativasLoginInvalidas() >= MAX_INVALID_LOGIN_ATTEMPTS) {
+                usuario.setBloqueado(true);
+            }
             usuarioService.salvar(usuario);
             throw invalidCredentials("Email ou senha incorretos.");
         }

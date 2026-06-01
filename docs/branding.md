@@ -50,6 +50,12 @@ Exemplos:
 - `branding.faviconUrl` prevalece sobre qualquer favicon padrao.
 - White label prevalece sobre textos padrao.
 
+## Formatos de upload
+
+- Logos, marcas reduzidas, logos de login e backgrounds aceitam somente imagens raster validas: `PNG`, `JPG` ou `JPEG`.
+- Favicons aceitam tambem `ICO` valido.
+- SVG continua permitido apenas como asset empacotado e revisado no frontend; arquivos SVG nao sao aceitos nem servidos em `/uploads/**`.
+
 ## O que nao fazer
 
 - Nao remover upload de assets.
@@ -66,4 +72,3 @@ Atualize este documento quando:
 - o fluxo de branding mudar;
 - houver novos tamanhos/formatos obrigatorios;
 - a estrategia de fallback visual for implementada no codigo.
-

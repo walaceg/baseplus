@@ -123,6 +123,45 @@ class AuthControllerTest {
     }
 
     @Test
+    void shouldBlockUserAfterRepeatedInvalidLoginAttempts() throws Exception {
+        Usuario usuario = new Usuario(
+                "Usuario Bloqueio Automatico",
+                "bloqueio.automatico@baseplus.com",
+                passwordEncoder.encode("Baseplus@456"),
+                true
+        );
+        usuarioService.salvar(usuario);
+
+        for (int attempt = 0; attempt < 5; attempt++) {
+            mockMvc.perform(post("/auth/login")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content("""
+                                    {
+                                      "email": "bloqueio.automatico@baseplus.com",
+                                      "password": "senha-incorreta"
+                                    }
+                                    """))
+                    .andExpect(status().isUnauthorized())
+                    .andExpect(jsonPath("$.message").value("Credenciais invalidas."));
+        }
+
+        Usuario bloqueado = usuarioService.buscarPorEmail("bloqueio.automatico@baseplus.com").orElseThrow();
+        org.hamcrest.MatcherAssert.assertThat(bloqueado.getTentativasLoginInvalidas(), org.hamcrest.Matchers.is(5));
+        org.hamcrest.MatcherAssert.assertThat(bloqueado.isBloqueado(), org.hamcrest.Matchers.is(true));
+
+        mockMvc.perform(post("/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "email": "bloqueio.automatico@baseplus.com",
+                                  "password": "Baseplus@456"
+                                }
+                """))
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.message").value("Usu\u00e1rio bloqueado"));
+    }
+
+    @Test
     void shouldBlockInactiveAndBlockedUsersOnLogin() throws Exception {
         Usuario inativo = new Usuario(
                 "Usuario Inativo",

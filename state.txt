@@ -1,6 +1,6 @@
 ﻿# Base+ State
 
-Atualizado em: 2026-05-25
+Atualizado em: 2026-05-26
 
 ## Estado atual
 
@@ -22,7 +22,7 @@ Atualizado em: 2026-05-25
 - Kit operacional repetivel criado com `docs/`, `TASK_PROMPT.md` e `scripts/check-project.ps1`.
 - Git inicializado na raiz do projeto.
 - Validacao frontend aprovada com `npm run build`.
-- Validacao backend aprovada com 105 testes.
+- Validacao backend aprovada com 114 testes.
 - Autorizacao por permission definida como granular obrigatoria; roles agrupam permissions, mas nao substituem permissions exigidas.
 - Primeira versao do modelo de dois perfis implementada:
   - Perfil funcional agrupa permissions.
@@ -35,6 +35,10 @@ Atualizado em: 2026-05-25
 - Documento de release criado em `docs/release-1.0.md`.
 - Versoes formais ajustadas para `1.0.1` no backend e frontend.
 - Sequencia de migrations Flyway corrigida, sem duplicidade de versao `V9`.
+- Primeira correcao da avaliacao de seguranca aplicada: `JWT_SECRET` obrigatorio fora do perfil `dev`, sem segredo JWT conhecido herdado por producao.
+- Uploads endurecidos: formatos ativos SVG bloqueados em `/uploads/**`, assinaturas reais de imagem verificadas e exclusao fisica de avatar coberta por teste.
+- Access tokens endurecidos: cada requisicao autenticada revalida usuario ativo/desbloqueado e recalcula roles/permissions atuais a partir do banco.
+- Login endurecido contra tentativas repetidas: 5 senhas invalidas consecutivas bloqueiam automaticamente o usuario.
 
 ## Ambiente
 
@@ -45,7 +49,7 @@ Atualizado em: 2026-05-25
 
 ## Ultima etapa concluida
 
-- Base+ 1.0.1 preparada com correcao da sequencia Flyway e validacao completa aprovada.
+- Correcoes de seguranca JWT, uploads, revalidacao de access token e bloqueio de login repetido aplicadas apos os testes dinamicos da versao `v1.0.1`, validadas com 114 testes backend aprovados e build frontend aprovado.
 
 ## Proxima etapa recomendada
 
@@ -55,9 +59,12 @@ Atualizado em: 2026-05-25
 - Criar `.env.example` se o projeto passar a usar variaveis de ambiente locais.
 - Separar `app-icons-source.png` em icones individuais se eles forem usados como favicon/app icon final.
 - Revisar estrategia de banco: H2 em dev, PostgreSQL persistente e Flyway.
+- Preparar commit/release das correcoes de seguranca locais.
 
 ## Atencoes
 
 - `Promptbaseplus.txt` foi preservado como documento legado de contexto original.
 - O repositorio Git possui release inicial publica `v1.0.0`; a correcao Flyway foi publicada em `v1.0.1`.
+- O segredo JWT padrao permanece apenas no perfil `dev`; esse perfil contem credenciais locais conhecidas e nao deve ser publicado ou exposto externamente.
+- Uploads publicos aceitam somente `PNG`, `JPG`/`JPEG` e `ICO` validos; SVG enviado ou legado em `/uploads/**` nao deve ser disponibilizado.
 - Evitar versionar logs, `target`, `dist`, `node_modules` e uploads locais.
