@@ -2,6 +2,15 @@
 
 Todas as mudancas relevantes do projeto devem ser registradas neste arquivo.
 
+## 2026-06-01
+
+### Release
+
+- Base+ publicada como versao `1.0.2`.
+- Backend e frontend versionados como `1.0.2`.
+- Release focada em endurecimento de seguranca para JWT, access token, uploads e tentativas repetidas de login.
+- Validacao backend aprovada com 114 testes automatizados.
+
 ## 2026-05-26
 
 ### Seguranca

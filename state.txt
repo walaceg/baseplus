@@ -4,7 +4,7 @@ Atualizado em: 2026-05-26
 
 ## Estado atual
 
-- Base+ 1.0.1 preparada como fundacao administrativa reutilizavel.
+- Base+ 1.0.2 preparada como fundacao administrativa reutilizavel.
 - Backend Spring Boot funcional.
 - Frontend React/Vite funcional.
 - Auth JWT, refresh token e logout implementados.
@@ -33,7 +33,7 @@ Atualizado em: 2026-05-26
   - Unidades organizacionais.
   - Criacao, edicao, listagem, filtros e exclusao controlada.
 - Documento de release criado em `docs/release-1.0.md`.
-- Versoes formais ajustadas para `1.0.1` no backend e frontend.
+- Versoes formais ajustadas para `1.0.2` no backend e frontend.
 - Sequencia de migrations Flyway corrigida, sem duplicidade de versao `V9`.
 - Primeira correcao da avaliacao de seguranca aplicada: `JWT_SECRET` obrigatorio fora do perfil `dev`, sem segredo JWT conhecido herdado por producao.
 - Uploads endurecidos: formatos ativos SVG bloqueados em `/uploads/**`, assinaturas reais de imagem verificadas e exclusao fisica de avatar coberta por teste.
@@ -49,22 +49,22 @@ Atualizado em: 2026-05-26
 
 ## Ultima etapa concluida
 
-- Correcoes de seguranca JWT, uploads, revalidacao de access token e bloqueio de login repetido aplicadas apos os testes dinamicos da versao `v1.0.1`, validadas com 114 testes backend aprovados e build frontend aprovado.
+- Correcoes de seguranca JWT, uploads, revalidacao de access token e bloqueio de login repetido aplicadas e preparadas como versao `v1.0.2`, validadas com 114 testes backend aprovados e build frontend aprovado.
 
 ## Proxima etapa recomendada
 
 - Criar o primeiro modulo real de negocio, como Empresas, usando CRUD Completo.
 - Aplicar validacao de escopo organizacional no primeiro modulo de negocio que possuir dados por empresa, filial, equipe ou outro contexto parametrizado.
-- Evoluir novos modulos a partir da versao publicada `v1.0.1`.
+- Evoluir novos modulos a partir da versao publicada `v1.0.2`.
 - Criar `.env.example` se o projeto passar a usar variaveis de ambiente locais.
 - Separar `app-icons-source.png` em icones individuais se eles forem usados como favicon/app icon final.
 - Revisar estrategia de banco: H2 em dev, PostgreSQL persistente e Flyway.
-- Preparar commit/release das correcoes de seguranca locais.
+- Iniciar novos modulos a partir da base publicada `v1.0.2`.
 
 ## Atencoes
 
 - `Promptbaseplus.txt` foi preservado como documento legado de contexto original.
-- O repositorio Git possui release inicial publica `v1.0.0`; a correcao Flyway foi publicada em `v1.0.1`.
+- O repositorio Git possui release inicial publica `v1.0.0`; a correcao Flyway foi publicada em `v1.0.1`; as correcoes de seguranca foram preparadas como `v1.0.2`.
 - O segredo JWT padrao permanece apenas no perfil `dev`; esse perfil contem credenciais locais conhecidas e nao deve ser publicado ou exposto externamente.
 - Uploads publicos aceitam somente `PNG`, `JPG`/`JPEG` e `ICO` validos; SVG enviado ou legado em `/uploads/**` nao deve ser disponibilizado.
 - Evitar versionar logs, `target`, `dist`, `node_modules` e uploads locais.
