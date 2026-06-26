@@ -184,6 +184,27 @@ Regras:
 - Validacoes de duplicidade e regras de exclusao ficam no service.
 - Endpoints devem ser protegidos por permission quando aplicavel.
 
+## Integracoes externas
+
+Quando o modulo receber ou consumir integracoes, siga `docs/integrations.md`.
+
+- `<Modulo>Controller` atende a aplicacao Base+ com JWT, permissions e escopo organizacional.
+- `<Modulo>ExternalController` e reservado para chamadas maquina-a-maquina e nao mistura mecanismos de autenticacao.
+- Adapters especificos ficam em `modules/<modulo>/integration`; somente infraestrutura transversal pertence a `com.baseplus.core.integration`.
+- REST, SOAP, APIs de terceiros e legados sao isolados do dominio por clients, DTOs e mappers.
+- Entradas mutaveis definem `externalId` ou `Idempotency-Key`.
+- Auditoria registra origem, data/hora, identificador externo, resultado e correlationId quando aplicavel.
+- A autenticacao inicial reservada usa `X-API-Key` configurada por ambiente; ela ainda nao esta implementada.
+
+Checklist adicional:
+
+1. Classificar entrada, saida ou ambas.
+2. Definir contrato e versionamento.
+3. Definir autenticacao e configuracao por ambiente.
+4. Definir idempotencia e constraints PostgreSQL.
+5. Definir auditoria, correlationId, timeout e retry.
+6. Criar testes de contrato e indisponibilidade.
+
 ## Permissoes
 
 Use o padrao:

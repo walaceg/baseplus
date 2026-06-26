@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Locale;
 import java.util.UUID;
 
@@ -17,7 +16,11 @@ import com.baseplus.core.exception.BusinessException;
 @Service
 public class LocalFileStorageService implements FileStorageService {
 
-    private static final Path ROOT_DIR = Paths.get("uploads").toAbsolutePath().normalize();
+    private final Path rootDirectory;
+
+    public LocalFileStorageService(UploadProperties uploadProperties) {
+        this.rootDirectory = uploadProperties.resolvedDirectory();
+    }
 
     @Override
     public StoredFile saveImage(MultipartFile file, String subdirectory, long maxSizeBytes) {
@@ -31,7 +34,7 @@ public class LocalFileStorageService implements FileStorageService {
 
         String contentType = normalizeContentType(file.getContentType());
         String extension = resolveValidatedExtension(file, contentType);
-        Path directory = ROOT_DIR.resolve(normalizeSubdirectory(subdirectory)).normalize();
+        Path directory = rootDirectory.resolve(normalizeSubdirectory(subdirectory)).normalize();
         ensureWithinRoot(directory);
 
         try {
@@ -52,7 +55,7 @@ public class LocalFileStorageService implements FileStorageService {
             return;
         }
 
-        Path file = ROOT_DIR.resolve(url.substring("/uploads/".length())).normalize();
+        Path file = rootDirectory.resolve(url.substring("/uploads/".length())).normalize();
         ensureWithinRoot(file);
 
         try {
@@ -121,7 +124,7 @@ public class LocalFileStorageService implements FileStorageService {
     }
 
     private void ensureWithinRoot(Path path) {
-        if (!path.normalize().startsWith(ROOT_DIR)) {
+        if (!path.normalize().startsWith(rootDirectory)) {
             throw new BusinessException("Arquivo invalido.", HttpStatus.BAD_REQUEST, java.util.List.of("Caminho de armazenamento invalido."));
         }
     }

@@ -15,6 +15,7 @@ Documentos de apoio:
 - `MODULE_TEMPLATE.md`: padrao para novos modulos.
 - `BRAND_GUIDE.md`: padrao visual da marca e regra de personalizacao.
 - `TASK_PROMPT.md`: prompt operacional para novas tarefas.
+- `docs/integrations.md`: padrao oficial para integracoes externas.
 
 ## Backend
 
@@ -46,6 +47,7 @@ application/
 Responsabilidades:
 
 - `core`: seguranca, configuracao, excecoes, storage e recursos transversais.
+- `core.integration`: infraestrutura transversal de autenticacao, configuracao, auditoria, idempotencia e transports de integracao.
 - `shared`: DTOs e utilitarios reutilizaveis.
 - `modules`: dominios de negocio.
 - `application`: orquestracao quando necessaria.
@@ -129,3 +131,14 @@ Todo novo modulo deve escolher:
 
 O padrao completo esta em `MODULE_TEMPLATE.md`.
 
+## Integracoes externas
+
+Infraestrutura compartilhada usa o namespace reservado:
+
+```text
+com.baseplus.core.integration
+```
+
+Adapters e contratos de um unico dominio permanecem em `com.baseplus.modules.<modulo>.integration`. Entradas maquina-a-maquina usam `<Modulo>ExternalController`, separadas dos controllers administrativos protegidos por JWT.
+
+Autenticacao por `X-API-Key`, idempotencia, auditoria, correlationId e transports REST/SOAP estao definidos em `docs/integrations.md`. Nenhum endpoint externo ou dependencia SOAP faz parte da base atual.

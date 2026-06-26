@@ -1,4 +1,4 @@
-﻿# AI Context - Base+
+# AI Context - Base+
 
 Este arquivo e o contexto principal para desenvolvimento assistido por IA no projeto Base+.
 
@@ -13,8 +13,11 @@ Este arquivo e o contexto principal para desenvolvimento assistido por IA no pro
 - `docs/module-development.md`: criacao de modulos.
 - `docs/branding.md`: detalhes de branding e personalizacao.
 - `docs/permissions.md`: padrao de permissoes.
+- `docs/docker.md`: operacao Docker integrada, volumes, backup e restore.
 - `docs/release-1.0.md`: escopo fechado, validacao e proximos passos da versao 1.0.
+- `docs/release-1.1-checklist.md`: checklist oficial para fechamento da v1.1.0.
 - `docs/setup.md`: ambiente local e validacao.
+- `docs/integrations.md`: padrao para integracoes REST, SOAP, terceiros e legados.
 
 ## Identidade
 
@@ -22,7 +25,8 @@ Base+ e uma plataforma corporativa modular para construcao de aplicacoes adminis
 
 Nome tecnico: `baseplus`
 Namespace backend: `com.baseplus`
-Versao atual: `1.0.2`
+Versao publicada: `1.0.2`
+Estado atual: preparacao local da release `v1.1.0`, sem tag ou publicacao nesta etapa.
 
 ## Stack oficial
 
@@ -35,6 +39,7 @@ Backend:
 - Flyway
 - PostgreSQL para ambiente persistente
 - H2 apenas para desenvolvimento/testes locais
+- Testcontainers para validacao de compatibilidade com PostgreSQL
 
 Frontend:
 
@@ -45,11 +50,18 @@ Frontend:
 - CSS variables
 - Componentes compartilhados em `src/shared/components`
 
+Infraestrutura:
+
+- Dockerfiles multi-stage para backend e frontend.
+- Docker Compose integrado com PostgreSQL, backend e frontend.
+- Nginx com fallback SPA e proxy para `/api` e `/uploads`.
+- Volumes persistentes para PostgreSQL e uploads.
+
 ## Arquitetura backend
 
 Pacote raiz: `com.baseplus`
 
-- `core`: infraestrutura, seguranca, excecoes, storage, configuracao e recursos transversais.
+- `core`: infraestrutura, seguranca, excecoes, storage, configuracao, integracoes e recursos transversais.
 - `shared`: DTOs e utilitarios reutilizaveis.
 - `modules`: dominios de negocio.
 - `application`: camada reservada para orquestracao quando necessario.
@@ -73,6 +85,16 @@ Cada modulo em `modules/<modulo>` deve seguir:
 - Nao criar dependencia direta desnecessaria entre modulos.
 - Preferir nomes e vocabulario ja existentes no projeto.
 - Evitar novas bibliotecas sem necessidade real.
+- Integracoes externas seguem `docs/integrations.md`; infraestrutura comum usa `com.baseplus.core.integration` e regra especifica permanece no modulo dono.
+
+## Persistencia e profiles
+
+- `dev`: H2 em memoria, Flyway desativado e segredo local conhecido apenas para desenvolvimento.
+- `docker`: PostgreSQL 16, Flyway ativo e Hibernate `ddl-auto=validate`.
+- `prod`: PostgreSQL externo por variaveis de ambiente, Flyway ativo e Hibernate `ddl-auto=validate`.
+- `JWT_SECRET` e obrigatorio fora do profile `dev`.
+- Uploads usam `baseplus.upload.directory`, configuravel por `UPLOAD_DIR`.
+- Ambientes `docker` e `prod` nao criam administrador automaticamente; o primeiro admin deve ser criado pelo bootstrap administrativo manual.
 
 ## Seguranca
 
@@ -85,6 +107,9 @@ Cada modulo em `modules/<modulo>` deve seguir:
 - Roles por modulo devem ser usadas como pacotes de permissoes, por exemplo `<MODULO>_ADMIN`, `<MODULO>_OPERADOR` e `<MODULO>_LEITOR`.
 - A base contempla dois perfis: perfil funcional para permissions e perfil organizacional para escopos parametrizaveis.
 - Escopos organizacionais devem usar tipos/unidades configuraveis, sem fixar empresa, filial ou equipe no codigo de novos modulos.
+- CORS e configurado por `BASEPLUS_CORS_ALLOWED_ORIGINS`; nao fixar dominios temporarios no codigo.
+- Hosts de tuneis locais para Vite devem usar `VITE_ALLOWED_HOSTS` em ambiente local nao versionado.
+- Bootstrap administrativo deve ser acionado apenas por configuracao explicita `BASEPLUS_BOOTSTRAP_ADMIN_ENABLED=true`, receber nome, email e senha por ambiente/argumentos e recusar execucao se ja houver usuario `ADMIN`.
 
 ## Arquitetura frontend
 
@@ -149,6 +174,7 @@ Antes de implementar um modulo, leia `MODULE_TEMPLATE.md` e declare qual modelo 
 
 - Rodar testes backend relevantes quando a alteracao afetar API, regra de negocio, seguranca ou persistencia.
 - Rodar `npm run build` quando a alteracao afetar frontend.
+- Rodar validacoes Docker/PostgreSQL quando a alteracao afetar profiles, persistencia, Docker, health/readiness ou uploads.
 - Atualizar `state.txt` quando o estado atual ou proxima etapa mudar.
 - Atualizar `CHANGELOG.md` quando houver mudanca funcional relevante.
 - Atualizar `README.md` quando comandos, setup ou arquitetura mudarem.

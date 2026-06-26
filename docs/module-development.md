@@ -9,6 +9,7 @@ Leia:
 - `AI_CONTEXT.md`
 - `state.txt`
 - `MODULE_TEMPLATE.md`
+- `docs/integrations.md`, se o modulo receber ou consumir chamadas externas
 - `BRAND_GUIDE.md`, se a tarefa envolver marca ou branding
 
 Declare o tipo de CRUD:
@@ -117,14 +118,15 @@ Rotas esperadas:
 4. Criar repository.
 5. Criar service.
 6. Criar controller.
-7. Criar/registrar permissoes.
-8. Criar service frontend.
-9. Criar telas.
-10. Registrar rotas.
-11. Registrar menu.
-12. Criar testes backend relevantes.
-13. Rodar `scripts/check-project.ps1` ou comandos equivalentes.
-14. Atualizar `state.txt` e `CHANGELOG.md`.
+7. Definir adapters, controller externo, autenticacao e idempotencia quando houver integracao.
+8. Criar/registrar permissoes.
+9. Criar service frontend.
+10. Criar telas.
+11. Registrar rotas.
+12. Registrar menu.
+13. Criar testes backend relevantes.
+14. Rodar `scripts/check-project.ps1` ou comandos equivalentes.
+15. Atualizar `state.txt` e `CHANGELOG.md`.
 
 ## Padrao de permissoes
 
@@ -151,4 +153,3 @@ Permissoes extras devem ser especificas:
 - Nao quebrar a personalizacao do Branding.
 - Nao alterar arquitetura global para resolver problema local.
 - Nao reverter alteracoes existentes sem pedido explicito.
-

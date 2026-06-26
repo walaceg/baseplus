@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://${DB_HOST:postgres}:5432/${DB_NAME:baseplus}
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:baseplus}
     username: ${DB_USER:baseplus}
     password: ${DB_PASSWORD:baseplus}
     driver-class-name: org.postgresql.Driver
@@ -11,3 +11,6 @@ spring:
     open-in-view: false
     hibernate:
       ddl-auto: validate
+
+jwt:
+  secret: ${JWT_SECRET}

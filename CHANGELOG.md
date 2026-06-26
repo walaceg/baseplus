@@ -1,6 +1,39 @@
-﻿# Changelog
+# Changelog
 
 Todas as mudancas relevantes do projeto devem ser registradas neste arquivo.
+
+## 2026-06-26
+
+### Preparacao v1.1.0
+
+- Base+ segue com versao publicada `1.0.2`; esta secao registra a preparacao local da release `v1.1.0`, ainda sem tag ou publicacao.
+- PostgreSQL consolidado como banco padrao para ambientes persistentes.
+- H2 mantido apenas para desenvolvimento local no profile `dev`.
+- Profiles `docker` e `prod` revisados com Flyway ativo e Hibernate `ddl-auto=validate`.
+- Adicionada validacao automatizada de compatibilidade com PostgreSQL 16 usando Testcontainers, Flyway e JPA validate.
+- Teste de compatibilidade PostgreSQL passa a ser ignorado quando Docker nao esta disponivel, sem quebrar a build.
+- Dependencias de Testcontainers atualizadas para compatibilidade com Docker Engine 29.x.
+- Criado profile `docker` para execucao local com PostgreSQL.
+- Criado profile `prod` para execucao produtiva com PostgreSQL por variaveis de ambiente.
+- Criado `.env.example` do backend com variaveis de dev, docker, prod e reservas futuras de integracao externa.
+- Uploads passam a usar diretorio configuravel por `UPLOAD_DIR`, preservando `uploads` como padrao de desenvolvimento.
+- Dockerfile multi-stage criado para o backend com Java 17, runtime enxuto e usuario nao-root.
+- Dockerfile multi-stage criado para o frontend com build Vite e Nginx.
+- Nginx configurado com fallback SPA e proxy para `/api` e `/uploads`.
+- Docker Compose integrado passa a subir PostgreSQL, backend e frontend.
+- PostgreSQL permanece sem porta publica no host no Compose integrado.
+- Volumes persistentes definidos para PostgreSQL e uploads.
+- Healthcheck do backend no Compose passa a usar readiness.
+- Endpoint `/health/ready` criado para verificar conectividade real com o banco sem expor dados sensiveis.
+- Endpoint `/health` mantido como liveness simples.
+- CORS deixa de depender de dominio temporario fixo e passa a usar `BASEPLUS_CORS_ALLOWED_ORIGINS`.
+- Vite deixa de manter host temporario fixo e passa a aceitar `VITE_ALLOWED_HOSTS` quando necessario localmente.
+- Uso de tuneis locais documentado como configuracao opcional nao versionada.
+- Padrao oficial de integracoes externas documentado em `docs/integrations.md`, incluindo REST, SOAP, terceiros, legados, `X-API-Key`, idempotencia, auditoria e correlationId.
+- Documentacao Docker operacional criada em `docs/docker.md`, incluindo execucao, portas, volumes, health, backup, restore e parada da stack.
+- Checklist oficial de validacao da v1.1.0 criado em `docs/release-1.1-checklist.md`.
+- Documentacao oficial alinhada para refletir a Base+ como fundacao reutilizavel preparada para v1.1.0.
+- Bootstrap administrativo oficial criado para primeira inicializacao de ambientes Docker/HOM/PRD, sem seed permanente, credenciais fixas, migrations ou inserts SQL.
 
 ## 2026-06-01
 
@@ -19,7 +52,7 @@ Todas as mudancas relevantes do projeto devem ser registradas neste arquivo.
 - `JWT_SECRET` passa a ser obrigatorio fora do perfil `dev`, impedindo que ambientes produtivos herdem o segredo conhecido usado localmente.
 - Adicionado teste automatizado para preservar a separacao entre segredo externo e fallback exclusivo de desenvolvimento.
 - Documentada a obrigatoriedade de fornecer segredo externo forte em perfis nao locais.
-- Uploads passam a aceitar apenas imagens raster/icone com assinatura valida (`PNG`, `JPG`/`JPEG` ou `ICO`), recusando SVG e arquivos disfarçados.
+- Uploads passam a aceitar apenas imagens raster/icone com assinatura valida (`PNG`, `JPG`/`JPEG` ou `ICO`), recusando SVG e arquivos disfarcados.
 - Arquivos SVG legados sob `/uploads/**` deixam de ser servidos publicamente; recursos ausentes passam a retornar `404`.
 - Exclusao fisica de avatar passa a ser verificada por teste automatizado.
 - Access tokens passam a ser revalidados contra o usuario atual a cada requisicao autenticada.
