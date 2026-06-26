@@ -1,8 +1,8 @@
 # Base+
 
-Versao publicada: `1.0.2`
+Versao publicada: `1.1.0`
 
-Estado atual: preparacao da release `v1.1.0`, ainda sem alteracao de versao publicada.
+Estado atual: Baseline Oficial `v1.1.0`.
 
 Base+ e uma plataforma corporativa modular para construcao de aplicacoes administrativas e sistemas de negocio. A proposta e servir como fundacao reutilizavel: autenticacao, autorizacao, perfis, auditoria, branding, estrutura organizacional, padroes de modulo, Docker e documentacao operacional ficam prontos antes da criacao dos modulos especificos de negocio.
 
@@ -280,8 +280,8 @@ docker compose up --detach --build --wait
 
 ## Release
 
-A versao publicada atual permanece `1.0.2`.
+A versao publicada atual e `1.1.0`.
 
-A preparacao da `v1.1.0` consolida PostgreSQL, Docker integrado, readiness, CORS configuravel, uploads configuraveis, documentacao operacional, padrao de integracoes e checklist oficial de release.
+A `v1.1.0` consolida PostgreSQL, Docker integrado, readiness, CORS configuravel, uploads configuraveis, documentacao operacional, padrao de integracoes e checklist oficial de release.
 
 Antes de iniciar novos modulos de negocio, use `MODULE_TEMPLATE.md`, `TASK_PROMPT.md` e `docs/module-development.md`.

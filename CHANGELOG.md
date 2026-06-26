@@ -4,9 +4,9 @@ Todas as mudancas relevantes do projeto devem ser registradas neste arquivo.
 
 ## 2026-06-26
 
-### Preparacao v1.1.0
+### Release v1.1.0
 
-- Base+ segue com versao publicada `1.0.2`; esta secao registra a preparacao local da release `v1.1.0`, ainda sem tag ou publicacao.
+- Base+ publicada como versao `1.1.0` e definida como Baseline Oficial da plataforma.
 - PostgreSQL consolidado como banco padrao para ambientes persistentes.
 - H2 mantido apenas para desenvolvimento local no profile `dev`.
 - Profiles `docker` e `prod` revisados com Flyway ativo e Hibernate `ddl-auto=validate`.
@@ -32,7 +32,7 @@ Todas as mudancas relevantes do projeto devem ser registradas neste arquivo.
 - Padrao oficial de integracoes externas documentado em `docs/integrations.md`, incluindo REST, SOAP, terceiros, legados, `X-API-Key`, idempotencia, auditoria e correlationId.
 - Documentacao Docker operacional criada em `docs/docker.md`, incluindo execucao, portas, volumes, health, backup, restore e parada da stack.
 - Checklist oficial de validacao da v1.1.0 criado em `docs/release-1.1-checklist.md`.
-- Documentacao oficial alinhada para refletir a Base+ como fundacao reutilizavel preparada para v1.1.0.
+- Documentacao oficial alinhada para refletir a Base+ como fundacao reutilizavel e Baseline Oficial v1.1.0.
 - Bootstrap administrativo oficial criado para primeira inicializacao de ambientes Docker/HOM/PRD, sem seed permanente, credenciais fixas, migrations ou inserts SQL.
 
 ## 2026-06-01
