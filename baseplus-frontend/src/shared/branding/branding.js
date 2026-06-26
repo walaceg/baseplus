@@ -80,7 +80,7 @@ export function applyBrandingSettings(settings = {}) {
 
   const branding = normalizeBrandingSettings(settings);
   const root = document.documentElement;
-  const visualTokens = buildBrandingVisualTokens(branding);
+  const visualTokens = buildBrandingVisualTokens(branding, settings.assetVersion);
 
   root.dataset.loginBackgroundMode = branding.loginBackgroundMode;
   root.dataset.loginBackgroundHasImage = branding.loginBackgroundUrl ? 'true' : 'false';
@@ -119,7 +119,7 @@ export async function applyBrandingFavicon(settings = {}) {
 
 export function buildBrandingPreviewStyle(settings = {}) {
   const branding = normalizeBrandingSettings(settings);
-  const visualTokens = buildBrandingVisualTokens(branding);
+  const visualTokens = buildBrandingVisualTokens(branding, settings.assetVersion);
 
   return {
     ...visualTokens,
@@ -406,8 +406,8 @@ function escapeXml(value) {
     .replaceAll("'", '&apos;');
 }
 
-function buildBrandingVisualTokens(branding) {
-  const loginBackgroundTokens = buildLoginBackgroundTokens(branding);
+function buildBrandingVisualTokens(branding, assetVersion = 0) {
+  const loginBackgroundTokens = buildLoginBackgroundTokens(branding, assetVersion);
 
   return {
     '--brand-platform-name': branding.nomePlataforma,
@@ -424,9 +424,9 @@ function buildBrandingVisualTokens(branding) {
   };
 }
 
-function buildLoginBackgroundTokens(branding) {
-  const loginBackgroundImage = buildLoginBackgroundImageToken(branding.loginBackgroundUrl);
-  const hasBackgroundImage = Boolean(loginBackgroundImage);
+function buildLoginBackgroundTokens(branding, assetVersion = 0) {
+  const loginBackgroundImage = buildLoginBackgroundImageToken(branding.loginBackgroundUrl, assetVersion);
+  const hasBackgroundImage = loginBackgroundImage !== 'none';
   const primaryGlow = withAlpha(branding.corPrimaria, branding.tema === 'dark' ? 0.24 : 0.18);
   const secondaryGlow = withAlpha(branding.corSecundaria, branding.tema === 'dark' ? 0.18 : 0.12);
   const primaryHalo = withAlpha(branding.corPrimaria, branding.tema === 'dark' ? 0.16 : 0.1);
@@ -550,13 +550,13 @@ function clamp(value) {
   return Math.max(0, Math.min(255, value));
 }
 
-function buildLoginBackgroundImageToken(value) {
+function buildLoginBackgroundImageToken(value, assetVersion = 0) {
   const normalized = normalizeLoginBackgroundUrl(value);
   if (!normalized) {
     return 'none';
   }
 
-  return `url("${escapeCssUrl(normalized)}")`;
+  return `url("${escapeCssUrl(resolveBrandingAssetUrl(normalized, assetVersion))}")`;
 }
 
 function escapeCssUrl(value) {

@@ -14,6 +14,7 @@ import com.baseplus.core.storage.StoredFile;
 import com.baseplus.modules.branding.domain.BrandingSettings;
 import com.baseplus.modules.branding.domain.LoginBackgroundMode;
 import com.baseplus.modules.branding.dto.BrandingSettingsResponse;
+import com.baseplus.modules.branding.dto.PublicBrandingSettingsResponse;
 import com.baseplus.modules.branding.dto.UpdateBrandingSettingsRequest;
 import com.baseplus.modules.branding.repository.BrandingSettingsRepository;
 
@@ -49,6 +50,11 @@ public class BrandingSettingsService {
     @Transactional
     public BrandingSettingsResponse obter() {
         return toResponse(getOrCreateDefault());
+    }
+
+    @Transactional
+    public PublicBrandingSettingsResponse obterPublico() {
+        return toPublicResponse(getOrCreateDefault());
     }
 
     @Transactional
@@ -237,6 +243,25 @@ public class BrandingSettingsService {
                 settings.getLoginBackgroundMode(),
                 settings.getLogoUrl(),
                 settings.getCompactLogoUrl(),
+                settings.getFaviconUrl(),
+                settings.getLoginLogoUrl(),
+                settings.getLoginBackgroundUrl(),
+                settings.isWhiteLabelEnabled(),
+                settings.getWhiteLabelName(),
+                settings.getWhiteLabelSubtitle()
+        );
+    }
+
+    private PublicBrandingSettingsResponse toPublicResponse(BrandingSettings settings) {
+        return new PublicBrandingSettingsResponse(
+                settings.getNomePlataforma(),
+                settings.getSubtituloInstitucional(),
+                settings.getTema(),
+                settings.getCorPrimaria(),
+                settings.getCorSecundaria(),
+                settings.getDensidadeVisual(),
+                settings.getLoginBackgroundMode(),
+                settings.getLogoUrl(),
                 settings.getFaviconUrl(),
                 settings.getLoginLogoUrl(),
                 settings.getLoginBackgroundUrl(),

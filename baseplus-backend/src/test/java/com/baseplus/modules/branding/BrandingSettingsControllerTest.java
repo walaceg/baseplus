@@ -83,6 +83,50 @@ class BrandingSettingsControllerTest {
     }
 
     @Test
+    void shouldReturnPublicBrandingWithoutAuthenticationAndHideAdministrativeFields() throws Exception {
+        brandingSettingsRepository.deleteAll();
+        brandingSettingsRepository.save(new BrandingSettings(
+                "Base+ Publica",
+                "Login publico",
+                "dark",
+                "#123456",
+                "#654321",
+                "compact",
+                LoginBackgroundMode.INSTITUTIONAL_GRADIENT,
+                "/uploads/branding/logo/public-logo.png",
+                "/uploads/branding/compact-logo/private-compact.png",
+                "/uploads/branding/favicon/public.ico",
+                "/uploads/branding/login-logo/public-login.png",
+                "/uploads/branding/login-background/public-background.jpg",
+                true,
+                "Portal Cliente",
+                "Acesso externo"
+        ));
+
+        mockMvc.perform(get("/branding/public"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.data.nomePlataforma").value("Base+ Publica"))
+                .andExpect(jsonPath("$.data.subtituloInstitucional").value("Login publico"))
+                .andExpect(jsonPath("$.data.tema").value("dark"))
+                .andExpect(jsonPath("$.data.corPrimaria").value("#123456"))
+                .andExpect(jsonPath("$.data.corSecundaria").value("#654321"))
+                .andExpect(jsonPath("$.data.densidadeVisual").value("compact"))
+                .andExpect(jsonPath("$.data.loginBackgroundMode").value("INSTITUTIONAL_GRADIENT"))
+                .andExpect(jsonPath("$.data.logoUrl").value("/uploads/branding/logo/public-logo.png"))
+                .andExpect(jsonPath("$.data.faviconUrl").value("/uploads/branding/favicon/public.ico"))
+                .andExpect(jsonPath("$.data.loginLogoUrl").value("/uploads/branding/login-logo/public-login.png"))
+                .andExpect(jsonPath("$.data.loginBackgroundUrl").value("/uploads/branding/login-background/public-background.jpg"))
+                .andExpect(jsonPath("$.data.whiteLabelEnabled").value(true))
+                .andExpect(jsonPath("$.data.whiteLabelName").value("Portal Cliente"))
+                .andExpect(jsonPath("$.data.whiteLabelSubtitle").value("Acesso externo"))
+                .andExpect(jsonPath("$.data.compactLogoUrl").doesNotExist())
+                .andExpect(jsonPath("$.data.id").doesNotExist())
+                .andExpect(jsonPath("$.message").value("Branding publico carregado."))
+                .andExpect(jsonPath("$.errors").value(empty()));
+    }
+
+    @Test
     void shouldUpdateBrandingWithJsonAndKeepSingleRecord() throws Exception {
         String token = loginAndGetToken();
 

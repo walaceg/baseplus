@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.baseplus.modules.branding.dto.BrandingSettingsResponse;
+import com.baseplus.modules.branding.dto.PublicBrandingSettingsResponse;
 import com.baseplus.modules.branding.dto.UpdateBrandingSettingsRequest;
 import com.baseplus.modules.branding.service.BrandingSettingsService;
 import com.baseplus.shared.dto.ApiResponse;
@@ -32,6 +33,12 @@ public class BrandingSettingsController {
     public ResponseEntity<ApiResponse<BrandingSettingsResponse>> obter() {
         BrandingSettingsResponse response = brandingSettingsService.obter();
         return ResponseEntity.ok(ApiResponse.success(response, "Branding carregado."));
+    }
+
+    @GetMapping("/public")
+    public ResponseEntity<ApiResponse<PublicBrandingSettingsResponse>> obterPublico() {
+        PublicBrandingSettingsResponse response = brandingSettingsService.obterPublico();
+        return ResponseEntity.ok(ApiResponse.success(response, "Branding publico carregado."));
     }
 
     @PutMapping

@@ -76,7 +76,7 @@ export function BrandingPage() {
       !uploadingLoginBackground,
     [draft.nomePlataforma, draft.subtituloInstitucional, hasColorErrors, uploadingCompactLogo, uploadingFavicon, uploadingLoginBackground, uploadingLoginLogo, uploadingLogo],
   );
-  const previewStyle = useMemo(() => buildBrandingPreviewStyle(draft), [draft]);
+  const previewStyle = useMemo(() => buildBrandingPreviewStyle({ ...draft, assetVersion }), [assetVersion, draft]);
   const loginPreviewName = draft.whiteLabelEnabled && draft.whiteLabelName ? draft.whiteLabelName : draft.nomePlataforma;
   const loginPreviewSubtitle = draft.whiteLabelEnabled && draft.whiteLabelSubtitle
     ? draft.whiteLabelSubtitle

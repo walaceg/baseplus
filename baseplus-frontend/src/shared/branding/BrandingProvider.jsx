@@ -3,7 +3,7 @@ import {
   clearBrandingRuntime,
   setBrandingRuntime,
 } from '../../core/theme/themeResolution.js';
-import { getBranding } from '../../modules/branding/brandingService.js';
+import { getBranding, getPublicBranding } from '../../modules/branding/brandingService.js';
 import { getJwtPermissions, getJwtRoles } from '../auth/jwt.js';
 import { tokenStorage } from '../storage/tokenStorage.js';
 import { BrandingContext } from './BrandingContext.js';
@@ -22,19 +22,10 @@ export function BrandingProvider({ children }) {
   const [assetVersion, setAssetVersion] = useState(() => Date.now());
 
   const refreshBranding = useCallback(async () => {
-    if (!canReadBranding()) {
-      setBranding(defaultBranding);
-      setBrandingRuntime({
-        density: defaultBranding.densidadeVisual,
-        theme: defaultBranding.tema,
-      });
-      setAssetVersion(Date.now());
-      setIsLoading(false);
-      return defaultBranding;
-    }
+    const loadBranding = canReadBranding() ? getBranding : getPublicBranding;
 
     try {
-      const nextBranding = normalizeBrandingSettings(await getBranding());
+      const nextBranding = normalizeBrandingSettings(await loadBranding());
       setBranding(nextBranding);
       setBrandingRuntime({
         density: nextBranding.densidadeVisual,

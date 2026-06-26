@@ -5,6 +5,11 @@ export async function getBranding() {
   return response.data.data;
 }
 
+export async function getPublicBranding() {
+  const response = await apiClient.get('/branding/public');
+  return response.data.data;
+}
+
 export async function updateBranding(payload) {
   const response = await apiClient.put('/branding', buildPayload(payload));
   return response.data.data;

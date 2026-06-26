@@ -63,7 +63,7 @@ public class SecurityConfig {
                         .accessDeniedHandler((request, response, accessDeniedException) -> writeForbiddenResponse(response))
                 )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/health", "/health/ready", "/h2-console/**", "/auth/login", "/auth/refresh", "/uploads/**").permitAll()
+                        .requestMatchers("/health", "/health/ready", "/h2-console/**", "/auth/login", "/auth/refresh", "/branding/public", "/uploads/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
