@@ -160,6 +160,7 @@ curl.exe http://127.0.0.1:5173/api/health/ready
 ```
 
 Operacao completa, portas, volumes, backup e restore estao em `docs/docker.md`.
+Atualizacao de ambientes existentes em HOM e PRD esta documentada em `docs/update.md`.
 
 ## Bootstrap administrativo
 
@@ -216,6 +217,7 @@ A compatibilidade com PostgreSQL e validada por teste automatizado com Testconta
 - `docs/architecture.md`: visao arquitetural da plataforma.
 - `docs/module-development.md`: guia pratico para criar novos modulos.
 - `docs/docker.md`: operacao Docker integrada, volumes, backup e restore.
+- `docs/update.md`: processo oficial de atualizacao de HOM e PRD sem reinstalar nem perder dados.
 - `docs/branding.md`: regras de marca, assets e precedencia de personalizacao.
 - `docs/permissions.md`: padrao de permissoes por modulo.
 - `docs/release-1.0.md`: escopo, validacao e proximos passos da versao 1.0.

@@ -2,6 +2,8 @@
 
 Guia operacional para executar a Base+ com Docker Compose, PostgreSQL, backend e frontend integrados.
 
+Para atualizar uma instalacao existente sem reinstalar e sem perder banco, uploads, usuarios, auditoria ou branding, consulte `docs/update.md`.
+
 ## Arquivo principal
 
 Execute os comandos a partir do backend, onde esta o `docker-compose.yml` oficial:
