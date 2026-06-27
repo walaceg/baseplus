@@ -380,6 +380,27 @@ class AuthControllerTest {
     }
 
     @Test
+    void shouldReturnAuthenticatedUserAvatarUrl() throws Exception {
+        Usuario usuario = new Usuario(
+                "Usuario Avatar",
+                "usuario.avatar@baseplus.com",
+                passwordEncoder.encode("Baseplus@456"),
+                true
+        );
+        usuario.setAvatarUrl("/uploads/avatars/avatar-auth.png");
+        usuarioService.salvar(usuario);
+        String token = login("usuario.avatar@baseplus.com", "Baseplus@456").path("data").path("token").asText();
+
+        mockMvc.perform(get("/auth/me")
+                        .header("Authorization", "Bearer " + token))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.data.email").value("usuario.avatar@baseplus.com"))
+                .andExpect(jsonPath("$.data.avatarUrl").value(startsWith("/uploads/avatars/")))
+                .andExpect(jsonPath("$.data.avatarUrl").value("/uploads/avatars/avatar-auth.png"));
+    }
+
+    @Test
     void shouldGenerateJwtWithExpectedShape() throws Exception {
         String token = loginAndGetToken();
 

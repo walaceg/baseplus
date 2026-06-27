@@ -201,6 +201,7 @@ public class AuthService {
                 usuario.getId(),
                 usuario.getNome(),
                 usuario.getEmail(),
+                usuario.getAvatarUrl(),
                 getActiveRoles(usuario),
                 getActivePermissions(usuario),
                 usuario.isTrocarSenhaPrimeiroAcesso()

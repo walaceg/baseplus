@@ -64,6 +64,9 @@ class ContaControllerTest {
 
     @Test
     void shouldReturnAuthenticatedConta() throws Exception {
+        Usuario usuario = usuarioService.buscarPorEmail("admin@baseplus.com").orElseThrow();
+        usuario.setAvatarUrl("/uploads/avatars/avatar-conta.png");
+        usuarioService.salvar(usuario);
         String token = loginAndGetToken();
 
         mockMvc.perform(get("/conta")
@@ -73,6 +76,8 @@ class ContaControllerTest {
                 .andExpect(jsonPath("$.data.id").value(notNullValue()))
                 .andExpect(jsonPath("$.data.nome").value("Administrador Base+"))
                 .andExpect(jsonPath("$.data.email").value("admin@baseplus.com"))
+                .andExpect(jsonPath("$.data.avatarUrl").value(startsWith("/uploads/avatars/")))
+                .andExpect(jsonPath("$.data.avatarUrl").value("/uploads/avatars/avatar-conta.png"))
                 .andExpect(jsonPath("$.data.senha").doesNotExist())
                 .andExpect(jsonPath("$.message").value("Conta autenticada."))
                 .andExpect(jsonPath("$.errors").value(empty()));

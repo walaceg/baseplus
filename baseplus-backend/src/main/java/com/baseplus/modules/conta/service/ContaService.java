@@ -230,7 +230,7 @@ public class ContaService {
     }
 
     private ContaResponse toResponse(Usuario usuario) {
-        return new ContaResponse(usuario.getId(), usuario.getNome(), usuario.getEmail());
+        return new ContaResponse(usuario.getId(), usuario.getNome(), usuario.getEmail(), usuario.getAvatarUrl());
     }
 
     private UserPreferences getOrCreatePreferencias(Usuario usuario) {
