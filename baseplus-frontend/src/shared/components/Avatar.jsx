@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { apiBaseURL } from '../api/apiClient.js';
+import { resolveAssetUrl } from '../utils/resolveAssetUrl.js';
 
 function getInitials(name = '') {
   return name
@@ -12,39 +13,7 @@ function getInitials(name = '') {
 }
 
 function resolveAvatarSrc(src, version) {
-  if (!src) {
-    return '';
-  }
-
-  const rawSrc = String(src).trim();
-
-  if (!rawSrc) {
-    return '';
-  }
-
-  if (rawSrc.startsWith('data:') || rawSrc.startsWith('blob:')) {
-    return rawSrc;
-  }
-
-  let resolvedSrc;
-
-  try {
-    resolvedSrc = new URL(rawSrc, apiBaseURL).toString();
-  } catch {
-    return rawSrc;
-  }
-
-  if (version === undefined || version === null || version === '') {
-    return resolvedSrc;
-  }
-
-  try {
-    const resolvedUrl = new URL(resolvedSrc);
-    resolvedUrl.searchParams.set('v', String(version));
-    return resolvedUrl.toString();
-  } catch {
-    return resolvedSrc;
-  }
+  return resolveAssetUrl(src, apiBaseURL, version) ?? '';
 }
 
 export function Avatar({
@@ -67,6 +36,7 @@ export function Avatar({
     .filter(Boolean)
     .join(' ');
   const initials = getInitials(name || alt) || '?';
+  const avatarTitle = name || alt || '';
   const resolvedSrc = useMemo(() => resolveAvatarSrc(src, version), [src, version]);
   const [status, setStatus] = useState(resolvedSrc ? 'loading' : 'fallback');
 
@@ -75,7 +45,7 @@ export function Avatar({
   }, [resolvedSrc]);
 
   return (
-    <span aria-label={alt || name} className={classes} data-avatar-status={status} role="img">
+    <span aria-label={alt || name} className={classes} data-avatar-status={status} role="img" title={avatarTitle || undefined}>
       {resolvedSrc && status !== 'error' ? (
         <img
           alt={alt || name}
