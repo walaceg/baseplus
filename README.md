@@ -162,6 +162,10 @@ curl.exe http://127.0.0.1:5173/api/health/ready
 Operacao completa, portas, volumes, backup e restore estao em `docs/docker.md`.
 Atualizacao de ambientes existentes em HOM e PRD esta documentada em `docs/update.md`.
 
+## Criando uma nova aplicacao
+
+A Base+ pode ser usada como fundacao para iniciar novos sistemas corporativos. O fluxo oficial de clone, troca de repositorio, configuracao, validacao e criacao do primeiro modulo esta em `docs/new-application.md`.
+
 ## Bootstrap administrativo
 
 Use o bootstrap administrativo apenas na primeira inicializacao de ambientes `docker`, homologacao ou producao, quando ainda nao existir usuario com perfil `ADMIN`.
@@ -216,6 +220,7 @@ A compatibilidade com PostgreSQL e validada por teste automatizado com Testconta
 - `TASK_PROMPT.md`: prompt padrao para novas interacoes com IA/Codex.
 - `docs/architecture.md`: visao arquitetural da plataforma.
 - `docs/module-development.md`: guia pratico para criar novos modulos.
+- `docs/new-application.md`: guia oficial para criar uma nova aplicacao a partir da Base+.
 - `docs/docker.md`: operacao Docker integrada, volumes, backup e restore.
 - `docs/update.md`: processo oficial de atualizacao de HOM e PRD sem reinstalar nem perder dados.
 - `docs/branding.md`: regras de marca, assets e precedencia de personalizacao.
