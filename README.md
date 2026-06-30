@@ -6,6 +6,10 @@ Estado atual: Baseline Oficial `v1.1.0`.
 
 Base+ e uma plataforma corporativa modular para construcao de aplicacoes administrativas e sistemas de negocio. A proposta e servir como fundacao reutilizavel: autenticacao, autorizacao, perfis, auditoria, branding, estrutura organizacional, padroes de modulo, Docker e documentacao operacional ficam prontos antes da criacao dos modulos especificos de negocio.
 
+## Visao da Plataforma
+
+A visao institucional da Base+ esta documentada em `VISION.md`.
+
 O projeto esta organizado em duas aplicacoes principais:
 
 - `baseplus-backend`: API Java/Spring Boot.
@@ -166,6 +170,22 @@ Atualizacao de ambientes existentes em HOM e PRD esta documentada em `docs/updat
 
 A Base+ pode ser usada como fundacao para iniciar novos sistemas corporativos. O fluxo oficial de clone, troca de repositorio, configuracao, validacao e criacao do primeiro modulo esta em `docs/new-application.md`.
 
+## Engenharia Assistida por IA
+
+A Base+ possui uma camada oficial de engenharia para orientar desenvolvimento assistido por IA e preservar conhecimento tecnico reutilizavel da plataforma. A referencia principal esta em `engineering/ai/README.md`.
+O metodo oficial de colaboracao entre humanos, IA e Codex esta em `engineering/playbooks/100-ai-collaboration-method.md`.
+Os principios arquiteturais permanentes da plataforma estao em `engineering/architecture/principles.md`.
+As decisoes arquiteturais permanentes sao registradas em `engineering/architecture/decisions.md`.
+O processo oficial de release da plataforma esta em `engineering/release/release-process.md`.
+
+## Operacao
+
+Os runbooks operacionais oficiais da Base+ estao em `engineering/operations/README.md`.
+
+## Playbooks
+
+A Base+ possui uma biblioteca oficial de Playbooks para conduzir conversas de engenharia entre desenvolvedores e IA antes da implementacao. A referencia principal esta em `engineering/playbooks/README.md`.
+
 ## Bootstrap administrativo
 
 Use o bootstrap administrativo apenas na primeira inicializacao de ambientes `docker`, homologacao ou producao, quando ainda nao existir usuario com perfil `ADMIN`.
@@ -229,6 +249,7 @@ A compatibilidade com PostgreSQL e validada por teste automatizado com Testconta
 - `docs/release-1.1-checklist.md`: checklist oficial para fechamento da v1.1.0.
 - `docs/setup.md`: setup local e validacao.
 - `docs/integrations.md`: padrao arquitetural para integracoes externas.
+- `engineering/ai/README.md`: camada oficial de engenharia assistida por IA.
 - `scripts/check-project.ps1`: checagem local de backend e frontend.
 - `state.txt`: checkpoint curto do estado atual.
 - `ROADMAP.md`: proximas etapas planejadas.
