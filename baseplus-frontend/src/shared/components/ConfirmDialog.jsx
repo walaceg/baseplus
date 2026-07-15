@@ -16,9 +16,8 @@ export function ConfirmDialog({ cancelLabel = 'Cancelar', confirmLabel = 'Confir
       }
       isOpen={open}
       onClose={onCancel}
+      description={message}
       title={title}
-    >
-      <p className="bp-confirm-dialog__message">{message}</p>
-    </Modal>
+    />
   );
 }

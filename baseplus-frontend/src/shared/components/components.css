@@ -248,6 +248,19 @@
   font-size: 18px;
 }
 
+.bp-modal__close {
+  width: var(--action-button-size, 36px);
+  padding: 0;
+}
+
+.bp-modal__description {
+  margin: 0;
+  padding: var(--modal-padding) var(--modal-padding) 0;
+  color: var(--color-text);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
 .bp-modal__footer {
   display: flex;
   justify-content: flex-end;
@@ -544,11 +557,6 @@
   margin: 0;
   color: var(--color-text-muted);
   font-size: 14px;
-}
-
-.bp-confirm-dialog__message {
-  margin: 0;
-  color: var(--color-text);
 }
 
 @keyframes bp-spin {
