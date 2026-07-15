@@ -186,6 +186,10 @@ Os runbooks operacionais oficiais da Base+ estao em `engineering/operations/READ
 
 A Base+ possui uma biblioteca oficial de Playbooks para conduzir conversas de engenharia entre desenvolvedores e IA antes da implementacao. A referencia principal esta em `engineering/playbooks/README.md`.
 
+## UX
+
+A experiencia do usuario e um pilar oficial da Base+. As diretrizes de UX, linguagem visual, interacao, acessibilidade e checklist de qualidade estao em `engineering/ux/README.md`.
+
 ## Bootstrap administrativo
 
 Use o bootstrap administrativo apenas na primeira inicializacao de ambientes `docker`, homologacao ou producao, quando ainda nao existir usuario com perfil `ADMIN`.

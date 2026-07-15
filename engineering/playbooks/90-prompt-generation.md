@@ -77,6 +77,14 @@ Resultado esperado: texto pronto para execucao.
 
 Nao deve ser feito: incluir ambiguidade desnecessaria.
 
+## 8. Incorporar UX quando houver interface
+
+Objetivo: garantir que todo prompt com impacto visual considere Manifesto UX, Nielsen, Design Tokens, linguagem humana, elegancia e simplicidade.
+
+Resultado esperado: prompt com restricoes e validacoes de UX explicitas.
+
+Nao deve ser feito: tratar UX como detalhe posterior.
+
 # Perguntas Obrigatorias
 
 - Qual decisao sera implementada?
@@ -86,6 +94,8 @@ Nao deve ser feito: incluir ambiguidade desnecessaria.
 - Quais arquivos nao devem ser alterados?
 - Qual validacao e obrigatoria?
 - Existe risco em banco, seguranca, Docker ou UX?
+- O prompt considera Manifesto UX, Nielsen, Design Tokens e linguagem humana?
+- O prompt preserva elegancia, simplicidade e acessibilidade?
 - Qual estimativa de tempo?
 - Qual estimativa de risco?
 - Qual estimativa de consumo de tokens?
@@ -107,6 +117,7 @@ A conversa termina quando:
 - restricoes estao claras;
 - validacoes estao definidas;
 - riscos foram comunicados.
+- criterios de UX foram incluidos quando aplicavel.
 
 # Resultado Esperado
 
@@ -124,6 +135,7 @@ Prompt final para execucao pelo Codex ou ferramenta equivalente.
 - [ ] Escopo definido.
 - [ ] Restricoes definidas.
 - [ ] Validacao definida.
+- [ ] UX considerada quando houver interface.
 - [ ] Risco estimado.
 - [ ] Tempo estimado.
 - [ ] Tokens estimados.

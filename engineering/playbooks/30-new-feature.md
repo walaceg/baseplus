@@ -68,6 +68,14 @@ Resultado esperado: lista de testes e validacoes.
 
 Nao deve ser feito: deixar validacao apenas manual.
 
+## 7. Revisao de UX
+
+Objetivo: validar Manifesto Base+, Nielsen, linguagem humana, simplicidade, elegancia, feedback, acessibilidade e performance percebida.
+
+Resultado esperado: ajustes de UX obrigatorios, recomendados e opcionais.
+
+Nao deve ser feito: gerar prompt sem avaliar impacto na experiencia.
+
 # Perguntas Obrigatorias
 
 - Qual problema a funcionalidade resolve?
@@ -77,6 +85,8 @@ Nao deve ser feito: deixar validacao apenas manual.
 - Ela exige banco ou migration?
 - Ela afeta frontend e backend?
 - Quais estados de UX devem existir?
+- A funcionalidade segue o Manifesto UX da Base+?
+- Existe oportunidade para simplificar a experiencia?
 - Como validar sucesso?
 
 # Criterios de Decisao
@@ -98,6 +108,7 @@ A conversa termina quando:
 - escopo foi definido;
 - riscos foram mapeados;
 - validacoes foram planejadas.
+- revisao de UX foi concluida.
 
 # Resultado Esperado
 
@@ -116,4 +127,5 @@ Decisao sobre a funcionalidade e prompt de implementacao pronto para ser gerado.
 - [ ] Integracoes avaliadas.
 - [ ] Testes definidos.
 - [ ] Riscos registrados.
+- [ ] Revisao de UX concluida.
 - [ ] Agora solicitar ao ChatGPT a geracao do Prompt para o Codex.

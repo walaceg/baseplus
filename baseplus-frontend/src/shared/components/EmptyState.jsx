@@ -4,7 +4,7 @@ export function EmptyState({ actionLabel, className = '', description, onAction,
   const classes = ['bp-empty-state', className].filter(Boolean).join(' ');
 
   return (
-    <div className={classes}>
+    <div className={classes} role="status">
       <strong className="bp-empty-state__title">{title}</strong>
       {description ? <p className="bp-empty-state__description">{description}</p> : null}
       {actionLabel && onAction ? (

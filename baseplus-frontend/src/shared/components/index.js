@@ -9,7 +9,7 @@ export { EmptyState } from './EmptyState.jsx';
 export { BrandingColorPicker } from './branding/BrandingColorPicker/index.js';
 export { BrandingLogo } from './branding/BrandingLogo/index.js';
 export { Input } from './Input.jsx';
-export { Loading } from './Loading.jsx';
+export { Loading, Skeleton } from './Loading.jsx';
 export { Modal } from './Modal.jsx';
 export { Pagination } from './Pagination.jsx';
 export { Select } from './Select.jsx';

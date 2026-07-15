@@ -1,11 +1,19 @@
-export function Table({ columns = [], emptyMessage = 'Nenhum registro encontrado.', rows = [] }) {
+export function Table({
+  ariaLabel = 'Tabela de dados',
+  caption,
+  columns = [],
+  emptyDescription = 'Ajuste os filtros ou cadastre um novo item quando disponivel.',
+  emptyMessage = 'Nenhum registro encontrado.',
+  rows = [],
+}) {
   return (
     <div className="bp-table-wrap">
-      <table className="bp-table">
+      <table aria-label={caption ? undefined : ariaLabel} className="bp-table">
+        {caption ? <caption className="bp-table__caption">{caption}</caption> : null}
         <thead>
           <tr>
             {columns.map((column) => (
-              <th key={column.key}>{column.header}</th>
+              <th key={column.key} scope="col">{column.header}</th>
             ))}
           </tr>
         </thead>
@@ -21,7 +29,8 @@ export function Table({ columns = [], emptyMessage = 'Nenhum registro encontrado
           ) : (
             <tr>
               <td className="bp-table__empty" colSpan={Math.max(columns.length, 1)}>
-                {emptyMessage}
+                <strong>{emptyMessage}</strong>
+                {emptyDescription ? <span>{emptyDescription}</span> : null}
               </td>
             </tr>
           )}
