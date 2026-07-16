@@ -1,8 +1,10 @@
 # Base+
 
-Versao publicada: `1.2.0`
+Versao publicada: `1.2.1`
 
-Estado atual: Release oficial `v1.2.0`.
+Estado atual: Release oficial `v1.2.1`.
+
+A branch master representa sempre a versao oficial mais recente da Base+.
 
 Base+ e uma plataforma corporativa modular para construcao de aplicacoes administrativas e sistemas de negocio. A proposta e servir como fundacao reutilizavel: autenticacao, autorizacao, perfis, auditoria, branding, estrutura organizacional, padroes de modulo, Docker e documentacao operacional ficam prontos antes da criacao dos modulos especificos de negocio.
 
@@ -317,8 +319,8 @@ docker compose up --detach --build --wait
 
 ## Release
 
-A versao publicada atual e `1.2.0`.
+A versao publicada atual e `1.2.1`.
 
-A `v1.2.0` consolida a Base+ como release oficial atual, mantendo a v1.1.0 como baseline anterior e incorporando evolucoes de UX, elegancia, acessibilidade, componentes compartilhados, Quality Gates e correcoes de linguagem em portugues.
+A `v1.2.1` consolida a Base+ como release oficial atual, mantendo a v1.2.0 como release anterior e incorporando principios fundamentais, arquitetura de engenharia, playbooks, guias para IA e separacao entre Plataforma e Aplicacao.
 
 Antes de iniciar novos modulos de negocio, use `MODULE_TEMPLATE.md`, `TASK_PROMPT.md` e `docs/module-development.md`.

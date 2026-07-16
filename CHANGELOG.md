@@ -4,6 +4,15 @@ Todas as mudancas relevantes do projeto devem ser registradas neste arquivo.
 
 ## 2026-07-16
 
+### Release v1.2.1
+
+- Base+ oficializada como versao `1.2.1`.
+- Consolidacao dos principios fundamentais da plataforma.
+- Consolidacao da arquitetura e da documentacao oficial de engenharia.
+- Atualizacao dos playbooks e dos guias para IA.
+- Separacao entre Plataforma e Aplicacao oficializada como principio arquitetural.
+- Navegacao arquitetural consolidada para distinguir Administracao da Plataforma e modulos funcionais da Aplicacao.
+
 ### Release v1.2.0
 
 - Base+ oficializada como versao `1.2.0`.
