@@ -119,7 +119,7 @@ export function AccountMenu({
             <div className="bp-account-menu__hero-copy">
               <span className="bp-account-menu__greeting">{greeting}</span>
               <strong className="bp-account-menu__name">{userName}</strong>
-              <span className="bp-account-menu__email">{userEmail || 'Sem email cadastrado'}</span>
+              <span className="bp-account-menu__email">{userEmail || 'Sem e-mail cadastrado'}</span>
             </div>
           </div>
 

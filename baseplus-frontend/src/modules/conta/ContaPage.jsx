@@ -386,7 +386,7 @@ export function ContaPage() {
           <Card.Header>
             <div>
               <strong>Dados da conta</strong>
-              <p>Nome e email do perfil atual.</p>
+              <p>Nome e e-mail do perfil atual.</p>
             </div>
           </Card.Header>
           <Card.Body>
@@ -402,7 +402,7 @@ export function ContaPage() {
               />
               <Input
                 id="account-email"
-                label="Email"
+                label="E-mail"
                 type="email"
                 value={account.email}
                 onChange={(event) => {

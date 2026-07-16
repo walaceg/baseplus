@@ -60,7 +60,7 @@ export function OrganizationUnitModal({ isOpen, loading = false, mode = 'create'
     >
       <form className="bp-form-grid" id="organization-unit-form" onSubmit={handleSubmit}>
         <Select id="organization-unit-type" label="Tipo" options={typeOptions} placeholder="Selecione um tipo" value={form.typeId} onChange={(event) => setForm((current) => ({ ...current, typeId: event.target.value }))} />
-        <Input id="organization-unit-code" label="Codigo" placeholder="0001" value={form.code} onChange={(event) => setForm((current) => ({ ...current, code: event.target.value }))} />
+        <Input id="organization-unit-code" label="Código" placeholder="0001" value={form.code} onChange={(event) => setForm((current) => ({ ...current, code: event.target.value }))} />
         <Input id="organization-unit-name" label="Nome" placeholder="Matriz" value={form.name} onChange={(event) => setForm((current) => ({ ...current, name: event.target.value }))} />
         <Select id="organization-unit-parent" label="Unidade superior" options={parentOptions} placeholder="Sem unidade superior" value={form.parentId} onChange={(event) => setForm((current) => ({ ...current, parentId: event.target.value }))} />
         <label className="bp-organization-switch" htmlFor="organization-unit-active">

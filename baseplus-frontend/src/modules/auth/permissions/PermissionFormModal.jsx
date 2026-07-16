@@ -40,7 +40,7 @@ export function PermissionFormModal({ isOpen, loading = false, mode = 'create', 
       }
       isOpen={isOpen}
       onClose={onClose}
-      title={mode === 'edit' ? 'Editar permission' : 'Nova permission'}
+      title={mode === 'edit' ? 'Editar permissão' : 'Nova permissão'}
     >
       <form id="permission-form" className="bp-form-grid" onSubmit={handleSubmit}>
         <Input

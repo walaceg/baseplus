@@ -8,9 +8,9 @@ const ICONS = {
 };
 
 const DEFAULT_TITLES = {
-  error: 'Não foi possível concluir',
+  error: 'Ação não concluída',
   info: 'Informação',
-  success: 'Tudo certo',
+  success: 'Ação concluída',
   warning: 'Atenção',
 };
 
@@ -18,17 +18,18 @@ function getRole(variant) {
   return variant === 'error' || variant === 'warning' ? 'alert' : 'status';
 }
 
-export function Alert({
+export function Toast({
+  action,
   children,
   className = '',
-  dismissLabel = 'Fechar mensagem',
+  dismissLabel = 'Fechar notificação',
   icon,
   onDismiss,
   title,
   variant = 'info',
   ...props
 }) {
-  const classes = ['bp-alert', `bp-alert--${variant}`, className].filter(Boolean).join(' ');
+  const classes = ['bp-toast', `bp-toast--${variant}`, className].filter(Boolean).join(' ');
   const role = props.role ?? getRole(variant);
   const Icon = icon === false ? null : icon ?? ICONS[variant] ?? ICONS.info;
   const displayTitle = title ?? DEFAULT_TITLES[variant];
@@ -36,19 +37,28 @@ export function Alert({
   return (
     <div aria-live={role === 'alert' ? 'assertive' : 'polite'} className={classes} role={role} {...props}>
       {Icon ? (
-        <span className="bp-alert__icon" aria-hidden="true">
+        <span className="bp-toast__icon" aria-hidden="true">
           <Icon size={18} />
         </span>
       ) : null}
-      <div className="bp-alert__content">
-        {displayTitle ? <strong className="bp-alert__title">{displayTitle}</strong> : null}
-        <div className="bp-alert__body">{children}</div>
+      <div className="bp-toast__content">
+        {displayTitle ? <strong className="bp-toast__title">{displayTitle}</strong> : null}
+        {children ? <div className="bp-toast__body">{children}</div> : null}
+        {action ? <div className="bp-toast__action">{action}</div> : null}
       </div>
       {onDismiss ? (
-        <button className="bp-alert__dismiss" type="button" aria-label={dismissLabel} onClick={onDismiss}>
+        <button className="bp-toast__dismiss" type="button" aria-label={dismissLabel} onClick={onDismiss}>
           <X size={16} aria-hidden="true" />
         </button>
       ) : null}
+    </div>
+  );
+}
+
+export function ToastRegion({ children, className = '', label = 'Notificações' }) {
+  return (
+    <div aria-label={label} className={['bp-toast-region', className].filter(Boolean).join(' ')} role="region">
+      {children}
     </div>
   );
 }

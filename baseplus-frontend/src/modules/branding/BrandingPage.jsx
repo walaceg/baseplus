@@ -91,7 +91,7 @@ export function BrandingPage() {
 
   function triggerLogoUpload() {
     if (!canUploadAssets) {
-      setError('Permissao BRANDING_UPLOAD_ASSETS necessaria para enviar assets de branding.');
+      setError('Permissão BRANDING_UPLOAD_ASSETS necessária para enviar assets de branding.');
       return;
     }
 
@@ -100,7 +100,7 @@ export function BrandingPage() {
 
   function triggerCompactLogoUpload() {
     if (!canUploadAssets) {
-      setError('Permissao BRANDING_UPLOAD_ASSETS necessaria para enviar assets de branding.');
+      setError('Permissão BRANDING_UPLOAD_ASSETS necessária para enviar assets de branding.');
       return;
     }
 
@@ -109,7 +109,7 @@ export function BrandingPage() {
 
   function triggerFaviconUpload() {
     if (!canUploadAssets) {
-      setError('Permissao BRANDING_UPLOAD_ASSETS necessaria para enviar assets de branding.');
+      setError('Permissão BRANDING_UPLOAD_ASSETS necessária para enviar assets de branding.');
       return;
     }
 
@@ -118,7 +118,7 @@ export function BrandingPage() {
 
   function triggerLoginLogoUpload() {
     if (!canUploadAssets) {
-      setError('Permissao BRANDING_UPLOAD_ASSETS necessaria para enviar assets de branding.');
+      setError('Permissão BRANDING_UPLOAD_ASSETS necessária para enviar assets de branding.');
       return;
     }
 
@@ -127,7 +127,7 @@ export function BrandingPage() {
 
   function triggerLoginBackgroundUpload() {
     if (!canUploadAssets) {
-      setError('Permissao BRANDING_UPLOAD_ASSETS necessaria para enviar assets de branding.');
+      setError('Permissão BRANDING_UPLOAD_ASSETS necessária para enviar assets de branding.');
       return;
     }
 
@@ -192,7 +192,7 @@ export function BrandingPage() {
     clearFeedback();
 
     if (!canUploadAssets) {
-      setError('Permissao BRANDING_UPLOAD_ASSETS necessaria para enviar logo.');
+      setError('Permissão BRANDING_UPLOAD_ASSETS necessária para enviar logo.');
       return;
     }
 
@@ -211,7 +211,7 @@ export function BrandingPage() {
       await refreshBranding();
       setMessage('Logo institucional atualizada com sucesso.');
     } catch (requestError) {
-      setError(requestError.response?.data?.message ?? 'Nao foi possivel enviar a logo.');
+      setError(requestError.response?.data?.message ?? 'Não foi possível enviar a logo.');
     } finally {
       setUploadingLogo(false);
     }
@@ -228,7 +228,7 @@ export function BrandingPage() {
     clearFeedback();
 
     if (!canUploadAssets) {
-      setError('Permissao BRANDING_UPLOAD_ASSETS necessaria para enviar marca reduzida.');
+      setError('Permissão BRANDING_UPLOAD_ASSETS necessária para enviar marca reduzida.');
       return;
     }
 
@@ -247,7 +247,7 @@ export function BrandingPage() {
       await refreshBranding();
       setMessage('Marca reduzida atualizada com sucesso.');
     } catch (requestError) {
-      setError(requestError.response?.data?.message ?? 'Nao foi possivel enviar a marca reduzida.');
+      setError(requestError.response?.data?.message ?? 'Não foi possível enviar a marca reduzida.');
     } finally {
       setUploadingCompactLogo(false);
     }
@@ -257,7 +257,7 @@ export function BrandingPage() {
     clearFeedback();
 
     if (!canEditBranding) {
-      setError('Permissao BRANDING_EDIT necessaria para remover a logo.');
+      setError('Permissão BRANDING_EDIT necessária para remover a logo.');
       return;
     }
 
@@ -271,7 +271,7 @@ export function BrandingPage() {
       await refreshBranding();
       setMessage('Logo removida com sucesso.');
     } catch (requestError) {
-      setError(requestError.response?.data?.message ?? 'Nao foi possivel remover a logo.');
+      setError(requestError.response?.data?.message ?? 'Não foi possível remover a logo.');
     } finally {
       setUploadingLogo(false);
     }
@@ -288,7 +288,7 @@ export function BrandingPage() {
     clearFeedback();
 
     if (!canUploadAssets) {
-      setError('Permissao BRANDING_UPLOAD_ASSETS necessaria para enviar favicon.');
+      setError('Permissão BRANDING_UPLOAD_ASSETS necessária para enviar favicon.');
       return;
     }
 
@@ -307,7 +307,7 @@ export function BrandingPage() {
       await refreshBranding();
       setMessage('Favicon atualizado com sucesso.');
     } catch (requestError) {
-      setError(requestError.response?.data?.message ?? 'Nao foi possivel enviar o favicon.');
+      setError(requestError.response?.data?.message ?? 'Não foi possível enviar o favicon.');
     } finally {
       setUploadingFavicon(false);
     }
@@ -324,7 +324,7 @@ export function BrandingPage() {
     clearFeedback();
 
     if (!canUploadAssets) {
-      setError('Permissao BRANDING_UPLOAD_ASSETS necessaria para enviar logo do login.');
+      setError('Permissão BRANDING_UPLOAD_ASSETS necessária para enviar logo do login.');
       return;
     }
 
@@ -343,7 +343,7 @@ export function BrandingPage() {
       await refreshBranding();
       setMessage('Logo do login atualizada com sucesso.');
     } catch (requestError) {
-      setError(requestError.response?.data?.message ?? 'Nao foi possivel enviar a logo do login.');
+      setError(requestError.response?.data?.message ?? 'Não foi possível enviar a logo do login.');
     } finally {
       setUploadingLoginLogo(false);
     }
@@ -360,7 +360,7 @@ export function BrandingPage() {
     clearFeedback();
 
     if (!canUploadAssets) {
-      setError('Permissao BRANDING_UPLOAD_ASSETS necessaria para enviar background.');
+      setError('Permissão BRANDING_UPLOAD_ASSETS necessária para enviar background.');
       return;
     }
 
@@ -379,7 +379,7 @@ export function BrandingPage() {
       await refreshBranding();
       setMessage('Background institucional atualizado com sucesso.');
     } catch (requestError) {
-      setError(requestError.response?.data?.message ?? 'Nao foi possivel enviar o background.');
+      setError(requestError.response?.data?.message ?? 'Não foi possível enviar o background.');
     } finally {
       setUploadingLoginBackground(false);
     }
@@ -387,7 +387,7 @@ export function BrandingPage() {
 
   function applyPreset(preset) {
     if (!canEditBranding) {
-      setError('Permissao BRANDING_EDIT necessaria para alterar o tema.');
+      setError('Permissão BRANDING_EDIT necessária para alterar o tema.');
       return;
     }
 
@@ -406,7 +406,7 @@ export function BrandingPage() {
     clearFeedback();
 
     if (!canEditBranding) {
-      setError('Acesso nao autorizado para editar branding.');
+      setError('Acesso não autorizado para editar branding.');
       return;
     }
 
@@ -425,7 +425,7 @@ export function BrandingPage() {
       await refreshBranding();
       setMessage('Branding atualizado com sucesso.');
     } catch (requestError) {
-      setError(requestError.response?.data?.message ?? 'Nao foi possivel salvar o branding.');
+      setError(requestError.response?.data?.message ?? 'Não foi possível salvar o branding.');
     } finally {
       setSaving(false);
     }
@@ -452,8 +452,8 @@ export function BrandingPage() {
 
       {message ? <Alert variant="success">{message}</Alert> : null}
       {error ? <Alert variant="error">{error}</Alert> : null}
-      {!canEditBranding ? <Alert variant="warning">Permissao BRANDING_EDIT necessaria para salvar dados basicos de branding.</Alert> : null}
-      {!canUploadAssets ? <Alert variant="warning">Permissao BRANDING_UPLOAD_ASSETS necessaria para enviar logo, favicon ou background.</Alert> : null}
+      {!canEditBranding ? <Alert variant="warning">Permissão BRANDING_EDIT necessária para salvar dados básicos de branding.</Alert> : null}
+      {!canUploadAssets ? <Alert variant="warning">Permissão BRANDING_UPLOAD_ASSETS necessária para enviar logo, favicon ou background.</Alert> : null}
 
       <form className="bp-branding-layout" onSubmit={handleSubmit}>
         <div className="bp-branding-panel">
@@ -550,7 +550,7 @@ export function BrandingPage() {
                           <strong>Acesso seguro</strong>
                         </div>
                         <div className="bp-branding-login-preview__form-body">
-                          <Input id="login-email-preview" label="Email" placeholder="usuario@empresa.com" />
+                          <Input id="login-email-preview" label="E-mail" placeholder="usuario@empresa.com.br" />
                           <Input id="login-password-preview" label="Senha" type="password" placeholder="••••••••" />
                         </div>
                         <div className="bp-branding-login-preview__form-footer">
@@ -883,7 +883,7 @@ export function BrandingPage() {
                               aria-pressed={active}
                               onClick={() => {
                                 if (!canEditBranding) {
-                                  setError('Permissao BRANDING_EDIT necessaria para alterar o background.');
+                                  setError('Permissão BRANDING_EDIT necessária para alterar o background.');
                                   return;
                                 }
 
@@ -1047,7 +1047,7 @@ export function BrandingPage() {
                     <Card.Header>
                       <div>
                         <strong>White-label</strong>
-                        <p>Personalize o nome e subtitulo exibidos apenas no login.</p>
+                        <p>Personalize o nome e subtítulo exibidos apenas no login.</p>
                       </div>
                     </Card.Header>
                     <Card.Body>
@@ -1080,7 +1080,7 @@ export function BrandingPage() {
                           />
                           <Input
                             id="branding-white-label-subtitle"
-                            label="Subtitulo exibido no login"
+                            label="Subtítulo exibido no login"
                             disabled={!canEditBranding || !draft.whiteLabelEnabled}
                             value={draft.whiteLabelSubtitle}
                             placeholder={draft.subtituloInstitucional}
@@ -1096,7 +1096,7 @@ export function BrandingPage() {
                           <span>
                             {draft.whiteLabelEnabled
                               ? 'O login usa os textos acima; o restante da plataforma mantem a identidade global.'
-                              : 'Quando inativo, o login usa nome e subtitulo institucionais globais.'}
+                              : 'Quando inativo, o login usa nome e subtítulo institucionais globais.'}
                           </span>
                         </div>
                       </div>

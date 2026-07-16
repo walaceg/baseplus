@@ -27,7 +27,7 @@ export function LoginPage() {
     setErrorMessage('');
 
     if (!email.trim() || !password) {
-      setErrorMessage('Informe email e senha.');
+      setErrorMessage('Informe e-mail e senha.');
       return;
     }
 
@@ -40,7 +40,7 @@ export function LoginPage() {
       }
       navigate(redirectTo, { replace: true });
     } catch (error) {
-      setErrorMessage(error.response?.data?.message ?? 'Nao foi possivel entrar.');
+      setErrorMessage(error.response?.data?.message ?? 'Não foi possível entrar.');
     } finally {
       setIsSubmitting(false);
     }
@@ -104,7 +104,7 @@ export function LoginPage() {
                 <Input
                   autoComplete="email"
                   id="email"
-                  label="Email"
+                  label="E-mail"
                   name="email"
                   type="email"
                   value={email}

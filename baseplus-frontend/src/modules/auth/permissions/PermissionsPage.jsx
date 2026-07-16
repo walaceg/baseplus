@@ -99,7 +99,7 @@ export function PermissionsPage() {
         }
       } catch (requestError) {
         if (active) {
-          setError(requestError.response?.data?.message ?? 'Nao foi possivel carregar as permissoes.');
+          setError(requestError.response?.data?.message ?? 'Não foi possível carregar as permissões.');
         }
       } finally {
         if (active) {
@@ -160,7 +160,7 @@ export function PermissionsPage() {
       const data = await permissionService.getPermission(id);
       setSelectedPermission(data);
     } catch (requestError) {
-      setError(requestError.response?.data?.message ?? 'Nao foi possivel carregar a permissao.');
+      setError(requestError.response?.data?.message ?? 'Não foi possível carregar a permissão.');
       setModalOpen(false);
     } finally {
       setModalLoading(false);
@@ -180,17 +180,17 @@ export function PermissionsPage() {
 
       if (modalMode === 'edit' && selectedPermission) {
         await permissionService.updatePermission(selectedPermission.id, payload);
-        setMessage('Permissao atualizada com sucesso.');
+        setMessage('Permissão atualizada com sucesso.');
       } else {
         await permissionService.createPermission(payload);
-        setMessage('Permissao criada com sucesso.');
+        setMessage('Permissão criada com sucesso.');
       }
 
       setModalOpen(false);
       setSelectedPermission(null);
       refreshPermissions();
     } catch (requestError) {
-      setError(requestError.response?.data?.message ?? 'Nao foi possivel salvar a permissao.');
+      setError(requestError.response?.data?.message ?? 'Não foi possível salvar a permissão.');
     } finally {
       setSaving(false);
     }
@@ -214,10 +214,10 @@ export function PermissionsPage() {
 
     try {
       await permissionService.deletePermission(deleteTarget);
-      setMessage('Permissao removida com sucesso.');
+      setMessage('Permissão removida com sucesso.');
       refreshPermissions();
     } catch (requestError) {
-      setError(requestError.response?.data?.message ?? 'Nao foi possivel remover a permissao.');
+      setError(requestError.response?.data?.message ?? 'Não foi possível remover a permissão.');
     } finally {
       setDeleteTarget(null);
     }
@@ -226,20 +226,20 @@ export function PermissionsPage() {
   const columns = [
     {
       key: 'name',
-      header: 'Permissao',
+      header: 'Permissão',
       render: (row) => (
         <div className="bp-permission-cell">
           <Avatar alt={row.name} name={row.name} size="sm" />
           <div>
             <strong>{row.name}</strong>
-            <span>{row.description || 'Sem descricao'}</span>
+            <span>{row.description || 'Sem descrição'}</span>
           </div>
         </div>
       ),
     },
     {
       key: 'actions',
-      header: 'Acoes',
+      header: 'Ações',
       render: (row) => (
         <div className="bp-permission-actions bp-action-group">
           {canEdit ? <ActionIconButton icon={Pencil} label="Editar" title="Editar" onClick={() => openEdit(row.id)} /> : null}
@@ -249,7 +249,7 @@ export function PermissionsPage() {
               icon={Trash2}
               label="Remover"
               variant="danger"
-              title={isProtectedPermission(row) ? 'Permissao protegida pelo sistema.' : 'Remover'}
+              title={isProtectedPermission(row) ? 'Permissão protegida pelo sistema.' : 'Remover'}
               onClick={() => handleDelete(row.id)}
             />
           ) : null}
@@ -264,10 +264,10 @@ export function PermissionsPage() {
     <div className="bp-permissions-page bp-list-page">
       <section className="bp-list-page__header">
         <div>
-          <h1>Permissoes</h1>
-          <p>Gestao de permissoes da Base+.</p>
+          <h1>Permissões</h1>
+          <p>Gestão de permissões da Base+.</p>
         </div>
-        {canCreate ? <Button onClick={openCreate}>Nova permissao</Button> : null}
+        {canCreate ? <Button onClick={openCreate}>Nova permissão</Button> : null}
       </section>
 
       <Card>
@@ -277,8 +277,8 @@ export function PermissionsPage() {
               <div className="bp-list-page__search">
                 <Input
                   id="permissions-search"
-                  label="Buscar permissoes"
-                  placeholder="Buscar permissoes..."
+                  label="Buscar permissões"
+                  placeholder="Buscar permissões..."
                   value={searchInput}
                   onChange={(event) => setSearchInput(event.target.value)}
                 />
@@ -299,7 +299,7 @@ export function PermissionsPage() {
       <Card>
         <Card.Body>
           {loading ? (
-            <Loading label="Carregando permissoes..." />
+            <Loading label="Carregando permissões..." />
           ) : permissionsPage.content.length ? (
             <>
               <Table columns={columns} rows={permissionsPage.content} />
@@ -315,10 +315,10 @@ export function PermissionsPage() {
             <EmptyState
               description={
                 hasFilters
-                  ? 'Nenhuma permissao corresponde aos filtros atuais. Limpe a busca para ampliar os resultados.'
-                  : 'Ainda nao existem permissoes cadastradas.'
+                  ? 'Nenhuma permissão corresponde aos filtros atuais. Limpe a busca para ampliar os resultados.'
+                  : 'Ainda não existem permissões cadastradas.'
               }
-              title="Nenhuma permissao encontrada"
+              title="Nenhuma permissão encontrada"
             />
           )}
         </Card.Body>
@@ -336,11 +336,11 @@ export function PermissionsPage() {
       <ConfirmDialog
         cancelLabel="Cancelar"
         confirmLabel="Remover"
-        message="Esta acao vai remover a permissao selecionada."
+        message="Esta ação vai remover a permissão selecionada."
         onCancel={() => setDeleteTarget(null)}
         onConfirm={confirmDelete}
         open={Boolean(deleteTarget)}
-        title="Confirmar remocao"
+        title="Confirmar remoção"
       />
     </div>
   );

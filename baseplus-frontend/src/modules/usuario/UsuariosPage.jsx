@@ -123,7 +123,7 @@ export function UsuariosPage() {
         }
       } catch (requestError) {
         if (active) {
-          setError(requestError.response?.data?.message ?? 'Nao foi possivel carregar os usuarios.');
+          setError(requestError.response?.data?.message ?? 'Não foi possível carregar os usuários.');
         }
       } finally {
         if (active) {
@@ -199,10 +199,10 @@ export function UsuariosPage() {
 
     try {
       await usuarioService.deleteUsuario(deleteTarget);
-      setMessage('Usuario removido com sucesso.');
+      setMessage('Usuário removido com sucesso.');
       refreshUsuarios();
     } catch (requestError) {
-      setError(requestError.response?.data?.message ?? 'Nao foi possivel remover o usuario.');
+      setError(requestError.response?.data?.message ?? 'Não foi possível remover o usuário.');
     } finally {
       setDeleteTarget(null);
     }
@@ -211,7 +211,7 @@ export function UsuariosPage() {
   const columns = [
     {
       key: 'usuario',
-      header: 'Usuario',
+      header: 'Usuário',
       render: (row) => (
         <div className="bp-usuario-cell">
           <Avatar alt={row.nome} name={row.nome} size="sm" src={row.avatarUrl} version={row.avatarVersion} />
@@ -232,7 +232,7 @@ export function UsuariosPage() {
             {row.departamento ? <span>{row.departamento}</span> : null}
           </div>
         ) : (
-          <span className="bp-usuario-empty">Nao informado</span>
+          <span className="bp-usuario-empty">Não informado</span>
         ),
     },
     {
@@ -262,7 +262,7 @@ export function UsuariosPage() {
     },
     {
       key: 'ultimoLoginEm',
-      header: 'Ultimo login',
+      header: 'Último login',
       render: (row) => <span className="bp-usuario-meta">{formatDateTime(row.ultimoLoginEm)}</span>,
     },
     {
@@ -272,7 +272,7 @@ export function UsuariosPage() {
     },
     {
       key: 'acoes',
-      header: 'Acoes',
+      header: 'Ações',
       render: (row) => (
         <div className="bp-usuario-actions bp-action-group">
           {canEdit ? (
@@ -304,10 +304,10 @@ export function UsuariosPage() {
     <div className="bp-usuarios-page bp-list-page">
       <section className="bp-list-page__header">
         <div>
-          <h1>Usuarios</h1>
-          <p>Gestao inicial de contas administrativas da Base+.</p>
+          <h1>Usuários</h1>
+          <p>Gestão inicial de contas administrativas da Base+.</p>
         </div>
-        {canCreate ? <Button onClick={() => navigate('/app/usuarios/novo')}>Novo usuario</Button> : null}
+        {canCreate ? <Button onClick={() => navigate('/app/usuarios/novo')}>Novo usuário</Button> : null}
       </section>
 
       <Card>
@@ -317,8 +317,8 @@ export function UsuariosPage() {
               <div className="bp-list-page__search">
                 <Input
                   id="usuarios-search"
-                  label="Buscar usuarios"
-                  placeholder="Buscar usuarios..."
+                  label="Buscar usuários"
+                  placeholder="Buscar usuários..."
                   value={searchInput}
                   onChange={(event) => setSearchInput(event.target.value)}
                 />
@@ -365,7 +365,7 @@ export function UsuariosPage() {
       <Card>
         <Card.Body>
           {loading ? (
-            <Loading label="Carregando usuarios..." />
+            <Loading label="Carregando usuários..." />
           ) : pageData.content.length ? (
             <>
               <Table columns={columns} rows={pageData.content} />
@@ -381,10 +381,10 @@ export function UsuariosPage() {
             <EmptyState
               description={
                 hasFilters
-                  ? 'Nenhum usuario corresponde aos filtros atuais. Limpe a busca para ampliar os resultados.'
-                  : 'Ainda nao existem usuarios cadastrados.'
+                  ? 'Nenhum usuário corresponde aos filtros atuais. Limpe a busca para ampliar os resultados.'
+                  : 'Ainda não existem usuários cadastrados.'
               }
-              title="Nenhum usuario encontrado"
+              title="Nenhum usuário encontrado"
             />
           )}
         </Card.Body>
@@ -393,11 +393,11 @@ export function UsuariosPage() {
       <ConfirmDialog
         cancelLabel="Cancelar"
         confirmLabel="Remover"
-        message="Esta acao vai remover o usuario selecionado."
+        message="Esta ação vai remover o usuário selecionado."
         onCancel={() => setDeleteTarget(null)}
         onConfirm={confirmDelete}
         open={Boolean(deleteTarget)}
-        title="Confirmar remocao"
+        title="Confirmar remoção"
       />
     </div>
   );

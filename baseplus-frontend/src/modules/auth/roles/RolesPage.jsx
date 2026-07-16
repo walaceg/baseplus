@@ -115,7 +115,7 @@ export function RolesPage() {
         }
       } catch (requestError) {
         if (active) {
-          setError(requestError.response?.data?.errors?.[0] ?? requestError.response?.data?.message ?? 'Nao foi possivel carregar os perfis.');
+          setError(requestError.response?.data?.errors?.[0] ?? requestError.response?.data?.message ?? 'Não foi possível carregar os perfis.');
         }
       } finally {
         if (active) {
@@ -185,7 +185,7 @@ export function RolesPage() {
       setMessage('Perfil removido com sucesso.');
       refreshRoles();
     } catch (requestError) {
-      setError(requestError.response?.data?.errors?.[0] ?? requestError.response?.data?.message ?? 'Nao foi possivel remover o perfil.');
+      setError(requestError.response?.data?.errors?.[0] ?? requestError.response?.data?.message ?? 'Não foi possível remover o perfil.');
     } finally {
       setDeleteTarget(null);
     }
@@ -205,7 +205,7 @@ export function RolesPage() {
       setMessage(nextStatus ? 'Perfil ativado com sucesso.' : 'Perfil desativado com sucesso.');
       refreshRoles();
     } catch (requestError) {
-      setError(requestError.response?.data?.errors?.[0] ?? requestError.response?.data?.message ?? 'Nao foi possivel atualizar o status do perfil.');
+      setError(requestError.response?.data?.errors?.[0] ?? requestError.response?.data?.message ?? 'Não foi possível atualizar o status do perfil.');
     } finally {
       setStatusTarget(null);
     }
@@ -220,7 +220,7 @@ export function RolesPage() {
           <Avatar alt={row.name} name={row.name} size="sm" />
           <div>
             <strong>{row.name}</strong>
-            <span>{row.description || 'Sem descricao'}</span>
+            <span>{row.description || 'Sem descrição'}</span>
           </div>
         </div>
       ),
@@ -234,7 +234,7 @@ export function RolesPage() {
           {row.type === 'ORGANIZATIONAL' ? (
             <Badge variant="primary">{row.organizationScopes?.length ?? 0} escopos</Badge>
           ) : (
-            <Badge variant="primary">{row.permissions?.length ?? 0} permissoes</Badge>
+            <Badge variant="primary">{row.permissions?.length ?? 0} permissões</Badge>
           )}
         </div>
       ),
@@ -251,7 +251,7 @@ export function RolesPage() {
     },
     {
       key: 'actions',
-      header: 'Acoes',
+      header: 'Ações',
       render: (row) => (
         <div className="bp-role-actions bp-action-group">
           {canEdit ? (
@@ -262,7 +262,7 @@ export function RolesPage() {
               disabled={row.sistema}
               icon={row.ativo ? PowerOff : Power}
               label={row.ativo ? 'Desativar' : 'Ativar'}
-              title={row.sistema ? 'Perfil de sistema nao pode ser desativado.' : row.ativo ? 'Desativar' : 'Ativar'}
+              title={row.sistema ? 'Perfil de sistema não pode ser desativado.' : row.ativo ? 'Desativar' : 'Ativar'}
               variant={row.ativo ? 'danger' : 'primary'}
               onClick={() => setStatusTarget(row)}
             />
@@ -273,7 +273,7 @@ export function RolesPage() {
               icon={Trash2}
               label="Remover"
               variant="danger"
-              title={row.sistema ? 'Perfil de sistema nao pode ser removido.' : 'Remover'}
+              title={row.sistema ? 'Perfil de sistema não pode ser removido.' : 'Remover'}
               onClick={() => setDeleteTarget(row)}
             />
           ) : null}
@@ -289,7 +289,7 @@ export function RolesPage() {
       <section className="bp-list-page__header">
         <div>
           <h1>Perfis</h1>
-          <p>Gestao de perfis, status e permissoes da Base+.</p>
+          <p>Gestão de perfis, status e permissões da Base+.</p>
         </div>
         {canCreate ? <Button onClick={() => navigate('/app/roles/novo')}>Novo perfil</Button> : null}
       </section>
@@ -302,7 +302,7 @@ export function RolesPage() {
                 <Input
                   id="roles-search"
                   label="Buscar perfis"
-                  placeholder="Buscar nome ou descricao..."
+                  placeholder="Buscar nome ou descrição..."
                   value={searchInput}
                   onChange={(event) => setSearchInput(event.target.value)}
                 />
@@ -358,7 +358,7 @@ export function RolesPage() {
               description={
                 hasFilters
                   ? 'Nenhum perfil corresponde aos filtros atuais. Limpe a busca para ampliar os resultados.'
-                  : 'Ainda nao existem perfis cadastrados.'
+                  : 'Ainda não existem perfis cadastrados.'
               }
               title="Nenhum perfil encontrado"
             />
@@ -369,17 +369,17 @@ export function RolesPage() {
       <ConfirmDialog
         cancelLabel="Cancelar"
         confirmLabel="Remover"
-        message="Esta acao vai remover o perfil selecionado."
+        message="Esta ação vai remover o perfil selecionado."
         onCancel={() => setDeleteTarget(null)}
         onConfirm={confirmDelete}
         open={Boolean(deleteTarget)}
-        title="Confirmar remocao"
+        title="Confirmar remoção"
       />
 
       <ConfirmDialog
         cancelLabel="Cancelar"
         confirmLabel={statusTarget?.ativo ? 'Desativar' : 'Ativar'}
-        message={statusTarget?.ativo ? 'Esta acao vai desativar o perfil selecionado.' : 'Esta acao vai ativar o perfil selecionado.'}
+        message={statusTarget?.ativo ? 'Esta ação vai desativar o perfil selecionado.' : 'Esta ação vai ativar o perfil selecionado.'}
         onCancel={() => setStatusTarget(null)}
         onConfirm={confirmStatusToggle}
         open={Boolean(statusTarget)}

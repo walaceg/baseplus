@@ -46,7 +46,7 @@ export function ResetSenhaUsuarioModal({ loading = false, onClose, onSubmit, ope
     setError('');
 
     if (!form.novaSenhaTemporaria.trim()) {
-      setError('Informe a nova senha temporaria.');
+      setError('Informe a nova senha temporária.');
       return;
     }
 
@@ -57,7 +57,7 @@ export function ResetSenhaUsuarioModal({ loading = false, onClose, onSubmit, ope
       });
       setForm((current) => ({ ...current, novaSenhaTemporaria: '' }));
     } catch (requestError) {
-      setError(getApiError(requestError, 'Nao foi possivel redefinir a senha.'));
+      setError(getApiError(requestError, 'Não foi possível redefinir a senha.'));
     }
   }
 
@@ -79,9 +79,9 @@ export function ResetSenhaUsuarioModal({ loading = false, onClose, onSubmit, ope
     >
       <form id="usuario-reset-senha-form" className="bp-form-grid" onSubmit={handleSubmit}>
         <Input
-          hint="A senha sera temporaria. Use a opcao de troca obrigatoria para exigir alteracao no proximo login."
+          hint="A senha será temporária. Use a opção de troca obrigatória para exigir alteração no próximo login."
           id="usuario-reset-nova-senha"
-          label="Nova senha temporaria"
+          label="Nova senha temporária"
           type="password"
           value={form.novaSenhaTemporaria}
           onChange={(event) => setForm((current) => ({ ...current, novaSenhaTemporaria: event.target.value }))}
@@ -89,7 +89,7 @@ export function ResetSenhaUsuarioModal({ loading = false, onClose, onSubmit, ope
         <SwitchField
           checked={form.obrigarTrocaProximoLogin}
           id="usuario-reset-obrigar-troca"
-          label="Obrigar troca no proximo login"
+          label="Obrigar troca no próximo login"
           onChange={(checked) => setForm((current) => ({ ...current, obrigarTrocaProximoLogin: checked }))}
         />
         {error ? <Alert variant="error">{error}</Alert> : null}

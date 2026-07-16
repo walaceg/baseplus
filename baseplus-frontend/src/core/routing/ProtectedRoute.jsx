@@ -22,8 +22,8 @@ export function ProtectedRoute({ children, permissions = [] }) {
   if (permissions.length > 0 && !canAny(permissions)) {
     return (
       <main className="route-status">
-        <h1>Acesso nao autorizado</h1>
-        <p>Seu perfil nao possui permissao para acessar esta area.</p>
+        <h1>Acesso não autorizado</h1>
+        <p>Seu perfil não possui permissão para acessar esta área.</p>
       </main>
     );
   }

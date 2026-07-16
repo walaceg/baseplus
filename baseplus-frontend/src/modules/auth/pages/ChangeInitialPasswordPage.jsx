@@ -38,7 +38,7 @@ export function ChangeInitialPasswordPage() {
       navigate('/app/dashboard', { replace: true });
     } catch (requestError) {
       const response = requestError.response?.data;
-      setError(response?.errors?.[0] ?? response?.message ?? 'Nao foi possivel alterar a senha.');
+      setError(response?.errors?.[0] ?? response?.message ?? 'Não foi possível alterar a senha.');
     } finally {
       setLoading(false);
     }
@@ -64,7 +64,7 @@ export function ChangeInitialPasswordPage() {
           <div>
             <h1>{branding.nomePlataforma}</h1>
             <p>{branding.subtituloInstitucional}</p>
-            <strong>Troca obrigatoria de senha</strong>
+            <strong>Troca obrigatória de senha</strong>
           </div>
         </section>
 
