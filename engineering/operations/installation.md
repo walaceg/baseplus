@@ -67,7 +67,7 @@ cd C:\dev\baseplus
 ```powershell
 git clone https://github.com/walaceg/baseplus.git
 cd baseplus
-git checkout v1.1.0
+git checkout v1.2.0
 ```
 
 ### Configuracao

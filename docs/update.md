@@ -113,7 +113,7 @@ git fetch --tags
 4. Trocar para a tag de destino:
 
 ```powershell
-git checkout v1.1.0
+git checkout v1.2.0
 ```
 
 5. Recompilar backend e frontend conforme o modelo de deploy do ambiente:
@@ -231,7 +231,7 @@ Rollback deve ser planejado antes da atualizacao.
 Para rollback simples de aplicacao, volte a tag/imagem anterior e reinicie os servicos:
 
 ```powershell
-git checkout v1.0.2
+git checkout v1.1.0
 ```
 
 ou ajuste a tag de imagem usada pelo ambiente e suba novamente:

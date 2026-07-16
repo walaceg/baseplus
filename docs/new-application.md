@@ -47,7 +47,7 @@ cd minha-aplicacao
 Use uma tag estavel:
 
 ```powershell
-git checkout v1.1.0
+git checkout v1.2.0
 ```
 
 Remova o remote original:
