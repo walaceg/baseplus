@@ -40,6 +40,23 @@ Uma aplicacao Base+ deve parecer:
 - tabelas sem acao clara;
 - componentes que mudam comportamento entre modulos.
 
+
+## Separacao de Contexto
+
+A UX da Base+ deve expressar claramente o principio:
+
+```text
+A plataforma administra a si mesma.
+A aplicacao administra o negocio.
+```
+
+Plataforma existe para operar, configurar e governar a propria Base+.
+
+Aplicacao existe para executar os processos de negocio do cliente.
+
+A interface nao deve induzir o usuario, desenvolvedor ou IA a colocar Clientes, Fornecedores, Produtos, Compras, Estoque, Financeiro ou qualquer outro dominio do cliente dentro de Administracao.
+
+Cada aplicacao define o nome do agrupamento funcional dos seus modulos de dominio. A Base+ nao fixa esse nome; ela apenas exige a separacao entre Plataforma e Aplicacao.
 ## Decisao
 
 UX faz parte da arquitetura da Base+.

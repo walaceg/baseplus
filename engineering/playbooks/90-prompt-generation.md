@@ -13,6 +13,7 @@ Nao utilize para pensar a arquitetura. Use para converter decisao em tarefa exec
 # Pre-requisitos
 
 - Decisao consolidada
+- Classificacao: Plataforma ou Aplicacao quando houver modulo
 - Escopo definido
 - Arquivos ou camadas afetadas
 - Restricoes conhecidas
@@ -90,6 +91,8 @@ Nao deve ser feito: tratar UX como detalhe posterior.
 - Qual decisao sera implementada?
 - O prompt possui uma unica responsabilidade?
 - Backend e frontend devem ser separados?
+- Se houver modulo, a classificacao Plataforma ou Aplicacao esta definida?
+- Se for modulo de dominio, qual agrupamento funcional da aplicacao deve recebe-lo?
 - Quais arquivos ou camadas podem ser alterados?
 - Quais arquivos nao devem ser alterados?
 - Qual validacao e obrigatoria?
@@ -108,6 +111,7 @@ Nao deve ser feito: tratar UX como detalhe posterior.
 - Validacao objetiva.
 - Baixo risco.
 - Aderencia a Base+.
+- Respeito a separacao Plataforma x Aplicacao.
 
 # Criterios de Encerramento
 

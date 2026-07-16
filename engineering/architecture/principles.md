@@ -60,6 +60,134 @@ Representa configuracoes, execucao, operacao, ambientes, Docker, banco, healthch
 
 Infraestrutura faz parte da arquitetura e deve ser tratada como parte do produto.
 
+
+## Separacao entre Plataforma e Aplicacao
+
+Principio fundamental:
+
+```text
+A plataforma administra a si mesma.
+A aplicacao administra o negocio.
+```
+
+A Base+ e composta por dois contextos independentes.
+
+### Plataforma
+
+Responsavel por funcionalidades de infraestrutura da propria Base+.
+
+Exemplos:
+
+- usuarios;
+- perfis;
+- permissoes;
+- organizacao;
+- branding;
+- auditoria;
+- configuracoes;
+- integracoes tecnicas;
+- monitoramento;
+- recursos administrativos.
+
+Seu objetivo e administrar a propria plataforma.
+
+### Aplicacao
+
+Responsavel pelos modulos funcionais do cliente.
+
+Exemplos:
+
+- clientes;
+- fornecedores;
+- produtos;
+- estoque;
+- compras;
+- vendas;
+- financeiro;
+- contratos;
+- atendimento;
+- RH;
+- producao.
+
+Seu objetivo e executar os processos de negocio.
+
+### Regra arquitetural
+
+Esses dois contextos nunca devem ser confundidos.
+
+A separacao deve existir em:
+
+- arquitetura;
+- navegacao;
+- menus;
+- breadcrumbs;
+- documentacao;
+- prompts de IA;
+- playbooks;
+- revisoes arquiteturais.
+
+### Agrupamento funcional
+
+A Base+ nao define o nome do agrupamento da aplicacao.
+
+Cada projeto pode utilizar o nome mais adequado, por exemplo:
+
+- Negocio;
+- Comercial;
+- Operacao;
+- ERP;
+- Producao;
+- Gestao;
+- Atendimento;
+- Academico;
+- Assistencial.
+
+A arquitetura da Base+ define apenas a separacao entre Plataforma e Aplicacao.
+
+### Checklist arquitetural obrigatorio
+
+Sempre que um novo modulo for criado, responder:
+
+```text
+1. Este modulo administra a plataforma Base+?
+
+Se SIM -> Administracao.
+Se NAO -> agrupamento funcional da aplicacao.
+
+2. O modulo pertence ao dominio do cliente?
+
+Se SIM -> nunca podera ser colocado em Administracao.
+```
+
+### Anti-pattern oficial
+
+Errado:
+
+```text
+Administracao
+- Usuarios
+- Permissoes
+- Clientes
+- Produtos
+- Financeiro
+```
+
+Correto:
+
+```text
+Administracao
+- Usuarios
+- Permissoes
+- Branding
+- Organizacao
+
+<agrupamento funcional definido pela aplicacao>
+- Clientes
+- Produtos
+- Financeiro
+```
+
+E proibido criar modulos de dominio do cliente dentro de Administracao.
 ## Reutilizacao
 
 Reutilizacao e consequencia de uma boa arquitetura.

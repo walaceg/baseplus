@@ -16,7 +16,8 @@ UX na Base+ nao e apenas aparencia. UX envolve:
 - reducao de erro;
 - feedback adequado;
 - acessibilidade;
-- consistencia entre modulos.
+- consistencia entre modulos;
+- separacao entre Plataforma e Aplicacao.
 
 ## Documentos
 
@@ -35,7 +36,7 @@ UX na Base+ nao e apenas aparencia. UX envolve:
 
 ## Principio
 
-Toda interface deve ajudar o usuario a trabalhar melhor.
+Toda interface deve ajudar o usuario a trabalhar melhor e deve deixar claro se a experiencia pertence a Plataforma ou a Aplicacao.
 
 A Base+ prioriza interfaces claras, discretas, consistentes e adequadas a sistemas corporativos.
 

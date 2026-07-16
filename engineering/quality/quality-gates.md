@@ -46,6 +46,21 @@ Toda alteracao visual deve validar:
 - estados vazios;
 - independencia do branding.
 
+
+## Gate de Arquitetura de Navegacao
+
+Antes de implementar, homologar ou publicar novo modulo, validar:
+
+- o modulo foi classificado como Plataforma ou Aplicacao;
+- a pergunta "Este modulo administra a plataforma Base+?" foi respondida;
+- a pergunta "O modulo pertence ao dominio do cliente?" foi respondida;
+- modulos de dominio do cliente nao foram criados dentro de Administracao;
+- o agrupamento funcional da aplicacao foi definido quando o modulo nao administra a plataforma;
+- menus, breadcrumbs, documentacao, prompts e permissoes refletem essa separacao;
+- o anti-pattern oficial foi evitado.
+
+A entrega nao deve seguir para release quando um modulo de dominio estiver posicionado como recurso administrativo da plataforma.
+
 ## Criterio
 
 Uma entrega nao deve seguir para release quando houver problema de UX que comprometa compreensao, acessibilidade, confianca, seguranca operacional ou execucao da tarefa principal.

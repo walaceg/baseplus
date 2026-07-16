@@ -10,6 +10,7 @@ Este documento define diretrizes para desenvolvimento assistido por IA na Base+.
 - Nao misturar responsabilidades.
 - Priorizar simplicidade.
 - Sempre respeitar a estrutura Base+.
+- Classificar todo novo modulo como Plataforma ou Aplicacao antes de implementar.
 - Sempre listar arquivos alterados.
 - Sempre sugerir validacao.
 - Sempre manter compatibilidade com PostgreSQL.
@@ -24,6 +25,7 @@ Este documento define diretrizes para desenvolvimento assistido por IA na Base+.
 - Nao mover funcionalidades para `core` sem reutilizacao comprovada.
 - Nao editar migrations ja publicadas.
 - Nao criar abstracoes sem necessidade real.
+- Nao criar modulos de dominio do cliente dentro de Administracao.
 
 ## Prompts
 
@@ -43,9 +45,10 @@ Exemplo:
 Projeto: Base+
 Area: Backend
 Tarefa:
-Criar o modulo Produtos usando CRUD Compacto.
+Criar o modulo Produtos usando CRUD Compacto no agrupamento funcional da aplicacao, pois Produtos pertence ao dominio do cliente e nao administra a plataforma Base+.
 
 Regras:
+- confirmar que Produtos pertence a Aplicacao, nao a Administracao
 - seguir Controller -> Service -> Repository -> Domain
 - criar DTOs
 - criar migration Flyway

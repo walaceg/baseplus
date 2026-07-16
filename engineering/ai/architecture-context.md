@@ -35,6 +35,39 @@ Toda funcionalidade nasce em modules.
 Somente evolui para core quando houver reutilizacao comprovada por duas ou mais aplicacoes.
 ```
 
+
+## Dois contextos funcionais
+
+Principio fundamental:
+
+```text
+A plataforma administra a si mesma.
+A aplicacao administra o negocio.
+```
+
+A Base+ distingue oficialmente:
+
+1. Plataforma.
+2. Aplicacao.
+
+Plataforma contem apenas recursos que administram a propria Base+: usuarios, perfis, permissoes, organizacao, branding, auditoria, configuracoes, monitoramento, integracoes tecnicas e recursos administrativos.
+
+Aplicacao contem dominios do cliente: clientes, fornecedores, produtos, estoque, compras, vendas, financeiro, contratos, atendimento, RH, producao ou qualquer dominio especifico.
+
+Todo novo modulo deve responder antes da implementacao:
+
+```text
+1. Este modulo administra a plataforma Base+?
+
+Se SIM -> Administracao.
+Se NAO -> agrupamento funcional da aplicacao.
+
+2. O modulo pertence ao dominio do cliente?
+
+Se SIM -> nunca podera ser colocado em Administracao.
+```
+
+E proibido criar modulos de dominio dentro de Administracao.
 ## Backend
 
 O backend usa Java e Spring Boot.

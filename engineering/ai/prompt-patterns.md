@@ -6,7 +6,7 @@ Este documento define categorias de prompts para evolucao assistida por IA.
 
 Objetivo: implementar ou ajustar regras de API, services, repositories, entidades, DTOs e testes.
 
-Quando utilizar: criacao de modulos, alteracao de contratos, regras de permissao, persistencia e validacoes.
+Quando utilizar: criacao de modulos, alteracao de contratos, regras de permissao, persistencia e validacoes. Para novo modulo, incluir classificacao Plataforma ou Aplicacao.
 
 Responsabilidade: manter arquitetura `Controller -> Service -> Repository -> Domain`.
 
@@ -22,12 +22,13 @@ Resultado esperado:
 
 Objetivo: implementar telas, componentes, services, rotas, menus e experiencia de usuario.
 
-Quando utilizar: novas paginas, ajustes visuais, integracao com API, loading, erro, filtros e formularios.
+Quando utilizar: novas paginas, ajustes visuais, integracao com API, loading, erro, filtros, formularios e navegacao. Para novo modulo, indicar o agrupamento correto do menu.
 
 Responsabilidade: respeitar `core/shared/modules`, design tokens e CSS Variables.
 
 Resultado esperado:
 
+- separacao de navegacao preservada entre Plataforma e Aplicacao;
 - arquivos React/CSS alterados;
 - componentes reutilizados;
 - build validado;

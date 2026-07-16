@@ -170,6 +170,10 @@ Atualizacao de ambientes existentes em HOM e PRD esta documentada em `docs/updat
 
 A Base+ pode ser usada como fundacao para iniciar novos sistemas corporativos. O fluxo oficial de clone, troca de repositorio, configuracao, validacao e criacao do primeiro modulo esta em `docs/new-application.md`.
 
+## Arquitetura
+
+Os principios fundamentais da Base+ estao em `engineering/architecture/fundamental-principles.md`. Esse documento representa a base conceitual da plataforma e orienta decisoes tecnicas, evolucao, revisoes arquiteturais e desenvolvimento assistido por IA.
+
 ## Engenharia Assistida por IA
 
 A Base+ possui uma camada oficial de engenharia para orientar desenvolvimento assistido por IA e preservar conhecimento tecnico reutilizavel da plataforma. A referencia principal esta em `engineering/ai/README.md`.

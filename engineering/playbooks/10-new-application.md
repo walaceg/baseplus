@@ -51,7 +51,7 @@ Nao deve ser feito: detalhar permissoes tecnicas ainda.
 
 Objetivo: identificar os primeiros modulos de negocio.
 
-Resultado esperado: lista priorizada de modulos candidatos.
+Resultado esperado: lista priorizada de modulos candidatos e nome do agrupamento funcional da aplicacao.
 
 Nao deve ser feito: implementar ou definir schema.
 
@@ -84,10 +84,11 @@ Nao deve ser feito: prometer datas sem base operacional.
 - Qual problema de negocio a nova aplicacao resolve?
 - Quem usara a aplicacao?
 - Quais modulos sao essenciais para a primeira entrega?
+- Qual nome a aplicacao usara para agrupar seus modulos funcionais?
 - Quais dados ou processos devem ser preservados desde o inicio?
 - Havera integracoes externas?
 - Ha requisitos de segregacao por empresa, filial, equipe ou outro escopo?
-- A aplicacao tera identidade propria ou manterá marca Base+?
+- A aplicacao tera identidade propria ou mantera marca Base+?
 - Qual ambiente sera usado para homologacao?
 - Qual criterio define sucesso da primeira versao?
 
@@ -107,6 +108,7 @@ A conversa esta concluida quando:
 
 - objetivo da aplicacao esta claro;
 - modulos iniciais foram priorizados;
+- agrupamento funcional da aplicacao foi definido;
 - riscos principais foram identificados;
 - decisoes de branding, seguranca e integracao foram registradas;
 - proximo passo esta definido.
@@ -125,6 +127,7 @@ Documento de decisao inicial contendo visao da aplicacao, modulos, riscos, roadm
 - [ ] Objetivos definidos.
 - [ ] Publico identificado.
 - [ ] Modulos iniciais listados.
+- [ ] Agrupamento funcional definido.
 - [ ] Branding discutido.
 - [ ] Seguranca discutida.
 - [ ] Integracoes mapeadas.

@@ -123,6 +123,8 @@ Use para novas telas, novos modulos, novas funcionalidades, alteracoes em formul
 - Os feedbacks sao suficientes?
 - A interface respira?
 - O usuario sabe sempre onde esta?
+- A tela pertence a Plataforma ou Aplicacao?
+- A navegacao evita colocar dominio do cliente dentro de Administracao?
 - Os erros ajudam o usuario?
 - As mensagens utilizam linguagem humana?
 - Existe oportunidade para simplificar?
@@ -133,6 +135,7 @@ Use para novas telas, novos modulos, novas funcionalidades, alteracoes em formul
 - Simplicidade.
 - Elegancia.
 - Consistencia.
+- Separacao clara entre Plataforma e Aplicacao.
 - Acessibilidade.
 - Feedback suficiente.
 - Baixa carga cognitiva.
@@ -147,6 +150,7 @@ A conversa termina quando riscos de UX foram identificados, ajustes obrigatorios
 - [ ] Manifesto Base+ considerado.
 - [ ] Nielsen considerado.
 - [ ] Consistencia validada.
+- [ ] Separacao Plataforma x Aplicacao validada.
 - [ ] Feedback validado.
 - [ ] Acessibilidade validada.
 - [ ] Simplificacao avaliada.

@@ -36,7 +36,15 @@ Resultado esperado: pontos de complexidade.
 
 Nao deve ser feito: confundir simplicidade com ausencia de estrutura.
 
-## 3. Modularidade
+## 3. Separacao Plataforma x Aplicacao
+
+Objetivo: verificar se a funcionalidade administra a plataforma Base+ ou pertence ao dominio da aplicacao.
+
+Resultado esperado: classificacao correta e ausencia de modulo de dominio dentro de Administracao.
+
+Nao deve ser feito: aceitar agrupamento em Administracao apenas por conveniencia de menu.
+
+## 4. Modularidade
 
 Objetivo: avaliar limites de responsabilidade.
 
@@ -44,7 +52,7 @@ Resultado esperado: conformidade com `modules`, `shared` e `core`.
 
 Nao deve ser feito: promover para `core` por conveniencia.
 
-## 4. Reutilizacao
+## 5. Reutilizacao
 
 Objetivo: verificar reutilizacao real.
 
@@ -52,7 +60,7 @@ Resultado esperado: decisao sobre manter local ou extrair.
 
 Nao deve ser feito: abstrair sem duas aplicacoes ou usos comprovados.
 
-## 5. Riscos
+## 6. Riscos
 
 Objetivo: identificar riscos arquiteturais.
 
@@ -60,7 +68,7 @@ Resultado esperado: lista priorizada.
 
 Nao deve ser feito: ignorar operacao, seguranca ou banco.
 
-## 6. Parecer
+## 7. Parecer
 
 Objetivo: consolidar avaliacao.
 
@@ -72,6 +80,8 @@ Nao deve ser feito: emitir parecer sem evidencias.
 
 - Esta simples?
 - Esta modular?
+- Administra a plataforma Base+ ou pertence ao dominio da aplicacao?
+- Ha algum modulo de dominio indevidamente dentro de Administracao?
 - Esta reutilizavel?
 - Deve permanecer em `modules`?
 - Deve evoluir para `core`?
@@ -84,6 +94,7 @@ Nao deve ser feito: emitir parecer sem evidencias.
 
 - Simplicidade.
 - Modularidade.
+- Separacao entre Plataforma e Aplicacao.
 - Baixo acoplamento.
 - Responsabilidade unica.
 - Reutilizacao comprovada.
@@ -112,6 +123,7 @@ Relatorio de revisao arquitetural com conformidades, riscos, ressalvas e recomen
 - [ ] Escopo definido.
 - [ ] Simplicidade avaliada.
 - [ ] Modularidade avaliada.
+- [ ] Separacao Plataforma x Aplicacao avaliada.
 - [ ] Reutilizacao avaliada.
 - [ ] Regra do core aplicada.
 - [ ] Riscos identificados.

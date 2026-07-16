@@ -13,6 +13,7 @@ Nao utilize para criar modulo novo ou tratar incidente.
 # Pre-requisitos
 
 - Contexto do modulo afetado
+- Classificacao do modulo: Plataforma ou Aplicacao
 - Regra de negocio desejada
 - Fluxo atual da funcionalidade
 - `engineering/architecture/principles.md`
@@ -81,6 +82,7 @@ Nao deve ser feito: gerar prompt sem avaliar impacto na experiencia.
 - Qual problema a funcionalidade resolve?
 - Quem usa essa funcionalidade?
 - Ela altera regra existente?
+- O modulo afetado esta corretamente classificado como Plataforma ou Aplicacao?
 - Ela afeta seguranca, auditoria ou permissoes?
 - Ela exige banco ou migration?
 - Ela afeta frontend e backend?
@@ -95,6 +97,7 @@ Nao deve ser feito: gerar prompt sem avaliar impacto na experiencia.
 - Baixo risco.
 - Compatibilidade.
 - Clareza de responsabilidade.
+- Separacao entre Plataforma e dominio da aplicacao.
 - Testabilidade.
 - Experiencia do usuario.
 - Aderencia a Base+.

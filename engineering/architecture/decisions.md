@@ -350,6 +350,63 @@ Os documentos de engenharia representam conhecimento institucional e orientam ta
 - Mudancas assistidas por IA devem ser revisadas.
 - Documentacao de engenharia deve evoluir junto com a plataforma.
 
+
+## ADR-015 - Separacao entre Plataforma e Aplicacao
+
+### Contexto
+
+A Base+ serve como fundacao para aplicacoes corporativas. Ela possui recursos para administrar a propria plataforma e tambem permite criar modulos funcionais para executar processos de negocio do cliente.
+
+### Problema
+
+Sem uma separacao explicita, desenvolvedores e IA podem confundir recursos administrativos da Base+ com modulos de dominio da aplicacao.
+
+Essa mistura prejudica navegacao, permissoes, clareza arquitetural, onboarding, prompts de IA, revisoes arquiteturais e evolucao incremental.
+
+### Decisao
+
+Oficializar o principio:
+
+```text
+A plataforma administra a si mesma.
+A aplicacao administra o negocio.
+```
+
+A Base+ passa a reconhecer dois contextos independentes:
+
+1. Plataforma.
+2. Aplicacao.
+
+Plataforma e responsavel por usuarios, perfis, permissoes, organizacao, branding, auditoria, configuracoes, integracoes tecnicas, monitoramento e recursos administrativos.
+
+Aplicacao e responsavel por clientes, fornecedores, produtos, estoque, compras, vendas, financeiro, contratos, atendimento, RH, producao e demais processos de negocio.
+
+Todo novo modulo deve responder antes da implementacao:
+
+```text
+1. Este modulo administra a plataforma Base+?
+
+Se SIM -> Administracao.
+Se NAO -> agrupamento funcional da aplicacao.
+
+2. O modulo pertence ao dominio do cliente?
+
+Se SIM -> nunca podera ser colocado em Administracao.
+```
+
+A Base+ nao define nome fixo para o agrupamento funcional da aplicacao. Cada projeto pode nomea-lo conforme seu contexto.
+
+### Justificativa
+
+A separacao preserva a Base+ como fundacao reutilizavel, reduz ambiguidade de navegacao, evita acoplamento conceitual e impede que modulos de negocio sejam tratados como recursos administrativos da plataforma.
+
+### Consequencias
+
+- E proibido criar modulos de dominio do cliente dentro de Administracao.
+- Playbooks, prompts e revisoes devem classificar o modulo antes da implementacao.
+- Menus, breadcrumbs e navegacao devem refletir a diferenca entre administrar a plataforma e executar processos de negocio.
+- Aplicacoes derivadas devem escolher seu proprio nome para o agrupamento funcional dos modulos de dominio.
+- O anti-pattern oficial e misturar Usuarios, Permissoes, Clientes, Produtos e Financeiro dentro de Administracao.
 ## Como registrar novos ADRs
 
 Novos ADRs devem ser adicionados neste documento usando numeracao sequencial.
@@ -357,9 +414,9 @@ Novos ADRs devem ser adicionados neste documento usando numeracao sequencial.
 Convencao:
 
 ```text
-ADR-015 - Titulo da decisao
 ADR-016 - Titulo da decisao
 ADR-017 - Titulo da decisao
+ADR-018 - Titulo da decisao
 ```
 
 Cada ADR deve conter:
