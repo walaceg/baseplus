@@ -39,21 +39,21 @@ public class PermissionController {
             @PageableDefault(size = 10, sort = {"name", "id"}, direction = Sort.Direction.ASC) Pageable pageable
     ) {
         PageResponse<PermissionResponse> response = permissionService.listar(search, pageable);
-        return ResponseEntity.ok(ApiResponse.success(response, "Permissions carregadas."));
+        return ResponseEntity.ok(ApiResponse.success(response, "Permissões carregadas."));
     }
 
     @GetMapping("/{id}")
     @PreAuthorize("@authorizationService.hasPermission('PERMISSIONS_VIEW')")
     public ResponseEntity<ApiResponse<PermissionResponse>> buscar(@PathVariable Long id) {
         PermissionResponse response = permissionService.buscar(id);
-        return ResponseEntity.ok(ApiResponse.success(response, "Permission carregada."));
+        return ResponseEntity.ok(ApiResponse.success(response, "Permissão carregada."));
     }
 
     @PostMapping
     @PreAuthorize("@authorizationService.hasPermission('PERMISSIONS_CREATE')")
     public ResponseEntity<ApiResponse<PermissionResponse>> criar(@RequestBody CreatePermissionRequest request) {
         PermissionResponse response = permissionService.criar(request);
-        return ResponseEntity.ok(ApiResponse.success(response, "Permission criada com sucesso."));
+        return ResponseEntity.ok(ApiResponse.success(response, "Permissão criada com sucesso."));
     }
 
     @PutMapping("/{id}")
@@ -63,13 +63,13 @@ public class PermissionController {
             @RequestBody UpdatePermissionRequest request
     ) {
         PermissionResponse response = permissionService.atualizar(id, request);
-        return ResponseEntity.ok(ApiResponse.success(response, "Permission atualizada com sucesso."));
+        return ResponseEntity.ok(ApiResponse.success(response, "Permissão atualizada com sucesso."));
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("@authorizationService.hasPermission('PERMISSIONS_DELETE')")
     public ResponseEntity<ApiResponse<Void>> remover(@PathVariable Long id) {
         permissionService.remover(id);
-        return ResponseEntity.ok(ApiResponse.success(null, "Permission removida com sucesso."));
+        return ResponseEntity.ok(ApiResponse.success(null, "Permissão removida com sucesso."));
     }
 }

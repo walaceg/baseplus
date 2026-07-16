@@ -45,11 +45,11 @@ public class RefreshTokenService {
     @Transactional
     public RefreshToken validar(String token) {
         if (token == null || token.trim().isEmpty()) {
-            throw invalidRefreshToken("Refresh token e obrigatorio.");
+            throw invalidRefreshToken("Refresh token é obrigatório.");
         }
 
         RefreshToken refreshToken = refreshTokenRepository.findByToken(token.trim())
-                .orElseThrow(() -> invalidRefreshToken("Refresh token invalido."));
+                .orElseThrow(() -> invalidRefreshToken("Refresh token inválido."));
 
         if (refreshToken.isExpired()) {
             refreshTokenRepository.delete(refreshToken);
@@ -74,6 +74,6 @@ public class RefreshTokenService {
     }
 
     private BusinessException invalidRefreshToken(String error) {
-        return new BusinessException("Refresh token invalido.", HttpStatus.UNAUTHORIZED, java.util.List.of(error));
+        return new BusinessException("Refresh token inválido.", HttpStatus.UNAUTHORIZED, java.util.List.of(error));
     }
 }

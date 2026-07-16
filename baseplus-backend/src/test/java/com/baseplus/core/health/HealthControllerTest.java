@@ -43,7 +43,7 @@ class HealthControllerTest {
                 .andExpect(jsonPath("$.data.status").value("UP"))
                 .andExpect(jsonPath("$.data.service").value("baseplus-backend"))
                 .andExpect(jsonPath("$.data.timestamp").value(notNullValue()))
-                .andExpect(jsonPath("$.message").value("Aplicacao em execucao."))
+                .andExpect(jsonPath("$.message").value("Aplicação em execução."))
                 .andExpect(jsonPath("$.errors").value(empty()));
     }
 
@@ -58,7 +58,7 @@ class HealthControllerTest {
                 .andExpect(jsonPath("$.data.service").value("baseplus-backend"))
                 .andExpect(jsonPath("$.data.database").value("UP"))
                 .andExpect(jsonPath("$.data.timestamp").value(notNullValue()))
-                .andExpect(jsonPath("$.message").value("Aplicacao pronta para receber trafego."))
+                .andExpect(jsonPath("$.message").value("Aplicação pronta para receber tráfego."))
                 .andExpect(jsonPath("$.errors").value(empty()));
     }
 
@@ -74,7 +74,7 @@ class HealthControllerTest {
                 .andExpect(jsonPath("$.data.service").value("baseplus-backend"))
                 .andExpect(jsonPath("$.data.database").value("DOWN"))
                 .andExpect(jsonPath("$.data.timestamp").value(notNullValue()))
-                .andExpect(jsonPath("$.message").value("Aplicacao indisponivel para receber trafego."))
-                .andExpect(jsonPath("$.errors[0]").value("Banco de dados indisponivel."));
+                .andExpect(jsonPath("$.message").value("Aplicação indisponível para receber tráfego."))
+                .andExpect(jsonPath("$.errors[0]").value("Banco de dados indisponível."));
     }
 }

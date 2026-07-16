@@ -59,7 +59,7 @@ class ContaControllerTest {
         mockMvc.perform(get("/conta"))
                 .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("$.success").value(false))
-                .andExpect(jsonPath("$.message").value("Acesso nao autorizado."));
+                .andExpect(jsonPath("$.message").value("Acesso não autorizado."));
     }
 
     @Test
@@ -132,7 +132,7 @@ class ContaControllerTest {
                                 """))
                 .andExpect(status().isConflict())
                 .andExpect(jsonPath("$.success").value(false))
-                .andExpect(jsonPath("$.message").value("Email ja cadastrado."));
+                .andExpect(jsonPath("$.message").value("Email já cadastrado."));
     }
 
     @Test
@@ -147,7 +147,7 @@ class ContaControllerTest {
                                 """))
                 .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("$.success").value(false))
-                .andExpect(jsonPath("$.message").value("Acesso nao autorizado."));
+                .andExpect(jsonPath("$.message").value("Acesso não autorizado."));
     }
 
     @Test
@@ -196,7 +196,7 @@ class ContaControllerTest {
                                 """))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.success").value(false))
-                .andExpect(jsonPath("$.message").value("Senha atual invalida."));
+                .andExpect(jsonPath("$.message").value("Senha atual inválida."));
     }
 
     @Test
@@ -214,7 +214,7 @@ class ContaControllerTest {
                                 """))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.success").value(false))
-                .andExpect(jsonPath("$.message").value("Dados invalidos."));
+                .andExpect(jsonPath("$.message").value("Dados inválidos."));
     }
 
     @Test
@@ -222,7 +222,7 @@ class ContaControllerTest {
         mockMvc.perform(get("/conta/preferencias"))
                 .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("$.success").value(false))
-                .andExpect(jsonPath("$.message").value("Acesso nao autorizado."));
+                .andExpect(jsonPath("$.message").value("Acesso não autorizado."));
     }
 
     @Test
@@ -240,7 +240,7 @@ class ContaControllerTest {
                 .andExpect(jsonPath("$.data.corSecundaria").value("#1e40af"))
                 .andExpect(jsonPath("$.data.preferenciaVisual").value("APP_DEFAULT"))
                 .andExpect(jsonPath("$.data.menuPrincipal").value("sidebar"))
-                .andExpect(jsonPath("$.message").value("Preferencias carregadas."))
+                .andExpect(jsonPath("$.message").value("Preferências carregadas."))
                 .andExpect(jsonPath("$.errors").value(empty()));
     }
 
@@ -267,7 +267,7 @@ class ContaControllerTest {
                 .andExpect(jsonPath("$.data.corSecundaria").value("#1e40af"))
                 .andExpect(jsonPath("$.data.preferenciaVisual").value("APP_DEFAULT"))
                 .andExpect(jsonPath("$.data.menuPrincipal").value("sidebar"))
-                .andExpect(jsonPath("$.message").value("Preferencias atualizadas com sucesso."))
+                .andExpect(jsonPath("$.message").value("Preferências atualizadas com sucesso."))
                 .andExpect(jsonPath("$.errors").value(empty()));
 
         mockMvc.perform(get("/conta/preferencias")
@@ -299,7 +299,7 @@ class ContaControllerTest {
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.data.tema").value("LIGHT"))
                 .andExpect(jsonPath("$.data.preferenciaVisual").value("COMPACT"))
-                .andExpect(jsonPath("$.message").value("Preferencias atualizadas com sucesso."));
+                .andExpect(jsonPath("$.message").value("Preferências atualizadas com sucesso."));
     }
 
     @Test
@@ -318,7 +318,7 @@ class ContaControllerTest {
                                 """))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.success").value(false))
-                .andExpect(jsonPath("$.message").value("Dados invalidos."));
+                .andExpect(jsonPath("$.message").value("Dados inválidos."));
     }
 
     @Test
@@ -343,7 +343,7 @@ class ContaControllerTest {
                 .andExpect(jsonPath("$.data.corSecundaria").value("#1e40af"))
                 .andExpect(jsonPath("$.data.preferenciaVisual").value("COMPACT"))
                 .andExpect(jsonPath("$.data.menuPrincipal").value("sidebar"))
-                .andExpect(jsonPath("$.message").value("Preferencias atualizadas com sucesso."))
+                .andExpect(jsonPath("$.message").value("Preferências atualizadas com sucesso."))
                 .andExpect(jsonPath("$.errors").value(empty()));
     }
 
@@ -368,7 +368,7 @@ class ContaControllerTest {
                 .andExpect(jsonPath("$.data.corSecundaria").value("#1e40af"))
                 .andExpect(jsonPath("$.data.preferenciaVisual").value("APP_DEFAULT"))
                 .andExpect(jsonPath("$.data.menuPrincipal").value("topbar"))
-                .andExpect(jsonPath("$.message").value("Preferencias atualizadas com sucesso."))
+                .andExpect(jsonPath("$.message").value("Preferências atualizadas com sucesso."))
                 .andExpect(jsonPath("$.errors").value(empty()));
 
         Usuario usuario = usuarioService.buscarPorEmail("admin@baseplus.com").orElseThrow();
@@ -387,7 +387,7 @@ class ContaControllerTest {
         mockMvc.perform(multipart("/conta/foto").file(file))
                 .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("$.success").value(false))
-                .andExpect(jsonPath("$.message").value("Acesso nao autorizado."));
+                .andExpect(jsonPath("$.message").value("Acesso não autorizado."));
     }
 
     @Test
@@ -433,7 +433,7 @@ class ContaControllerTest {
             assertFalse(Files.exists(uploadedFile));
             mockMvc.perform(get(avatarUrl))
                     .andExpect(status().isNotFound())
-                    .andExpect(jsonPath("$.message").value("Recurso nao encontrado."));
+                    .andExpect(jsonPath("$.message").value("Recurso não encontrado."));
         } finally {
             Files.deleteIfExists(uploadedFile);
         }
@@ -454,7 +454,7 @@ class ContaControllerTest {
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.success").value(false))
-                .andExpect(jsonPath("$.message").value("Arquivo invalido."));
+                .andExpect(jsonPath("$.message").value("Arquivo inválido."));
     }
 
     @Test
@@ -472,7 +472,7 @@ class ContaControllerTest {
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.success").value(false))
-                .andExpect(jsonPath("$.message").value("Arquivo invalido."));
+                .andExpect(jsonPath("$.message").value("Arquivo inválido."));
     }
 
     @Test
@@ -490,7 +490,7 @@ class ContaControllerTest {
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.success").value(false))
-                .andExpect(jsonPath("$.message").value("Arquivo invalido."));
+                .andExpect(jsonPath("$.message").value("Arquivo inválido."));
     }
 
     @Test
@@ -502,7 +502,7 @@ class ContaControllerTest {
         try {
             mockMvc.perform(get("/uploads/security-test/legacy.svg"))
                     .andExpect(status().isNotFound())
-                    .andExpect(jsonPath("$.message").value("Recurso nao encontrado."));
+                    .andExpect(jsonPath("$.message").value("Recurso não encontrado."));
         } finally {
             Files.deleteIfExists(storedSvg);
         }
@@ -513,7 +513,7 @@ class ContaControllerTest {
         mockMvc.perform(get("/conta/sessoes"))
                 .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("$.success").value(false))
-                .andExpect(jsonPath("$.message").value("Acesso nao autorizado."));
+                .andExpect(jsonPath("$.message").value("Acesso não autorizado."));
     }
 
     @Test
@@ -526,7 +526,7 @@ class ContaControllerTest {
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.data[0].id").value(notNullValue()))
                 .andExpect(jsonPath("$.data[0].criadaEm").value(notNullValue()))
-                .andExpect(jsonPath("$.message").value("Sessoes carregadas."))
+                .andExpect(jsonPath("$.message").value("Sessões carregadas."))
                 .andExpect(jsonPath("$.errors").value(empty()));
     }
 
@@ -550,7 +550,7 @@ class ContaControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.data").doesNotExist())
-                .andExpect(jsonPath("$.message").value("Sessao removida com sucesso."))
+                .andExpect(jsonPath("$.message").value("Sessão removida com sucesso."))
                 .andExpect(jsonPath("$.errors").value(empty()));
 
         mockMvc.perform(post("/auth/refresh")
@@ -562,7 +562,7 @@ class ContaControllerTest {
                                 """.formatted(refreshToken)))
                 .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("$.success").value(false))
-                .andExpect(jsonPath("$.message").value("Refresh token invalido."));
+                .andExpect(jsonPath("$.message").value("Refresh token inválido."));
     }
 
     @Test
@@ -573,7 +573,7 @@ class ContaControllerTest {
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.success").value(false))
-                .andExpect(jsonPath("$.message").value("Sessao nao encontrada."));
+                .andExpect(jsonPath("$.message").value("Sessão não encontrada."));
     }
 
     private String loginAndGetToken() throws Exception {

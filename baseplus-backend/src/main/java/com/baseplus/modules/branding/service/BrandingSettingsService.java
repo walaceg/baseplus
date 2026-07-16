@@ -60,7 +60,7 @@ public class BrandingSettingsService {
     @Transactional
     public BrandingSettingsResponse atualizar(UpdateBrandingSettingsRequest request) {
         if (request == null) {
-            throw new BusinessException("Dados invalidos.", HttpStatus.BAD_REQUEST, List.of("Ao menos um campo deve ser informado."));
+            throw new BusinessException("Dados inválidos.", HttpStatus.BAD_REQUEST, List.of("Ao menos um campo deve ser informado."));
         }
 
         BrandingSettings settings = getOrCreateDefault();
@@ -299,7 +299,7 @@ public class BrandingSettingsService {
 
         String normalized = value.trim().toLowerCase(Locale.ROOT);
         if (!"light".equals(normalized) && !"dark".equals(normalized)) {
-            throw new BusinessException("Dados invalidos.", HttpStatus.BAD_REQUEST, List.of("Tema invalido."));
+            throw new BusinessException("Dados inválidos.", HttpStatus.BAD_REQUEST, List.of("Tema inválido."));
         }
 
         return normalized;
@@ -312,7 +312,7 @@ public class BrandingSettingsService {
 
         String normalized = value.trim().toLowerCase(Locale.ROOT);
         if (!"compact".equals(normalized) && !"regular".equals(normalized)) {
-            throw new BusinessException("Dados invalidos.", HttpStatus.BAD_REQUEST, List.of("Densidade visual invalida."));
+            throw new BusinessException("Dados inválidos.", HttpStatus.BAD_REQUEST, List.of("Densidade visual inválida."));
         }
 
         return normalized;
@@ -325,7 +325,7 @@ public class BrandingSettingsService {
 
         String normalized = value.trim().toUpperCase(Locale.ROOT);
         if (!normalized.matches("#([0-9A-F]{3}|[0-9A-F]{6})")) {
-            throw new BusinessException("Dados invalidos.", HttpStatus.BAD_REQUEST, List.of("Cor invalida."));
+            throw new BusinessException("Dados inválidos.", HttpStatus.BAD_REQUEST, List.of("Cor inválida."));
         }
 
         return normalized;
@@ -333,33 +333,33 @@ public class BrandingSettingsService {
 
     private void validateLoginBackgroundFile(MultipartFile file) {
         if (file == null || file.isEmpty()) {
-            throw new BusinessException("Arquivo invalido.", HttpStatus.BAD_REQUEST, List.of("O arquivo e obrigatorio."));
+            throw new BusinessException("Arquivo inválido.", HttpStatus.BAD_REQUEST, List.of("O arquivo é obrigatório."));
         }
 
         if (file.getSize() > MAX_LOGIN_BACKGROUND_SIZE_BYTES) {
-            throw new BusinessException("Arquivo invalido.", HttpStatus.BAD_REQUEST, List.of("O arquivo excede o tamanho maximo permitido."));
+            throw new BusinessException("Arquivo inválido.", HttpStatus.BAD_REQUEST, List.of("O arquivo excede o tamanho máximo permitido."));
         }
 
         String contentType = file.getContentType() == null ? "" : file.getContentType().trim().toLowerCase(Locale.ROOT);
         if (!"image/png".equals(contentType) && !"image/jpeg".equals(contentType) && !"image/jpg".equals(contentType)) {
-            throw new BusinessException("Arquivo invalido.", HttpStatus.BAD_REQUEST, List.of("O arquivo deve ser PNG, JPG ou JPEG."));
+            throw new BusinessException("Arquivo inválido.", HttpStatus.BAD_REQUEST, List.of("O arquivo deve ser PNG, JPG ou JPEG."));
         }
     }
 
     private void validateLoginLogoFile(MultipartFile file) {
         if (file == null || file.isEmpty()) {
-            throw new BusinessException("Arquivo invalido.", HttpStatus.BAD_REQUEST, List.of("O arquivo e obrigatorio."));
+            throw new BusinessException("Arquivo inválido.", HttpStatus.BAD_REQUEST, List.of("O arquivo é obrigatório."));
         }
 
         if (file.getSize() > MAX_LOGIN_LOGO_SIZE_BYTES) {
-            throw new BusinessException("Arquivo invalido.", HttpStatus.BAD_REQUEST, List.of("O arquivo excede o tamanho maximo permitido."));
+            throw new BusinessException("Arquivo inválido.", HttpStatus.BAD_REQUEST, List.of("O arquivo excede o tamanho máximo permitido."));
         }
 
         String contentType = file.getContentType() == null ? "" : file.getContentType().trim().toLowerCase(Locale.ROOT);
         if (!"image/png".equals(contentType)
                 && !"image/jpeg".equals(contentType)
                 && !"image/jpg".equals(contentType)) {
-            throw new BusinessException("Arquivo invalido.", HttpStatus.BAD_REQUEST, List.of("O arquivo deve ser PNG, JPG ou JPEG."));
+            throw new BusinessException("Arquivo inválido.", HttpStatus.BAD_REQUEST, List.of("O arquivo deve ser PNG, JPG ou JPEG."));
         }
     }
 

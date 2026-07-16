@@ -50,7 +50,7 @@ class PermissionControllerTest {
         mockMvc.perform(get("/permissions"))
                 .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("$.success").value(false))
-                .andExpect(jsonPath("$.message").value("Acesso nao autorizado."));
+                .andExpect(jsonPath("$.message").value("Acesso não autorizado."));
     }
 
     @Test
@@ -82,7 +82,7 @@ class PermissionControllerTest {
                 .andExpect(jsonPath("$.data.content[0].id").value(notNullValue()))
                 .andExpect(jsonPath("$.data.content[0].name").value("ADMIN_ACCESS"))
                 .andExpect(jsonPath("$.data.page").value(0))
-                .andExpect(jsonPath("$.message").value("Permissions carregadas."))
+                .andExpect(jsonPath("$.message").value("Permissões carregadas."))
                 .andExpect(jsonPath("$.errors").value(empty()));
     }
 
@@ -117,7 +117,7 @@ class PermissionControllerTest {
                 .andExpect(jsonPath("$.data.id").value(notNullValue()))
                 .andExpect(jsonPath("$.data.name").value("USERS_MANAGE"))
                 .andExpect(jsonPath("$.data.description").value("Gerenciar usuarios"))
-                .andExpect(jsonPath("$.message").value("Permission criada com sucesso."))
+                .andExpect(jsonPath("$.message").value("Permissão criada com sucesso."))
                 .andExpect(jsonPath("$.errors").value(empty()));
     }
 
@@ -136,7 +136,7 @@ class PermissionControllerTest {
                                 """))
                 .andExpect(status().isConflict())
                 .andExpect(jsonPath("$.success").value(false))
-                .andExpect(jsonPath("$.message").value("Permission ja cadastrada."));
+                .andExpect(jsonPath("$.message").value("Permissão já cadastrada."));
     }
 
     @Test
@@ -149,7 +149,7 @@ class PermissionControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.data.id").value(permissionId))
-                .andExpect(jsonPath("$.message").value("Permission carregada."));
+                .andExpect(jsonPath("$.message").value("Permissão carregada."));
 
         mockMvc.perform(put("/permissions/{id}", permissionId)
                         .header("Authorization", "Bearer " + token)
@@ -165,7 +165,7 @@ class PermissionControllerTest {
                 .andExpect(jsonPath("$.data.id").value(permissionId))
                 .andExpect(jsonPath("$.data.name").value("REPORTS_EXPORT"))
                 .andExpect(jsonPath("$.data.description").value("Exportar relatorios"))
-                .andExpect(jsonPath("$.message").value("Permission atualizada com sucesso."));
+                .andExpect(jsonPath("$.message").value("Permissão atualizada com sucesso."));
     }
 
     @Test
@@ -178,14 +178,14 @@ class PermissionControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.data").doesNotExist())
-                .andExpect(jsonPath("$.message").value("Permission removida com sucesso."))
+                .andExpect(jsonPath("$.message").value("Permissão removida com sucesso."))
                 .andExpect(jsonPath("$.errors").value(empty()));
 
         mockMvc.perform(get("/permissions/{id}", permissionId)
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.success").value(false))
-                .andExpect(jsonPath("$.message").value("Permission nao encontrada."));
+                .andExpect(jsonPath("$.message").value("Permissão não encontrada."));
     }
 
     @Test
@@ -214,7 +214,7 @@ class PermissionControllerTest {
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.success").value(false))
-                .andExpect(jsonPath("$.message").value("Operacao invalida."));
+                .andExpect(jsonPath("$.message").value("Operação inválida."));
     }
 
     private Long criarPermission(String token, String name) throws Exception {

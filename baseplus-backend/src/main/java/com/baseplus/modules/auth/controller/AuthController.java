@@ -53,6 +53,6 @@ public class AuthController {
     @GetMapping("/me")
     public ResponseEntity<ApiResponse<AuthUserResponse>> me() {
         AuthUserResponse response = authService.me();
-        return ResponseEntity.ok(ApiResponse.success(response, "Usuario autenticado."));
+        return ResponseEntity.ok(ApiResponse.success(response, "Usuário autenticado."));
     }
 }

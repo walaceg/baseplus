@@ -56,18 +56,18 @@ public class AuthService {
     @Transactional(noRollbackFor = BusinessException.class)
     public LoginResponse login(LoginRequest request) {
         if (request == null || isBlank(request.email()) || isBlank(request.password())) {
-            throw new BusinessException("Credenciais invalidas.", HttpStatus.UNAUTHORIZED, java.util.List.of("Email e senha sao obrigatorios."));
+            throw new BusinessException("Credenciais inválidas.", HttpStatus.UNAUTHORIZED, java.util.List.of("Email e senha são obrigatórios."));
         }
 
         Usuario usuario = usuarioService.buscarPorEmail(request.email())
                 .orElseThrow(() -> invalidCredentials("Email ou senha incorretos."));
 
         if (!usuario.isAtivo()) {
-            throw new BusinessException("Usuário inativo", HttpStatus.UNAUTHORIZED, java.util.List.of("Usuário inativo"));
+            throw new BusinessException("Usuário inativo.", HttpStatus.UNAUTHORIZED, java.util.List.of("Usuário inativo."));
         }
 
         if (usuario.isBloqueado()) {
-            throw new BusinessException("Usuário bloqueado", HttpStatus.UNAUTHORIZED, java.util.List.of("Usuário bloqueado"));
+            throw new BusinessException("Usuário bloqueado.", HttpStatus.UNAUTHORIZED, java.util.List.of("Usuário bloqueado."));
         }
 
         if (!passwordEncoder.matches(request.password(), usuario.getSenha())) {
@@ -123,38 +123,38 @@ public class AuthService {
     @Transactional(noRollbackFor = BusinessException.class)
     public void changeInitialPassword(ChangeInitialPasswordRequest request) {
         if (request == null) {
-            throw badRequest("Dados da troca de senha sao obrigatorios.");
+            throw badRequest("Dados da troca de senha são obrigatórios.");
         }
 
         if (isBlank(request.senhaAtual())) {
-            throw badRequest("Senha atual e obrigatoria.");
+            throw badRequest("Senha atual é obrigatória.");
         }
 
         if (isBlank(request.novaSenha())) {
-            throw badRequest("Nova senha e obrigatoria.");
+            throw badRequest("Nova senha é obrigatória.");
         }
 
         if (isBlank(request.confirmarNovaSenha())) {
-            throw badRequest("Confirmacao da nova senha e obrigatoria.");
+            throw badRequest("Confirmação da nova senha é obrigatória.");
         }
 
         Usuario usuario = getAuthenticatedUserAllowingInitialPasswordChange();
         if (!usuario.isTrocarSenhaPrimeiroAcesso()) {
-            throw badRequest("Troca de senha inicial nao requerida.");
+            throw badRequest("Troca de senha inicial não requerida.");
         }
 
         if (!passwordEncoder.matches(request.senhaAtual(), usuario.getSenha())) {
             usuario.registrarLoginInvalido();
             usuarioService.salvar(usuario);
-            throw new BusinessException("Senha atual invalida.", HttpStatus.BAD_REQUEST, java.util.List.of("A senha atual informada nao confere."));
+            throw new BusinessException("Senha atual inválida.", HttpStatus.BAD_REQUEST, java.util.List.of("A senha atual informada não confere."));
         }
 
         if (!request.novaSenha().equals(request.confirmarNovaSenha())) {
-            throw badRequest("Nova senha e confirmacao devem ser iguais.");
+            throw badRequest("Nova senha e confirmação devem ser iguais.");
         }
 
         if (request.novaSenha().length() < MIN_PASSWORD_LENGTH) {
-            throw badRequest("A nova senha deve ter no minimo 8 caracteres.");
+            throw badRequest("A nova senha deve ter no mínimo 8 caracteres.");
         }
 
         if (passwordEncoder.matches(request.novaSenha(), usuario.getSenha())) {
@@ -173,10 +173,10 @@ public class AuthService {
         Usuario usuario = refreshToken.getUsuario();
 
         if (!usuario.isAtivo()) {
-            throw new BusinessException("Refresh token invalido.", HttpStatus.UNAUTHORIZED, java.util.List.of("Usuario inativo."));
+            throw new BusinessException("Refresh token inválido.", HttpStatus.UNAUTHORIZED, java.util.List.of("Usuário inativo."));
         }
         if (usuario.isBloqueado()) {
-            throw new BusinessException("Refresh token invalido.", HttpStatus.UNAUTHORIZED, java.util.List.of("Usuário bloqueado"));
+            throw new BusinessException("Refresh token inválido.", HttpStatus.UNAUTHORIZED, java.util.List.of("Usuário bloqueado."));
         }
 
         String token = gerarAccessToken(usuario);
@@ -216,25 +216,25 @@ public class AuthService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal() == null) {
-            throw new BusinessException("Acesso nao autorizado.", HttpStatus.UNAUTHORIZED, java.util.List.of("Autenticacao obrigatoria."));
+            throw new BusinessException("Acesso não autorizado.", HttpStatus.UNAUTHORIZED, java.util.List.of("Autenticação obrigatória."));
         }
 
         return usuarioService.buscarPorId(getAuthenticatedUserId(authentication))
                 .filter(Usuario::isAtivo)
                 .filter(usuario -> !usuario.isBloqueado())
-                .orElseThrow(() -> new BusinessException("Acesso nao autorizado.", HttpStatus.UNAUTHORIZED, java.util.List.of("Usuario autenticado nao encontrado.")));
+                .orElseThrow(() -> new BusinessException("Acesso não autorizado.", HttpStatus.UNAUTHORIZED, java.util.List.of("Usuário autenticado não encontrado.")));
     }
 
     private Long getAuthenticatedUserId(Authentication authentication) {
         try {
             return Long.valueOf(authentication.getPrincipal().toString());
         } catch (NumberFormatException exception) {
-            throw new BusinessException("Acesso nao autorizado.", HttpStatus.UNAUTHORIZED, java.util.List.of("Token invalido."));
+            throw new BusinessException("Acesso não autorizado.", HttpStatus.UNAUTHORIZED, java.util.List.of("Token inválido."));
         }
     }
 
     private BusinessException invalidCredentials(String error) {
-        return new BusinessException("Credenciais invalidas.", HttpStatus.UNAUTHORIZED, java.util.List.of(error));
+        return new BusinessException("Credenciais inválidas.", HttpStatus.UNAUTHORIZED, java.util.List.of(error));
     }
 
     private BusinessException badRequest(String error) {

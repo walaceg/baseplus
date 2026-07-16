@@ -38,7 +38,7 @@ public class BrandingSettingsController {
     @GetMapping("/public")
     public ResponseEntity<ApiResponse<PublicBrandingSettingsResponse>> obterPublico() {
         PublicBrandingSettingsResponse response = brandingSettingsService.obterPublico();
-        return ResponseEntity.ok(ApiResponse.success(response, "Branding publico carregado."));
+        return ResponseEntity.ok(ApiResponse.success(response, "Branding público carregado."));
     }
 
     @PutMapping

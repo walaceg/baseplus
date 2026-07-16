@@ -47,7 +47,7 @@ public class AdminBootstrapRunner implements ApplicationRunner {
                     properties.getEmail(),
                     properties.getPassword()
             );
-            logger.info("Bootstrap administrativo concluido para o usuario {}.", response.email());
+            logger.info("Bootstrap administrativo concluído para o usuário {}.", response.email());
         } catch (BusinessException exception) {
             exitCode = 1;
             logger.error("Bootstrap administrativo recusado: {}", exception.getMessage());

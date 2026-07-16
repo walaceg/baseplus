@@ -56,7 +56,7 @@ class RoleControllerTest {
         mockMvc.perform(get("/roles"))
                 .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("$.success").value(false))
-                .andExpect(jsonPath("$.message").value("Acesso nao autorizado."));
+                .andExpect(jsonPath("$.message").value("Acesso não autorizado."));
     }
 
     @Test
@@ -93,7 +93,7 @@ class RoleControllerTest {
                 .andExpect(jsonPath("$.data.content[0].atualizadoEm").value(notNullValue()))
                 .andExpect(jsonPath("$.data.content[0].permissions").value(notNullValue()))
                 .andExpect(jsonPath("$.data.page").value(0))
-                .andExpect(jsonPath("$.message").value("Roles carregadas."))
+                .andExpect(jsonPath("$.message").value("Perfis carregados."))
                 .andExpect(jsonPath("$.errors").value(empty()));
     }
 
@@ -137,7 +137,7 @@ class RoleControllerTest {
                 .andExpect(jsonPath("$.data.atualizadoEm").value(notNullValue()))
                 .andExpect(jsonPath("$.data.permissions[0].id").value(permissionId))
                 .andExpect(jsonPath("$.data.permissions[0].name").value("ADMIN_ACCESS"))
-                .andExpect(jsonPath("$.message").value("Role criada com sucesso."))
+                .andExpect(jsonPath("$.message").value("Perfil criado com sucesso."))
                 .andExpect(jsonPath("$.errors").value(empty()));
     }
 
@@ -157,7 +157,7 @@ class RoleControllerTest {
                                 """))
                 .andExpect(status().isConflict())
                 .andExpect(jsonPath("$.success").value(false))
-                .andExpect(jsonPath("$.message").value("Role ja cadastrada."));
+                .andExpect(jsonPath("$.message").value("Perfil já cadastrado."));
     }
 
     @Test
@@ -171,7 +171,7 @@ class RoleControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.data.id").value(roleId))
-                .andExpect(jsonPath("$.message").value("Role carregada."));
+                .andExpect(jsonPath("$.message").value("Perfil carregado."));
 
         mockMvc.perform(put("/roles/{id}", roleId)
                         .header("Authorization", "Bearer " + token)
@@ -191,7 +191,7 @@ class RoleControllerTest {
                 .andExpect(jsonPath("$.data.description").value("Suporte lider"))
                 .andExpect(jsonPath("$.data.ativo").value(false))
                 .andExpect(jsonPath("$.data.permissions[0].name").value("ADMIN_ACCESS"))
-                .andExpect(jsonPath("$.message").value("Role atualizada com sucesso."));
+                .andExpect(jsonPath("$.message").value("Perfil atualizado com sucesso."));
     }
 
     @Test
@@ -210,7 +210,7 @@ class RoleControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.data.ativo").value(false))
-                .andExpect(jsonPath("$.message").value("Role desativada com sucesso."));
+                .andExpect(jsonPath("$.message").value("Perfil desativado com sucesso."));
 
         mockMvc.perform(get("/roles")
                         .header("Authorization", "Bearer " + token)
@@ -233,14 +233,14 @@ class RoleControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.data.permissions[0].id").value(permissionId))
-                .andExpect(jsonPath("$.message").value("Permissao associada com sucesso."));
+                .andExpect(jsonPath("$.message").value("Permissão associada com sucesso."));
 
         mockMvc.perform(delete("/roles/{id}/permissions/{permissionId}", roleId, permissionId)
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.data.permissions").value(empty()))
-                .andExpect(jsonPath("$.message").value("Permissao removida com sucesso."));
+                .andExpect(jsonPath("$.message").value("Permissão removida com sucesso."));
     }
 
     @Test
@@ -267,7 +267,7 @@ class RoleControllerTest {
                 .andExpect(jsonPath("$.data.content[0].bloqueado").value(false))
                 .andExpect(jsonPath("$.data.content[0].avatarUrl").doesNotExist())
                 .andExpect(jsonPath("$.data.content[0].roles").doesNotExist())
-                .andExpect(jsonPath("$.message").value("Usuarios do perfil carregados."));
+                .andExpect(jsonPath("$.message").value("Usuários do perfil carregados."));
 
         mockMvc.perform(post("/roles/{id}/usuarios/{usuarioId}", roleId, usuario.getId())
                         .header("Authorization", "Bearer " + token))
@@ -275,13 +275,13 @@ class RoleControllerTest {
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.data.id").value(usuario.getId()))
                 .andExpect(jsonPath("$.data.roles[0]").value("USER_OPS"))
-                .andExpect(jsonPath("$.message").value("Usuario vinculado ao perfil com sucesso."));
+                .andExpect(jsonPath("$.message").value("Usuário vinculado ao perfil com sucesso."));
 
         mockMvc.perform(post("/roles/{id}/usuarios/{usuarioId}", roleId, usuario.getId())
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isConflict())
                 .andExpect(jsonPath("$.success").value(false))
-                .andExpect(jsonPath("$.message").value("Usuario ja vinculado."));
+                .andExpect(jsonPath("$.message").value("Usuário já vinculado."));
 
         mockMvc.perform(get("/roles/{id}/usuarios", roleId)
                         .header("Authorization", "Bearer " + token)
@@ -293,13 +293,13 @@ class RoleControllerTest {
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.message").value("Usuario removido do perfil com sucesso."));
+                .andExpect(jsonPath("$.message").value("Usuário removido do perfil com sucesso."));
 
         mockMvc.perform(delete("/roles/{id}/usuarios/{usuarioId}", roleId, usuario.getId())
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.success").value(false))
-                .andExpect(jsonPath("$.message").value("Usuario nao vinculado."));
+                .andExpect(jsonPath("$.message").value("Usuário não vinculado."));
     }
 
     @Test
@@ -312,8 +312,8 @@ class RoleControllerTest {
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.success").value(false))
-                .andExpect(jsonPath("$.message").value("Operacao invalida."))
-                .andExpect(jsonPath("$.errors[0]").value("Nao e permitido remover o ultimo usuario ADMIN."));
+                .andExpect(jsonPath("$.message").value("Operação inválida."))
+                .andExpect(jsonPath("$.errors[0]").value("Não é permitido remover o último usuário ADMIN."));
     }
 
     @Test
@@ -332,7 +332,7 @@ class RoleControllerTest {
                                 """))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.success").value(false))
-                .andExpect(jsonPath("$.message").value("Permissao nao encontrada."));
+                .andExpect(jsonPath("$.message").value("Permissão não encontrada."));
     }
 
     @Test
@@ -345,14 +345,14 @@ class RoleControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.data").doesNotExist())
-                .andExpect(jsonPath("$.message").value("Role removida com sucesso."))
+                .andExpect(jsonPath("$.message").value("Perfil removido com sucesso."))
                 .andExpect(jsonPath("$.errors").value(empty()));
 
         mockMvc.perform(get("/roles/{id}", roleId)
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.success").value(false))
-                .andExpect(jsonPath("$.message").value("Role nao encontrada."));
+                .andExpect(jsonPath("$.message").value("Perfil não encontrado."));
     }
 
     @Test
@@ -364,7 +364,7 @@ class RoleControllerTest {
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.success").value(false))
-                .andExpect(jsonPath("$.message").value("Operacao invalida."));
+                .andExpect(jsonPath("$.message").value("Operação inválida."));
     }
 
     @Test
@@ -386,7 +386,7 @@ class RoleControllerTest {
                 .andExpect(status().isConflict())
                 .andExpect(jsonPath("$.success").value(false))
                 .andExpect(jsonPath("$.message").value("Perfil em uso."))
-                .andExpect(jsonPath("$.errors[0]").value("Nao e permitido remover um perfil vinculado a usuarios."));
+                .andExpect(jsonPath("$.errors[0]").value("Não é permitido remover um perfil vinculado a usuários."));
     }
 
     private Long criarRole(String token, String name) throws Exception {

@@ -67,7 +67,7 @@ public class AdminBootstrapService {
         ));
 
         Usuario usuario = usuarioRepository.findById(response.id())
-                .orElseThrow(() -> new BusinessException("Usuario nao encontrado.", HttpStatus.NOT_FOUND, List.of("Usuario criado nao foi localizado.")));
+                .orElseThrow(() -> new BusinessException("Usuário não encontrado.", HttpStatus.NOT_FOUND, List.of("Usuário criado não foi localizado.")));
         usuario.addRole(adminRole);
         Usuario saved = usuarioRepository.save(usuario);
         auditLogService.registrar("SYSTEM", "BOOTSTRAP_ADMIN", "USUARIO", saved.getId());
@@ -79,7 +79,7 @@ public class AdminBootstrapService {
             throw new BusinessException(
                     "Bootstrap administrativo recusado.",
                     HttpStatus.CONFLICT,
-                    List.of("Ja existe usuario administrador cadastrado.")
+                    List.of("Já existe usuário administrador cadastrado.")
             );
         }
     }
@@ -103,17 +103,17 @@ public class AdminBootstrapService {
     private void validateInput(String name, String email, String password) {
         if (isBlank(name) || isBlank(email) || isBlank(password)) {
             throw new BusinessException(
-                    "Dados invalidos.",
+                    "Dados inválidos.",
                     HttpStatus.BAD_REQUEST,
-                    List.of("Nome, email e senha sao obrigatorios para o bootstrap administrativo.")
+                    List.of("Nome, email e senha são obrigatórios para o bootstrap administrativo.")
             );
         }
 
         if (password.length() < MIN_PASSWORD_LENGTH) {
             throw new BusinessException(
-                    "Senha invalida.",
+                    "Senha inválida.",
                     HttpStatus.BAD_REQUEST,
-                    List.of("A senha do administrador deve ter no minimo 8 caracteres.")
+                    List.of("A senha do administrador deve ter no mínimo 8 caracteres.")
             );
         }
     }

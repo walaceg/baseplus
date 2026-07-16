@@ -43,21 +43,21 @@ public class UsuarioController {
             @PageableDefault(size = 10, sort = {"criadoEm", "id"}, direction = Sort.Direction.DESC) Pageable pageable
     ) {
         PageResponse<UsuarioResponse> response = usuarioAdminService.listar(search, ativo, bloqueado, primeiroAcesso, pageable);
-        return ResponseEntity.ok(ApiResponse.success(response, "Usuarios carregados."));
+        return ResponseEntity.ok(ApiResponse.success(response, "Usuários carregados."));
     }
 
     @GetMapping("/{id}")
     @PreAuthorize("@authorizationService.hasPermission('USERS_VIEW')")
     public ResponseEntity<ApiResponse<UsuarioResponse>> buscar(@PathVariable Long id) {
         UsuarioResponse response = usuarioAdminService.buscar(id);
-        return ResponseEntity.ok(ApiResponse.success(response, "Usuario carregado."));
+        return ResponseEntity.ok(ApiResponse.success(response, "Usuário carregado."));
     }
 
     @PostMapping
     @PreAuthorize("@authorizationService.hasPermission('USERS_CREATE')")
     public ResponseEntity<ApiResponse<UsuarioResponse>> criar(@RequestBody CreateUsuarioRequest request) {
         UsuarioResponse response = usuarioAdminService.criar(request);
-        return ResponseEntity.ok(ApiResponse.success(response, "Usuario criado com sucesso."));
+        return ResponseEntity.ok(ApiResponse.success(response, "Usuário criado com sucesso."));
     }
 
     @PutMapping("/{id}")
@@ -67,7 +67,7 @@ public class UsuarioController {
             @RequestBody UpdateUsuarioRequest request
     ) {
         UsuarioResponse response = usuarioAdminService.atualizar(id, request);
-        return ResponseEntity.ok(ApiResponse.success(response, "Usuario atualizado com sucesso."));
+        return ResponseEntity.ok(ApiResponse.success(response, "Usuário atualizado com sucesso."));
     }
 
     @PostMapping("/{id}/resetar-senha")
@@ -84,6 +84,6 @@ public class UsuarioController {
     @PreAuthorize("@authorizationService.hasPermission('USERS_DELETE')")
     public ResponseEntity<ApiResponse<Void>> remover(@PathVariable Long id) {
         usuarioAdminService.remover(id);
-        return ResponseEntity.ok(ApiResponse.success(null, "Usuario removido com sucesso."));
+        return ResponseEntity.ok(ApiResponse.success(null, "Usuário removido com sucesso."));
     }
 }

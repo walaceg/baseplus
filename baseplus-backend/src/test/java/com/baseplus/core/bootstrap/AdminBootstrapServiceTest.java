@@ -72,7 +72,7 @@ class AdminBootstrapServiceTest {
     void shouldRejectWeakPassword() {
         assertThatThrownBy(() -> adminBootstrapService.bootstrap("Admin Homologacao", "admin.homolog@baseplus.com", "curta"))
                 .isInstanceOf(BusinessException.class)
-                .hasMessage("Senha invalida.");
+                .hasMessage("Senha inválida.");
 
         assertThat(usuarioRepository.countByRoles_NameIgnoreCase(AdminAccessDefaults.ADMIN_ROLE)).isZero();
     }

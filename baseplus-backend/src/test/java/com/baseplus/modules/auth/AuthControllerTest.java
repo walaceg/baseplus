@@ -77,7 +77,7 @@ class AuthControllerTest {
                                 """))
                 .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("$.success").value(false))
-                .andExpect(jsonPath("$.message").value("Credenciais invalidas."));
+                .andExpect(jsonPath("$.message").value("Credenciais inválidas."));
     }
 
     @Test
@@ -99,7 +99,7 @@ class AuthControllerTest {
                                 }
                                 """))
                 .andExpect(status().isUnauthorized())
-                .andExpect(jsonPath("$.message").value("Credenciais invalidas."));
+                .andExpect(jsonPath("$.message").value("Credenciais inválidas."));
 
         org.hamcrest.MatcherAssert.assertThat(
                 usuarioService.buscarPorEmail("tentativas.login@baseplus.com").orElseThrow().getTentativasLoginInvalidas(),
@@ -142,7 +142,7 @@ class AuthControllerTest {
                                     }
                                     """))
                     .andExpect(status().isUnauthorized())
-                    .andExpect(jsonPath("$.message").value("Credenciais invalidas."));
+                    .andExpect(jsonPath("$.message").value("Credenciais inválidas."));
         }
 
         Usuario bloqueado = usuarioService.buscarPorEmail("bloqueio.automatico@baseplus.com").orElseThrow();
@@ -158,7 +158,7 @@ class AuthControllerTest {
                                 }
                 """))
                 .andExpect(status().isUnauthorized())
-                .andExpect(jsonPath("$.message").value("Usu\u00e1rio bloqueado"));
+                .andExpect(jsonPath("$.message").value("Usuário bloqueado."));
     }
 
     @Test
@@ -189,7 +189,7 @@ class AuthControllerTest {
                                 }
                                 """))
                 .andExpect(status().isUnauthorized())
-                .andExpect(jsonPath("$.message").value("Usuário inativo"));
+                .andExpect(jsonPath("$.message").value("Usuário inativo."));
 
         mockMvc.perform(post("/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -200,7 +200,7 @@ class AuthControllerTest {
                                 }
                                 """))
                 .andExpect(status().isUnauthorized())
-                .andExpect(jsonPath("$.message").value("Usuário bloqueado"));
+                .andExpect(jsonPath("$.message").value("Usuário bloqueado."));
     }
 
     @Test
@@ -233,7 +233,7 @@ class AuthControllerTest {
         mockMvc.perform(get("/conta")
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isForbidden())
-                .andExpect(jsonPath("$.message").value("Troca de senha obrigatoria."));
+                .andExpect(jsonPath("$.message").value("Troca de senha obrigatória."));
 
         mockMvc.perform(post("/auth/change-initial-password")
                         .header("Authorization", "Bearer " + token)
@@ -283,8 +283,8 @@ class AuthControllerTest {
                                 }
                                 """))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value("A nova senha deve ter no minimo 8 caracteres."))
-                .andExpect(jsonPath("$.errors[0]").value("A nova senha deve ter no minimo 8 caracteres."));
+                .andExpect(jsonPath("$.message").value("A nova senha deve ter no mínimo 8 caracteres."))
+                .andExpect(jsonPath("$.errors[0]").value("A nova senha deve ter no mínimo 8 caracteres."));
 
         mockMvc.perform(post("/auth/change-initial-password")
                         .header("Authorization", "Bearer " + token)
@@ -297,8 +297,8 @@ class AuthControllerTest {
                                 }
                                 """))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value("Nova senha e confirmacao devem ser iguais."))
-                .andExpect(jsonPath("$.errors[0]").value("Nova senha e confirmacao devem ser iguais."));
+                .andExpect(jsonPath("$.message").value("Nova senha e confirmação devem ser iguais."))
+                .andExpect(jsonPath("$.errors[0]").value("Nova senha e confirmação devem ser iguais."));
 
         mockMvc.perform(post("/auth/change-initial-password")
                         .header("Authorization", "Bearer " + token)
@@ -325,8 +325,8 @@ class AuthControllerTest {
                                 }
                                 """))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value("Senha atual invalida."))
-                .andExpect(jsonPath("$.errors[0]").value("A senha atual informada nao confere."));
+                .andExpect(jsonPath("$.message").value("Senha atual inválida."))
+                .andExpect(jsonPath("$.errors[0]").value("A senha atual informada não confere."));
     }
 
 
@@ -335,7 +335,7 @@ class AuthControllerTest {
         mockMvc.perform(get("/rota-protegida"))
                 .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("$.success").value(false))
-                .andExpect(jsonPath("$.message").value("Acesso nao autorizado."));
+                .andExpect(jsonPath("$.message").value("Acesso não autorizado."));
     }
 
     @Test
@@ -352,7 +352,7 @@ class AuthControllerTest {
         mockMvc.perform(get("/auth/me"))
                 .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("$.success").value(false))
-                .andExpect(jsonPath("$.message").value("Acesso nao autorizado."));
+                .andExpect(jsonPath("$.message").value("Acesso não autorizado."));
     }
 
     @Test
@@ -360,7 +360,7 @@ class AuthControllerTest {
         mockMvc.perform(post("/auth/logout"))
                 .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("$.success").value(false))
-                .andExpect(jsonPath("$.message").value("Acesso nao autorizado."));
+                .andExpect(jsonPath("$.message").value("Acesso não autorizado."));
     }
 
     @Test
@@ -375,7 +375,7 @@ class AuthControllerTest {
                 .andExpect(jsonPath("$.data.nome").value("Administrador Base+"))
                 .andExpect(jsonPath("$.data.email").value("admin@baseplus.com"))
                 .andExpect(jsonPath("$.data.senha").doesNotExist())
-                .andExpect(jsonPath("$.message").value("Usuario autenticado."))
+                .andExpect(jsonPath("$.message").value("Usuário autenticado."))
                 .andExpect(jsonPath("$.errors").value(empty()));
     }
 
@@ -461,7 +461,7 @@ class AuthControllerTest {
                                 """))
                 .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("$.success").value(false))
-                .andExpect(jsonPath("$.message").value("Refresh token invalido."));
+                .andExpect(jsonPath("$.message").value("Refresh token inválido."));
     }
 
     @Test
@@ -487,7 +487,7 @@ class AuthControllerTest {
                                 """.formatted(refreshToken)))
                 .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("$.success").value(false))
-                .andExpect(jsonPath("$.message").value("Refresh token invalido."));
+                .andExpect(jsonPath("$.message").value("Refresh token inválido."));
 
         mockMvc.perform(get("/auth/me")
                         .header("Authorization", "Bearer " + token))

@@ -49,7 +49,7 @@ class UsuarioControllerTest {
         mockMvc.perform(get("/usuarios"))
                 .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("$.success").value(false))
-                .andExpect(jsonPath("$.message").value("Acesso nao autorizado."));
+                .andExpect(jsonPath("$.message").value("Acesso não autorizado."));
     }
 
     @Test
@@ -89,7 +89,7 @@ class UsuarioControllerTest {
                 .andExpect(jsonPath("$.data.page").value(0))
                 .andExpect(jsonPath("$.data.size").value(10))
                 .andExpect(jsonPath("$.data.totalElements").value(notNullValue()))
-                .andExpect(jsonPath("$.message").value("Usuarios carregados."))
+                .andExpect(jsonPath("$.message").value("Usuários carregados."))
                 .andExpect(jsonPath("$.errors").value(empty()));
     }
 
@@ -179,7 +179,7 @@ class UsuarioControllerTest {
                 .andExpect(jsonPath("$.data.ultimoLoginEm").doesNotExist())
                 .andExpect(jsonPath("$.data.tentativasLoginInvalidas").value(0))
                 .andExpect(jsonPath("$.data.senha").doesNotExist())
-                .andExpect(jsonPath("$.message").value("Usuario criado com sucesso."))
+                .andExpect(jsonPath("$.message").value("Usuário criado com sucesso."))
                 .andExpect(jsonPath("$.errors").value(empty()));
 
         Usuario usuario = usuarioService.buscarPorEmail("novo@baseplus.com").orElseThrow();
@@ -213,7 +213,7 @@ class UsuarioControllerTest {
                                 """))
                 .andExpect(status().isConflict())
                 .andExpect(jsonPath("$.success").value(false))
-                .andExpect(jsonPath("$.message").value("Email ja cadastrado."));
+                .andExpect(jsonPath("$.message").value("Email já cadastrado."));
     }
 
     @Test
@@ -226,7 +226,7 @@ class UsuarioControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.data.id").value(usuarioId))
-                .andExpect(jsonPath("$.message").value("Usuario carregado."));
+                .andExpect(jsonPath("$.message").value("Usuário carregado."));
 
         mockMvc.perform(put("/usuarios/{id}", usuarioId)
                         .header("Authorization", "Bearer " + token)
@@ -262,7 +262,7 @@ class UsuarioControllerTest {
                 .andExpect(jsonPath("$.data.ativo").value(false))
                 .andExpect(jsonPath("$.data.bloqueado").value(true))
                 .andExpect(jsonPath("$.data.trocarSenhaPrimeiroAcesso").value(false))
-                .andExpect(jsonPath("$.message").value("Usuario atualizado com sucesso."));
+                .andExpect(jsonPath("$.message").value("Usuário atualizado com sucesso."));
     }
 
     @Test
@@ -354,7 +354,7 @@ class UsuarioControllerTest {
         mockMvc.perform(get("/usuarios")
                         .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().isUnauthorized())
-                .andExpect(jsonPath("$.message").value("Acesso nao autorizado."));
+                .andExpect(jsonPath("$.message").value("Acesso não autorizado."));
     }
 
     @Test
@@ -441,8 +441,8 @@ class UsuarioControllerTest {
                                 """))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.success").value(false))
-                .andExpect(jsonPath("$.message").value("A nova senha temporaria deve ter no minimo 8 caracteres."))
-                .andExpect(jsonPath("$.errors[0]").value("A nova senha temporaria deve ter no minimo 8 caracteres."));
+                .andExpect(jsonPath("$.message").value("A nova senha temporária deve ter no mínimo 8 caracteres."))
+                .andExpect(jsonPath("$.errors[0]").value("A nova senha temporária deve ter no mínimo 8 caracteres."));
 
         mockMvc.perform(post("/usuarios/{id}/resetar-senha", 999999L)
                         .header("Authorization", "Bearer " + token)
@@ -455,7 +455,7 @@ class UsuarioControllerTest {
                                 """))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.success").value(false))
-                .andExpect(jsonPath("$.message").value("Usuario nao encontrado."));
+                .andExpect(jsonPath("$.message").value("Usuário não encontrado."));
     }
 
     @Test
@@ -470,14 +470,14 @@ class UsuarioControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.data").doesNotExist())
-                .andExpect(jsonPath("$.message").value("Usuario removido com sucesso."))
+                .andExpect(jsonPath("$.message").value("Usuário removido com sucesso."))
                 .andExpect(jsonPath("$.errors").value(empty()));
 
         mockMvc.perform(get("/usuarios/{id}", usuarioId)
                         .header("Authorization", "Bearer " + adminToken))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.success").value(false))
-                .andExpect(jsonPath("$.message").value("Usuario nao encontrado."));
+                .andExpect(jsonPath("$.message").value("Usuário não encontrado."));
 
         mockMvc.perform(post("/auth/refresh")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -488,7 +488,7 @@ class UsuarioControllerTest {
                                 """.formatted(refreshToken)))
                 .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("$.success").value(false))
-                .andExpect(jsonPath("$.message").value("Refresh token invalido."));
+                .andExpect(jsonPath("$.message").value("Refresh token inválido."));
     }
 
     @Test
@@ -501,7 +501,7 @@ class UsuarioControllerTest {
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.success").value(false))
-                .andExpect(jsonPath("$.message").value("Operacao invalida."));
+                .andExpect(jsonPath("$.message").value("Operação inválida."));
     }
 
     private Long criarUsuario(String token, String email) throws Exception {
