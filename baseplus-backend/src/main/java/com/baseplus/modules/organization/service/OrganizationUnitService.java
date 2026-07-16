@@ -60,13 +60,13 @@ public class OrganizationUnitService {
     @Transactional
     public OrganizationUnitResponse criar(CreateOrganizationUnitRequest request) {
         if (request == null || request.typeId() == null || isBlank(request.code()) || isBlank(request.name())) {
-            throw new BusinessException("Dados invalidos.", HttpStatus.BAD_REQUEST, List.of("Tipo, codigo e nome sao obrigatorios."));
+            throw new BusinessException("Dados inválidos.", HttpStatus.BAD_REQUEST, List.of("Tipo, código e nome são obrigatórios."));
         }
 
         OrganizationUnitType type = typeService.getType(request.typeId());
         String code = normalizeCode(request.code());
         if (repository.existsByType_IdAndCodeIgnoreCase(type.getId(), code)) {
-            throw new BusinessException("Unidade ja cadastrada.", HttpStatus.CONFLICT, List.of("Ja existe unidade com este tipo e codigo."));
+            throw new BusinessException("Unidade já cadastrada.", HttpStatus.CONFLICT, List.of("Já existe unidade com este tipo e código."));
         }
 
         OrganizationUnit unit = new OrganizationUnit(type, code, request.name().trim());
@@ -80,14 +80,14 @@ public class OrganizationUnitService {
     @Transactional
     public OrganizationUnitResponse atualizar(Long id, UpdateOrganizationUnitRequest request) {
         if (request == null || request.typeId() == null || isBlank(request.code()) || isBlank(request.name())) {
-            throw new BusinessException("Dados invalidos.", HttpStatus.BAD_REQUEST, List.of("Tipo, codigo e nome sao obrigatorios."));
+            throw new BusinessException("Dados inválidos.", HttpStatus.BAD_REQUEST, List.of("Tipo, código e nome são obrigatórios."));
         }
 
         OrganizationUnit unit = getUnit(id);
         OrganizationUnitType type = typeService.getType(request.typeId());
         String code = normalizeCode(request.code());
         if (repository.existsByType_IdAndCodeIgnoreCaseAndIdNot(type.getId(), code, unit.getId())) {
-            throw new BusinessException("Unidade ja cadastrada.", HttpStatus.CONFLICT, List.of("Ja existe unidade com este tipo e codigo."));
+            throw new BusinessException("Unidade já cadastrada.", HttpStatus.CONFLICT, List.of("Já existe unidade com este tipo e código."));
         }
 
         unit.setType(type);
@@ -106,10 +106,10 @@ public class OrganizationUnitService {
     public void excluir(Long id) {
         OrganizationUnit unit = getUnit(id);
         if (repository.existsByParent_Id(unit.getId())) {
-            throw new BusinessException("Unidade em uso.", HttpStatus.CONFLICT, List.of("Nao e possivel excluir unidade com unidades filhas."));
+            throw new BusinessException("Unidade em uso.", HttpStatus.CONFLICT, List.of("Não é possível excluir unidade com unidades filhas."));
         }
         if (roleOrganizationScopeRepository.existsByOrganizationUnit_Id(unit.getId())) {
-            throw new BusinessException("Unidade em uso.", HttpStatus.CONFLICT, List.of("Nao e possivel excluir unidade vinculada a perfis organizacionais."));
+            throw new BusinessException("Unidade em uso.", HttpStatus.CONFLICT, List.of("Não é possível excluir unidade vinculada a perfis organizacionais."));
         }
 
         repository.delete(unit);
@@ -118,10 +118,10 @@ public class OrganizationUnitService {
 
     public OrganizationUnit getUnit(Long id) {
         if (id == null) {
-            throw new BusinessException("Unidade nao encontrada.", HttpStatus.NOT_FOUND, List.of("Unidade organizacional nao encontrada."));
+            throw new BusinessException("Unidade não encontrada.", HttpStatus.NOT_FOUND, List.of("Unidade organizacional não encontrada."));
         }
         return repository.findById(id)
-                .orElseThrow(() -> new BusinessException("Unidade nao encontrada.", HttpStatus.NOT_FOUND, List.of("Unidade organizacional nao encontrada.")));
+                .orElseThrow(() -> new BusinessException("Unidade não encontrada.", HttpStatus.NOT_FOUND, List.of("Unidade organizacional não encontrada.")));
     }
 
     private OrganizationUnit resolveParent(Long parentId, Long currentId) {
@@ -129,7 +129,7 @@ public class OrganizationUnitService {
             return null;
         }
         if (currentId != null && currentId.equals(parentId)) {
-            throw new BusinessException("Hierarquia invalida.", HttpStatus.BAD_REQUEST, List.of("A unidade nao pode ser pai dela mesma."));
+            throw new BusinessException("Hierarquia inválida.", HttpStatus.BAD_REQUEST, List.of("A unidade não pode ser pai dela mesma."));
         }
         return getUnit(parentId);
     }

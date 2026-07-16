@@ -68,19 +68,19 @@ public class ContaService {
 
     public ContaResponse atualizarConta(UpdateContaRequest request) {
         if (request == null || isBlank(request.nome()) || isBlank(request.email())) {
-            throw new BusinessException("Dados invalidos.", HttpStatus.BAD_REQUEST, List.of("Nome e email sao obrigatorios."));
+            throw new BusinessException("Dados inválidos.", HttpStatus.BAD_REQUEST, List.of("Nome e email são obrigatórios."));
         }
 
         String email = request.email().trim().toLowerCase();
         if (!isEmailValido(email)) {
-            throw new BusinessException("Dados invalidos.", HttpStatus.BAD_REQUEST, List.of("Email invalido."));
+            throw new BusinessException("Dados inválidos.", HttpStatus.BAD_REQUEST, List.of("Email inválido."));
         }
 
         Usuario usuario = getUsuarioAutenticado();
         usuarioService.buscarPorEmail(email)
                 .filter(outroUsuario -> !outroUsuario.getId().equals(usuario.getId()))
                 .ifPresent(outroUsuario -> {
-                    throw new BusinessException("Email ja cadastrado.", HttpStatus.CONFLICT, List.of("Ja existe um usuario com este email."));
+                    throw new BusinessException("Email já cadastrado.", HttpStatus.CONFLICT, List.of("Já existe um usuário com este email."));
                 });
 
         usuario.setNome(request.nome().trim());
@@ -91,16 +91,16 @@ public class ContaService {
 
     public void alterarSenha(ChangePasswordRequest request) {
         if (request == null || isBlank(request.senhaAtual()) || isBlank(request.novaSenha())) {
-            throw new BusinessException("Dados invalidos.", HttpStatus.BAD_REQUEST, List.of("Senha atual e nova senha sao obrigatorias."));
+            throw new BusinessException("Dados inválidos.", HttpStatus.BAD_REQUEST, List.of("Senha atual e nova senha são obrigatórias."));
         }
 
         Usuario usuario = getUsuarioAutenticado();
         if (!passwordEncoder.matches(request.senhaAtual(), usuario.getSenha())) {
-            throw new BusinessException("Senha atual invalida.", HttpStatus.BAD_REQUEST, List.of("A senha atual informada nao confere."));
+            throw new BusinessException("Senha atual inválida.", HttpStatus.BAD_REQUEST, List.of("A senha atual informada não confere."));
         }
 
         if (passwordEncoder.matches(request.novaSenha(), usuario.getSenha())) {
-            throw new BusinessException("Dados invalidos.", HttpStatus.BAD_REQUEST, List.of("A nova senha deve ser diferente da senha atual."));
+            throw new BusinessException("Dados inválidos.", HttpStatus.BAD_REQUEST, List.of("A nova senha deve ser diferente da senha atual."));
         }
 
         usuario.setSenha(passwordEncoder.encode(request.novaSenha()));
@@ -114,20 +114,20 @@ public class ContaService {
 
     public UserPreferencesResponse atualizarPreferencias(UpdateUserPreferencesRequest request) {
         if (request == null) {
-            throw new BusinessException("Dados invalidos.", HttpStatus.BAD_REQUEST, List.of("Ao menos um campo deve ser informado."));
+            throw new BusinessException("Dados inválidos.", HttpStatus.BAD_REQUEST, List.of("Ao menos um campo deve ser informado."));
         }
 
         UserPreferences preferences = getOrCreatePreferencias(getUsuarioAutenticado());
         if (request.tema() != null) {
             if (isBlank(request.tema())) {
-                throw new BusinessException("Dados invalidos.", HttpStatus.BAD_REQUEST, List.of("Tema nao pode ser vazio."));
+                throw new BusinessException("Dados inválidos.", HttpStatus.BAD_REQUEST, List.of("Tema não pode ser vazio."));
             }
             preferences.setTema(resolveThemePreference(request.tema()));
         }
 
         if (request.idioma() != null) {
             if (isBlank(request.idioma())) {
-                throw new BusinessException("Dados invalidos.", HttpStatus.BAD_REQUEST, List.of("Idioma nao pode ser vazio."));
+                throw new BusinessException("Dados inválidos.", HttpStatus.BAD_REQUEST, List.of("Idioma não pode ser vazio."));
             }
             preferences.setIdioma(request.idioma().trim());
         }
@@ -196,12 +196,12 @@ public class ContaService {
     @Transactional
     public void removerSessao(Long id) {
         if (id == null) {
-            throw new BusinessException("Sessao nao encontrada.", HttpStatus.NOT_FOUND, List.of("Sessao nao encontrada para o usuario autenticado."));
+            throw new BusinessException("Sessão não encontrada.", HttpStatus.NOT_FOUND, List.of("Sessão não encontrada para o usuário autenticado."));
         }
 
         Usuario usuario = getUsuarioAutenticado();
         UserSession session = userSessionRepository.findByIdAndUsuario(id, usuario)
-                .orElseThrow(() -> new BusinessException("Sessao nao encontrada.", HttpStatus.NOT_FOUND, List.of("Sessao nao encontrada para o usuario autenticado.")));
+                .orElseThrow(() -> new BusinessException("Sessão não encontrada.", HttpStatus.NOT_FOUND, List.of("Sessão não encontrada para o usuário autenticado.")));
 
         refreshTokenService.removerPorSessao(session);
         userSessionRepository.delete(session);
@@ -211,21 +211,21 @@ public class ContaService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal() == null) {
-            throw new BusinessException("Acesso nao autorizado.", HttpStatus.UNAUTHORIZED, List.of("Autenticacao obrigatoria."));
+            throw new BusinessException("Acesso não autorizado.", HttpStatus.UNAUTHORIZED, List.of("Autenticação obrigatória."));
         }
 
         Long usuarioId = getUsuarioId(authentication);
         return usuarioService.buscarPorId(usuarioId)
                 .filter(Usuario::isAtivo)
                 .filter(usuario -> !usuario.isBloqueado())
-                .orElseThrow(() -> new BusinessException("Acesso nao autorizado.", HttpStatus.UNAUTHORIZED, List.of("Usuario autenticado nao encontrado.")));
+                .orElseThrow(() -> new BusinessException("Acesso não autorizado.", HttpStatus.UNAUTHORIZED, List.of("Usuário autenticado não encontrado.")));
     }
 
     private Long getUsuarioId(Authentication authentication) {
         try {
             return Long.valueOf(authentication.getPrincipal().toString());
         } catch (NumberFormatException exception) {
-            throw new BusinessException("Acesso nao autorizado.", HttpStatus.UNAUTHORIZED, List.of("Token invalido."));
+            throw new BusinessException("Acesso não autorizado.", HttpStatus.UNAUTHORIZED, List.of("Token inválido."));
         }
     }
 
@@ -278,7 +278,7 @@ public class ContaService {
 
         String normalized = color.trim().toUpperCase();
         if (!normalized.matches("#([0-9A-F]{3}|[0-9A-F]{6})")) {
-            throw new BusinessException("Dados invalidos.", HttpStatus.BAD_REQUEST, List.of("Cor invalida."));
+            throw new BusinessException("Dados inválidos.", HttpStatus.BAD_REQUEST, List.of("Cor inválida."));
         }
 
         return normalized;
@@ -291,7 +291,7 @@ public class ContaService {
 
         String normalized = preference.trim().toUpperCase();
         if (!"APP_DEFAULT".equals(normalized) && !"LIGHT".equals(normalized) && !"DARK".equals(normalized)) {
-            throw new BusinessException("Dados invalidos.", HttpStatus.BAD_REQUEST, List.of("Tema invalido."));
+            throw new BusinessException("Dados inválidos.", HttpStatus.BAD_REQUEST, List.of("Tema inválido."));
         }
 
         return normalized;
@@ -304,7 +304,7 @@ public class ContaService {
 
         String normalized = preference.trim().toUpperCase();
         if (!"APP_DEFAULT".equals(normalized) && !"REGULAR".equals(normalized) && !"COMPACT".equals(normalized)) {
-            throw new BusinessException("Dados invalidos.", HttpStatus.BAD_REQUEST, List.of("Preferencia visual invalida."));
+            throw new BusinessException("Dados inválidos.", HttpStatus.BAD_REQUEST, List.of("Preferência visual inválida."));
         }
 
         return normalized;
@@ -313,7 +313,7 @@ public class ContaService {
     private String resolveMenuPrincipal(String menuPrincipal) {
         String normalized = menuPrincipal.trim().toLowerCase();
         if (!"sidebar".equals(normalized) && !"topbar".equals(normalized)) {
-            throw new BusinessException("Dados invalidos.", HttpStatus.BAD_REQUEST, List.of("Menu principal invalido."));
+            throw new BusinessException("Dados inválidos.", HttpStatus.BAD_REQUEST, List.of("Menu principal inválido."));
         }
 
         return normalized;

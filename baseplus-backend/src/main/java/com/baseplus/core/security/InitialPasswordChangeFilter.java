@@ -60,7 +60,7 @@ public class InitialPasswordChangeFilter extends OncePerRequestFilter {
         }
 
         ApiResponse<Void> body = ApiResponse.failure(
-                "Troca de senha obrigatoria.",
+                "Troca de senha obrigatória.",
                 List.of("Altere sua senha inicial antes de acessar o sistema.")
         );
         response.setStatus(HttpStatus.FORBIDDEN.value());

@@ -69,7 +69,7 @@ async function refreshAccessToken(refreshToken) {
         const accessToken = response.data?.data?.token;
 
         if (!accessToken) {
-          throw new Error('Access token ausente na renovacao.');
+          throw new Error('Access token ausente na renovação.');
         }
 
         tokenStorage.setAccessToken(accessToken);

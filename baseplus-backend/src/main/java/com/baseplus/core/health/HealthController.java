@@ -31,7 +31,7 @@ public class HealthController {
                 "timestamp", OffsetDateTime.now()
         );
 
-        return ResponseEntity.ok(ApiResponse.success(data, "Aplicacao em execucao."));
+        return ResponseEntity.ok(ApiResponse.success(data, "Aplicação em execução."));
     }
 
     @GetMapping("/health/ready")
@@ -50,7 +50,7 @@ public class HealthController {
                     "timestamp", OffsetDateTime.now()
             );
 
-            return ResponseEntity.ok(ApiResponse.success(data, "Aplicacao pronta para receber trafego."));
+            return ResponseEntity.ok(ApiResponse.success(data, "Aplicação pronta para receber tráfego."));
         } catch (DataAccessException exception) {
             return databaseUnavailableResponse();
         }
@@ -75,7 +75,7 @@ public class HealthController {
                 "permission", "ADMIN_ACCESS"
         );
 
-        return ResponseEntity.ok(ApiResponse.success(data, "Health por permissao."));
+        return ResponseEntity.ok(ApiResponse.success(data, "Health por permissão."));
     }
 
     private ResponseEntity<ApiResponse<Map<String, Object>>> databaseUnavailableResponse() {
@@ -89,8 +89,8 @@ public class HealthController {
         ApiResponse<Map<String, Object>> body = new ApiResponse<>(
                 false,
                 data,
-                "Aplicacao indisponivel para receber trafego.",
-                List.of("Banco de dados indisponivel.")
+                "Aplicação indisponível para receber tráfego.",
+                List.of("Banco de dados indisponível.")
         );
 
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(body);

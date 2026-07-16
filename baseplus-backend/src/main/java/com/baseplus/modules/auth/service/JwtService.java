@@ -127,7 +127,7 @@ public class JwtService {
         try {
             return encode(objectMapper.writeValueAsBytes(value));
         } catch (Exception exception) {
-            throw new IllegalStateException("Nao foi possivel gerar o token JWT.", exception);
+            throw new IllegalStateException("Não foi possível gerar o token JWT.", exception);
         }
     }
 
@@ -138,7 +138,7 @@ public class JwtService {
             mac.init(key);
             return encode(mac.doFinal(value.getBytes(StandardCharsets.UTF_8)));
         } catch (Exception exception) {
-            throw new IllegalStateException("Nao foi possivel assinar o token JWT.", exception);
+            throw new IllegalStateException("Não foi possível assinar o token JWT.", exception);
         }
     }
 

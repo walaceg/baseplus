@@ -44,7 +44,7 @@ export function OrganizationTypeModal({ isOpen, loading = false, mode = 'create'
       <form className="bp-form-grid" id="organization-type-form" onSubmit={handleSubmit}>
         <Input
           id="organization-type-code"
-          label="Codigo"
+          label="Código"
           placeholder="EMPRESA"
           value={form.code}
           onChange={(event) => setForm((current) => ({ ...current, code: event.target.value }))}

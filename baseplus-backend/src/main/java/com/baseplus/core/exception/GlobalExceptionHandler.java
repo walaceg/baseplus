@@ -37,13 +37,13 @@ public class GlobalExceptionHandler {
                 .map(error -> error.getField() + ": " + error.getDefaultMessage())
                 .toList();
 
-        ApiResponse<Void> response = ApiResponse.failure("Erro de validacao.", errors);
+        ApiResponse<Void> response = ApiResponse.failure("Erro de validação.", errors);
         return ResponseEntity.badRequest().body(response);
     }
 
     @ExceptionHandler({AccessDeniedException.class, AuthorizationDeniedException.class})
     public ResponseEntity<ApiResponse<Void>> handleAccessDeniedException(Exception exception) {
-        ApiResponse<Void> response = ApiResponse.failure("Acesso negado.", "Permissao insuficiente.");
+        ApiResponse<Void> response = ApiResponse.failure("Acesso negado.", "Permissão insuficiente.");
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
     }
 
@@ -51,15 +51,15 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResponse<Void>> handleMultipartException(Exception exception) {
         log.warn("Multipart exception: {}", exception.getMessage(), exception);
         ApiResponse<Void> response = ApiResponse.failure(
-                "Arquivo invalido.",
-                "O upload nao pode ser processado ou excede o tamanho maximo permitido."
+                "Arquivo inválido.",
+                "O upload não pode ser processado ou excede o tamanho máximo permitido."
         );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
     @ExceptionHandler(NoResourceFoundException.class)
     public ResponseEntity<ApiResponse<Void>> handleNoResourceFoundException(NoResourceFoundException exception) {
-        ApiResponse<Void> response = ApiResponse.failure("Recurso nao encontrado.", "O recurso solicitado nao existe.");
+        ApiResponse<Void> response = ApiResponse.failure("Recurso não encontrado.", "O recurso solicitado não existe.");
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 

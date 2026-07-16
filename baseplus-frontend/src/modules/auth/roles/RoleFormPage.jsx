@@ -18,7 +18,7 @@ const EMPTY_FORM = {
 };
 
 const ROLE_TYPE_OPTIONS = [
-  { value: 'FUNCTIONAL', label: 'Funcional - agrupa permissoes' },
+  { value: 'FUNCTIONAL', label: 'Funcional - agrupa permissões' },
   { value: 'ORGANIZATIONAL', label: 'Organizacional - agrupa escopos' },
   { value: 'SYSTEM', label: 'Sistema' },
 ];
@@ -108,7 +108,7 @@ export function RoleFormPage({ mode = 'create' }) {
         }
       } catch (requestError) {
         if (active) {
-          setError(getApiError(requestError, 'Nao foi possivel carregar o formulario de perfil.'));
+          setError(getApiError(requestError, 'Não foi possível carregar o formulário de perfil.'));
         }
       } finally {
         if (active) {
@@ -141,7 +141,7 @@ export function RoleFormPage({ mode = 'create' }) {
         }
       } catch (requestError) {
         if (active) {
-          setError(getApiError(requestError, 'Nao foi possivel carregar os usuarios do perfil.'));
+          setError(getApiError(requestError, 'Não foi possível carregar os usuários do perfil.'));
         }
       } finally {
         if (active) {
@@ -181,7 +181,7 @@ export function RoleFormPage({ mode = 'create' }) {
         }
       } catch (requestError) {
         if (active) {
-          setError(getApiError(requestError, 'Nao foi possivel buscar usuarios para vincular.'));
+          setError(getApiError(requestError, 'Não foi possível buscar usuários para vincular.'));
         }
       } finally {
         if (active) {
@@ -251,13 +251,13 @@ export function RoleFormPage({ mode = 'create' }) {
 
     const unit = organizationUnits.find((item) => item.id === unitId);
     if (!unit) {
-      setError('Unidade organizacional nao encontrada.');
+      setError('Unidade organizacional não encontrada.');
       return;
     }
 
     setForm((current) => {
       if (current.organizationScopes.some((scope) => Number(scope.organizationUnitId) === unitId)) {
-        setError('Esta unidade organizacional ja esta vinculada ao perfil.');
+        setError('Esta unidade organizacional já está vinculada ao perfil.');
         return current;
       }
 
@@ -303,11 +303,11 @@ export function RoleFormPage({ mode = 'create' }) {
       setError('');
       setMessage('');
       const response = await roleService.addRoleUsuario(id, usuario.id);
-      setMessage(response.message ?? 'Usuario vinculado ao perfil com sucesso.');
+      setMessage(response.message ?? 'Usuário vinculado ao perfil com sucesso.');
       await refreshRoleUsers();
       setAvailableUsers((current) => current.filter((item) => item.id !== usuario.id));
     } catch (requestError) {
-      setError(getApiError(requestError, 'Nao foi possivel vincular o usuario ao perfil.'));
+      setError(getApiError(requestError, 'Não foi possível vincular o usuário ao perfil.'));
     } finally {
       setAddingUserId(null);
     }
@@ -323,11 +323,11 @@ export function RoleFormPage({ mode = 'create' }) {
       setError('');
       setMessage('');
       const response = await roleService.removeRoleUsuario(id, removeUserTarget.id);
-      setMessage(response.message ?? 'Usuario removido do perfil com sucesso.');
+      setMessage(response.message ?? 'Usuário removido do perfil com sucesso.');
       await refreshRoleUsers();
       setRemoveUserTarget(null);
     } catch (requestError) {
-      setError(getApiError(requestError, 'Nao foi possivel remover o usuario do perfil.'));
+      setError(getApiError(requestError, 'Não foi possível remover o usuário do perfil.'));
     } finally {
       setSaving(false);
     }
@@ -422,13 +422,13 @@ export function RoleFormPage({ mode = 'create' }) {
 
         setRole(updated);
         setForm(toForm(updated));
-        setMessage('Permissoes do perfil atualizadas com sucesso.');
+        setMessage('Permissões do perfil atualizadas com sucesso.');
       } else {
         await roleService.createRole(payload);
         navigate('/app/roles', { replace: true, state: { message: 'Perfil criado com sucesso.' } });
       }
     } catch (requestError) {
-      setError(getApiError(requestError, 'Nao foi possivel salvar o perfil.'));
+      setError(getApiError(requestError, 'Não foi possível salvar o perfil.'));
     } finally {
       setSaving(false);
     }
@@ -439,7 +439,7 @@ export function RoleFormPage({ mode = 'create' }) {
       <section className="bp-list-page__header">
         <div>
           <h1>{title}</h1>
-          <p>{isEdit ? 'Atualize dados administrativos e permissoes do perfil.' : 'Cadastre uma unidade de autorizacao da plataforma.'}</p>
+          <p>{isEdit ? 'Atualize dados administrativos e permissões do perfil.' : 'Cadastre uma unidade de autorização da plataforma.'}</p>
         </div>
       </section>
 
@@ -465,7 +465,7 @@ export function RoleFormPage({ mode = 'create' }) {
                   <Input
                     id="role-description"
                     disabled={isEdit && !canEditRole}
-                    label="Descricao"
+                    label="Descrição"
                     value={form.description}
                     onChange={(event) => updateField('description', event.target.value)}
                   />
@@ -487,13 +487,13 @@ export function RoleFormPage({ mode = 'create' }) {
             <Card.Body>
               <section className="bp-role-form-section">
                 <div className="bp-role-form-section__header">
-                  <h2>Permissoes</h2>
-                  <p>{canManagePermissions ? 'Selecione as permissoes vinculadas a este perfil.' : 'Seu perfil permite editar dados, mas nao gerenciar permissoes.'}</p>
+                    <h2>Permissões</h2>
+                  <p>{canManagePermissions ? 'Selecione as permissões vinculadas a este perfil.' : 'Seu perfil permite editar dados, mas não gerenciar permissões.'}</p>
                 </div>
                 <Input
                   id="role-permission-search"
-                  label="Buscar permissoes"
-                  placeholder="Buscar por permissao ou descricao..."
+                  label="Buscar permissões"
+                  placeholder="Buscar por permissão ou descrição..."
                   value={permissionSearch}
                   onChange={(event) => setPermissionSearch(event.target.value)}
                 />
@@ -519,7 +519,7 @@ export function RoleFormPage({ mode = 'create' }) {
                                 />
                                 <span>
                                   <strong>{permission.name}</strong>
-                                  <small>{permission.description || 'Sem descricao'}</small>
+                                  <small>{permission.description || 'Sem descrição'}</small>
                                 </span>
                               </label>
                             ))}
@@ -527,7 +527,7 @@ export function RoleFormPage({ mode = 'create' }) {
                         </section>
                       ))
                   ) : (
-                    <p className="bp-role-empty">Nenhuma permissao encontrada.</p>
+                    <p className="bp-role-empty">Nenhuma permissão encontrada.</p>
                   )}
                 </div>
               </section>
@@ -560,7 +560,7 @@ export function RoleFormPage({ mode = 'create' }) {
                     <Select
                       disabled={!canManageOrganizationScopes}
                       id="role-organization-scope-level"
-                      label="Nivel"
+                      label="Nível"
                       options={SCOPE_LEVEL_OPTIONS}
                       value={scopeDraft.scopeLevel}
                       onChange={(event) => setScopeDraft((current) => ({ ...current, scopeLevel: event.target.value }))}
@@ -601,8 +601,8 @@ export function RoleFormPage({ mode = 'create' }) {
             <Card.Body>
               <section className="bp-role-form-section">
                 <div className="bp-role-form-section__header">
-                  <h2>Seguranca administrativa</h2>
-                  {role?.sistema ? <p>Perfil interno da plataforma. A exclusao e desativacao ficam bloqueadas.</p> : null}
+                  <h2>Segurança administrativa</h2>
+                  {role?.sistema ? <p>Perfil interno da plataforma. A exclusão e desativação ficam bloqueadas.</p> : null}
                 </div>
                 <div className="bp-role-admin-flags">
                   <label className="bp-role-switch" htmlFor="role-active">
@@ -628,20 +628,20 @@ export function RoleFormPage({ mode = 'create' }) {
               <Card.Body>
                 <section className="bp-role-form-section">
                   <div className="bp-role-form-section__header">
-                    <h2>Usuarios do perfil</h2>
-                    <p>Gerencie quais usuarios pertencem a este perfil de acesso.</p>
+                    <h2>Usuários do perfil</h2>
+                    <p>Gerencie quais usuários pertencem a este perfil de acesso.</p>
                   </div>
 
                   <div className="bp-role-user-manager">
                     <div className="bp-role-user-manager__search">
                       <Input
                         id="role-user-search"
-                        label="Buscar usuario para adicionar"
-                        placeholder="Digite nome ou email..."
+                        label="Buscar usuário para adicionar"
+                        placeholder="Digite nome ou e-mail..."
                         value={userSearch}
                         onChange={(event) => setUserSearch(event.target.value)}
                       />
-                      {searchingUsers ? <Loading label="Buscando usuarios..." /> : null}
+                      {searchingUsers ? <Loading label="Buscando usuários..." /> : null}
                       {debouncedUserSearch.trim().length >= 2 && availableUsers.length ? (
                         <div className="bp-role-user-results">
                           {availableUsers.map((usuario) => (
@@ -650,8 +650,8 @@ export function RoleFormPage({ mode = 'create' }) {
                               <ActionIconButton
                                 disabled={addingUserId === usuario.id}
                                 icon={UserPlus}
-                                label="Adicionar usuario"
-                                title="Adicionar usuario"
+                                label="Adicionar usuário"
+                                title="Adicionar usuário"
                                 variant="primary"
                                 onClick={() => handleAddUser(usuario)}
                               />
@@ -663,7 +663,7 @@ export function RoleFormPage({ mode = 'create' }) {
 
                     <div className="bp-role-user-manager__list">
                       {loadingUsers ? (
-                        <Loading label="Carregando usuarios do perfil..." />
+                        <Loading label="Carregando usuários do perfil..." />
                       ) : roleUsers.length ? (
                         <div className="bp-role-user-list">
                           {roleUsers.map((usuario) => (
@@ -671,8 +671,8 @@ export function RoleFormPage({ mode = 'create' }) {
                               <UserSummary usuario={usuario} />
                               <ActionIconButton
                                 icon={Trash2}
-                                label="Remover usuario"
-                                title="Remover usuario"
+                                label="Remover usuário"
+                                title="Remover usuário"
                                 variant="danger"
                                 onClick={() => setRemoveUserTarget(usuario)}
                               />
@@ -680,7 +680,7 @@ export function RoleFormPage({ mode = 'create' }) {
                           ))}
                         </div>
                       ) : (
-                        <EmptyState description="Nenhum usuario vinculado a este perfil" title="Sem usuarios vinculados" />
+                        <EmptyState description="Nenhum usuário vinculado a este perfil" title="Sem usuários vinculados" />
                       )}
                     </div>
                   </div>
@@ -705,11 +705,11 @@ export function RoleFormPage({ mode = 'create' }) {
       <ConfirmDialog
         cancelLabel="Cancelar"
         confirmLabel="Remover"
-        message="Esta acao vai remover o usuario selecionado deste perfil."
+        message="Esta ação vai remover o usuário selecionado deste perfil."
         onCancel={() => setRemoveUserTarget(null)}
         onConfirm={confirmRemoveUser}
         open={Boolean(removeUserTarget)}
-        title="Remover usuario do perfil"
+        title="Remover usuário do perfil"
       />
     </div>
   );

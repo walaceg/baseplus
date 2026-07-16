@@ -1,10 +1,10 @@
 # Base+ State
 
-Atualizado em: 2026-06-26
+Atualizado em: 2026-07-16
 
 ## Estado atual
 
-- Baseline Oficial: `v1.1.0`.
+- Release oficial atual: `v1.2.0`.
 - Plataforma pronta para servir como fundacao de novos projetos de negocio.
 - Base+ permanece como fundacao administrativa reutilizavel, sem modulo real de negocio acoplado.
 - Backend Spring Boot funcional.
@@ -35,7 +35,7 @@ Atualizado em: 2026-06-26
   - Uploads aceitam somente `PNG`, `JPG`/`JPEG` e `ICO` validos.
   - Access tokens revalidam usuario ativo/desbloqueado e roles/permissions atuais.
   - Login bloqueia usuario apos 5 tentativas consecutivas com senha invalida.
-- Baseline Oficial v1.1.0 consolidada:
+- Baseline anterior v1.1.0 consolidada:
   - PostgreSQL consolidado como banco padrao para ambientes persistentes.
   - H2 mantido apenas para desenvolvimento local.
   - Profiles `docker` e `prod` revisados.
@@ -53,6 +53,13 @@ Atualizado em: 2026-06-26
   - Documentacao Docker criada em `docs/docker.md`.
   - Checklist oficial v1.1.0 criado em `docs/release-1.1-checklist.md`.
   - Documentacao oficial alinhada ao estado atual da Baseline Oficial v1.1.0.
+- Release oficial v1.2.0 preparada:
+  - Backend Maven versionado como 1.2.0.
+  - Frontend versionado como 1.2.0.
+  - UX, elegancia, acessibilidade e heuristicas de Nielsen institucionalizadas.
+  - Componentes compartilhados do frontend evoluidos.
+  - Correcoes de linguagem e mensagens em portugues aplicadas no frontend e backend.
+  - Processo oficial de versionamento documentado em engineering/release/versioning.md.
 
 ## Ambiente
 
@@ -67,16 +74,16 @@ Atualizado em: 2026-06-26
 
 ## Ultima etapa concluida
 
-- Base+ `v1.1.0` fechada documentalmente como Baseline Oficial da plataforma.
+- Base+ `v1.2.0` oficializada como release atual da plataforma.
 
 ## Proxima evolucao prevista
 
-- v1.2.0: evolucoes incrementais da fundacao apos uso em novos projetos de negocio.
-- Manter `docs/release-1.1-checklist.md` como referencia de validacao da Baseline Oficial.
+- v1.3.0: proximas evolucoes incrementais da fundacao apos validacao da v1.2.0 em novos projetos de negocio.
+- Manter `docs/release-1.1-checklist.md` como referencia historica de validacao da baseline anterior.
 
 ## Proxima etapa recomendada
 
-- Iniciar novos projetos de negocio a partir da Baseline Oficial `v1.1.0`.
+- Iniciar novos projetos de negocio a partir da release oficial `v1.2.0`.
 - Em seguida, criar o primeiro modulo real de negocio, como Empresas, usando CRUD Completo.
 - Aplicar validacao de escopo organizacional no primeiro modulo de negocio que possuir dados por empresa, filial, equipe ou outro contexto parametrizado.
 - Separar `app-icons-source.png` em icones individuais se eles forem usados como favicon/app icon final.
@@ -84,7 +91,7 @@ Atualizado em: 2026-06-26
 ## Atencoes
 
 - `Promptbaseplus.txt` foi preservado como documento legado de contexto original.
-- O repositorio Git possui release inicial publica `v1.0.0`; a correcao Flyway foi publicada em `v1.0.1`; as correcoes de seguranca foram publicadas como `v1.0.2`; a Baseline Oficial da plataforma foi consolidada em `v1.1.0`.
+- O repositorio Git possui release inicial publica `v1.0.0`; a correcao Flyway foi publicada em `v1.0.1`; as correcoes de seguranca foram publicadas como `v1.0.2`; a Baseline Oficial da plataforma foi consolidada em `v1.1.0`; a release oficial atual e `v1.2.0`.
 - O segredo JWT padrao permanece apenas no perfil `dev`; esse perfil contem credenciais locais conhecidas e nao deve ser publicado ou exposto externamente.
 - Tuneis locais devem ser configurados apenas por `.env` local ou variaveis de ambiente; nao fixar dominios temporarios no codigo.
 - Evitar versionar logs, `target`, `dist`, `node_modules`, dumps, backups e uploads locais.

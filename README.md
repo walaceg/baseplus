@@ -1,8 +1,8 @@
 # Base+
 
-Versao publicada: `1.1.0`
+Versao publicada: `1.2.0`
 
-Estado atual: Baseline Oficial `v1.1.0`.
+Estado atual: Release oficial `v1.2.0`.
 
 Base+ e uma plataforma corporativa modular para construcao de aplicacoes administrativas e sistemas de negocio. A proposta e servir como fundacao reutilizavel: autenticacao, autorizacao, perfis, auditoria, branding, estrutura organizacional, padroes de modulo, Docker e documentacao operacional ficam prontos antes da criacao dos modulos especificos de negocio.
 
@@ -177,6 +177,7 @@ O metodo oficial de colaboracao entre humanos, IA e Codex esta em `engineering/p
 Os principios arquiteturais permanentes da plataforma estao em `engineering/architecture/principles.md`.
 As decisoes arquiteturais permanentes sao registradas em `engineering/architecture/decisions.md`.
 O processo oficial de release da plataforma esta em `engineering/release/release-process.md`.
+O padrao oficial de versionamento esta em `engineering/release/versioning.md`.
 
 ## Operacao
 
@@ -185,6 +186,10 @@ Os runbooks operacionais oficiais da Base+ estao em `engineering/operations/READ
 ## Playbooks
 
 A Base+ possui uma biblioteca oficial de Playbooks para conduzir conversas de engenharia entre desenvolvedores e IA antes da implementacao. A referencia principal esta em `engineering/playbooks/README.md`.
+
+## UX
+
+A experiencia do usuario e um pilar oficial da Base+. As diretrizes de UX, linguagem visual, interacao, acessibilidade e checklist de qualidade estao em `engineering/ux/README.md`.
 
 ## Bootstrap administrativo
 
@@ -246,7 +251,7 @@ A compatibilidade com PostgreSQL e validada por teste automatizado com Testconta
 - `docs/branding.md`: regras de marca, assets e precedencia de personalizacao.
 - `docs/permissions.md`: padrao de permissoes por modulo.
 - `docs/release-1.0.md`: escopo, validacao e proximos passos da versao 1.0.
-- `docs/release-1.1-checklist.md`: checklist oficial para fechamento da v1.1.0.
+- `docs/release-1.1-checklist.md`: checklist historico usado no fechamento da v1.1.0.
 - `docs/setup.md`: setup local e validacao.
 - `docs/integrations.md`: padrao arquitetural para integracoes externas.
 - `engineering/ai/README.md`: camada oficial de engenharia assistida por IA.
@@ -285,7 +290,7 @@ cd C:\dev\baseplus
 .\scripts\check-project.ps1
 ```
 
-Checklist completo da v1.1.0:
+Checklist historico da v1.1.0:
 
 ```text
 docs/release-1.1-checklist.md
@@ -308,8 +313,8 @@ docker compose up --detach --build --wait
 
 ## Release
 
-A versao publicada atual e `1.1.0`.
+A versao publicada atual e `1.2.0`.
 
-A `v1.1.0` consolida PostgreSQL, Docker integrado, readiness, CORS configuravel, uploads configuraveis, documentacao operacional, padrao de integracoes e checklist oficial de release.
+A `v1.2.0` consolida a Base+ como release oficial atual, mantendo a v1.1.0 como baseline anterior e incorporando evolucoes de UX, elegancia, acessibilidade, componentes compartilhados, Quality Gates e correcoes de linguagem em portugues.
 
 Antes de iniciar novos modulos de negocio, use `MODULE_TEMPLATE.md`, `TASK_PROMPT.md` e `docs/module-development.md`.

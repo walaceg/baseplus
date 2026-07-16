@@ -14,17 +14,17 @@ Fluxo oficial:
 
 ```text
 Desenvolvimento
-↓
+->
 Validacao Local (DEV)
-↓
+->
 Homologacao (HOM)
-↓
+->
 Correcoes
-↓
+->
 Consolidacao
-↓
+->
 Release
-↓
+->
 Producao
 ```
 
@@ -106,9 +106,9 @@ Exemplo:
 
 ```text
 1.1.0
-↓
+->
 1.1.1
-↓
+->
 1.1.2
 ```
 
@@ -128,7 +128,7 @@ Exemplo:
 
 ```text
 1.1.0
-↓
+->
 1.2.0
 ```
 
@@ -138,7 +138,7 @@ Use MINOR para:
 - criar novo padrao oficial;
 - melhorar arquitetura sem quebra;
 - adicionar suporte operacional;
-- consolidar melhorias compatíveis.
+- consolidar melhorias compativeis.
 
 ## Grandes Mudancas
 
@@ -148,13 +148,13 @@ Exemplo:
 
 ```text
 1.x.x
-↓
+->
 2.0.0
 ```
 
 Use MAJOR para:
 
-- mudancas incompatíveis;
+- mudancas incompativeis;
 - revisao estrutural relevante;
 - alteracao profunda de contratos;
 - migracao arquitetural significativa;
@@ -166,17 +166,17 @@ Fluxo oficial de release:
 
 ```text
 Implementacao
-↓
+->
 Testes
-↓
+->
 Documentacao
-↓
+->
 Homologacao
-↓
+->
 Validacao
-↓
+->
 Tag
-↓
+->
 Producao
 ```
 
@@ -197,6 +197,23 @@ Requisitos minimos:
 - sem erros conhecidos criticos.
 
 Quando algum criterio nao puder ser validado, a release deve registrar a ressalva e o risco associado.
+
+## Checklist de Versionamento da Release
+
+Antes de publicar uma release oficial, conferir obrigatoriamente:
+
+- versao do `baseplus-backend/pom.xml` conferida;
+- versao do `baseplus-frontend/package.json` conferida;
+- versao do `baseplus-frontend/package-lock.json` conferida;
+- documentacao atualizada;
+- builds aprovados;
+- testes aprovados;
+- Quality Gates aprovados;
+- branch de desenvolvimento integrada;
+- tag Git criada;
+- tag Git nao devera ser movida apos publicacao.
+
+O padrao detalhado de versionamento esta em `engineering/release/versioning.md`.
 
 ## Processo para Aplicacoes Derivadas
 

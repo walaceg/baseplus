@@ -15,9 +15,10 @@ Este arquivo e o contexto principal para desenvolvimento assistido por IA no pro
 - `docs/permissions.md`: padrao de permissoes.
 - `docs/docker.md`: operacao Docker integrada, volumes, backup e restore.
 - `docs/release-1.0.md`: escopo fechado, validacao e proximos passos da versao 1.0.
-- `docs/release-1.1-checklist.md`: checklist oficial para fechamento da v1.1.0.
+- `docs/release-1.1-checklist.md`: checklist historico usado no fechamento da v1.1.0.
 - `docs/setup.md`: ambiente local e validacao.
 - `docs/integrations.md`: padrao para integracoes REST, SOAP, terceiros e legados.
+- `engineering/release/versioning.md`: padrao oficial de versionamento.
 
 ## Identidade
 
@@ -25,8 +26,8 @@ Base+ e uma plataforma corporativa modular para construcao de aplicacoes adminis
 
 Nome tecnico: `baseplus`
 Namespace backend: `com.baseplus`
-Versao publicada: `1.1.0`
-Estado atual: Baseline Oficial `v1.1.0`, pronta para novos projetos de negocio.
+Versao publicada: `1.2.0`
+Estado atual: release oficial `v1.2.0`, pronta para novos projetos de negocio.
 
 ## Stack oficial
 

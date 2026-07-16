@@ -55,7 +55,7 @@ public class ContaController {
     @GetMapping("/preferencias")
     public ResponseEntity<ApiResponse<UserPreferencesResponse>> obterPreferencias() {
         UserPreferencesResponse response = contaService.obterPreferencias();
-        return ResponseEntity.ok(ApiResponse.success(response, "Preferencias carregadas."));
+        return ResponseEntity.ok(ApiResponse.success(response, "Preferências carregadas."));
     }
 
     @PutMapping("/preferencias")
@@ -63,7 +63,7 @@ public class ContaController {
             @RequestBody UpdateUserPreferencesRequest request
     ) {
         UserPreferencesResponse response = contaService.atualizarPreferencias(request);
-        return ResponseEntity.ok(ApiResponse.success(response, "Preferencias atualizadas com sucesso."));
+        return ResponseEntity.ok(ApiResponse.success(response, "Preferências atualizadas com sucesso."));
     }
 
     @PostMapping("/foto")
@@ -81,12 +81,12 @@ public class ContaController {
     @GetMapping("/sessoes")
     public ResponseEntity<ApiResponse<List<UserSessionResponse>>> listarSessoes() {
         List<UserSessionResponse> response = contaService.listarSessoes();
-        return ResponseEntity.ok(ApiResponse.success(response, "Sessoes carregadas."));
+        return ResponseEntity.ok(ApiResponse.success(response, "Sessões carregadas."));
     }
 
     @DeleteMapping("/sessoes/{id}")
     public ResponseEntity<ApiResponse<Void>> removerSessao(@PathVariable Long id) {
         contaService.removerSessao(id);
-        return ResponseEntity.ok(ApiResponse.success(null, "Sessao removida com sucesso."));
+        return ResponseEntity.ok(ApiResponse.success(null, "Sessão removida com sucesso."));
     }
 }

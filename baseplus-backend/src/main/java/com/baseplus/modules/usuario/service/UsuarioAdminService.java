@@ -86,16 +86,16 @@ public class UsuarioAdminService {
     @Transactional
     public UsuarioResponse criar(CreateUsuarioRequest request) {
         if (request == null || isBlank(request.nome()) || isBlank(request.email()) || isBlank(request.senha())) {
-            throw new BusinessException("Dados invalidos.", HttpStatus.BAD_REQUEST, List.of("Nome, email e senha sao obrigatorios."));
+            throw new BusinessException("Dados inválidos.", HttpStatus.BAD_REQUEST, List.of("Nome, email e senha são obrigatórios."));
         }
 
         String email = normalizarEmail(request.email());
         if (!isEmailValido(email)) {
-            throw new BusinessException("Dados invalidos.", HttpStatus.BAD_REQUEST, List.of("Email invalido."));
+            throw new BusinessException("Dados inválidos.", HttpStatus.BAD_REQUEST, List.of("Email inválido."));
         }
 
         if (usuarioRepository.existsByEmailIgnoreCase(email)) {
-            throw new BusinessException("Email ja cadastrado.", HttpStatus.CONFLICT, List.of("Ja existe um usuario com este email."));
+            throw new BusinessException("Email já cadastrado.", HttpStatus.CONFLICT, List.of("Já existe um usuário com este email."));
         }
 
         Usuario usuario = new Usuario(
@@ -116,19 +116,19 @@ public class UsuarioAdminService {
     @Transactional
     public UsuarioResponse atualizar(Long id, UpdateUsuarioRequest request) {
         if (request == null || isBlank(request.nome()) || isBlank(request.email()) || request.ativo() == null) {
-            throw new BusinessException("Dados invalidos.", HttpStatus.BAD_REQUEST, List.of("Nome, email e ativo sao obrigatorios."));
+            throw new BusinessException("Dados inválidos.", HttpStatus.BAD_REQUEST, List.of("Nome, email e ativo são obrigatórios."));
         }
 
         Usuario usuario = getUsuario(id);
         String email = normalizarEmail(request.email());
         if (!isEmailValido(email)) {
-            throw new BusinessException("Dados invalidos.", HttpStatus.BAD_REQUEST, List.of("Email invalido."));
+            throw new BusinessException("Dados inválidos.", HttpStatus.BAD_REQUEST, List.of("Email inválido."));
         }
 
         usuarioRepository.findByEmailIgnoreCase(email)
                 .filter(outroUsuario -> !outroUsuario.getId().equals(usuario.getId()))
                 .ifPresent(outroUsuario -> {
-                    throw new BusinessException("Email ja cadastrado.", HttpStatus.CONFLICT, List.of("Ja existe um usuario com este email."));
+                    throw new BusinessException("Email já cadastrado.", HttpStatus.CONFLICT, List.of("Já existe um usuário com este email."));
                 });
 
         usuario.setNome(request.nome().trim());
@@ -151,11 +151,11 @@ public class UsuarioAdminService {
     @Transactional
     public UsuarioResponse resetarSenha(Long id, ResetSenhaUsuarioRequest request) {
         if (request == null || isBlank(request.novaSenhaTemporaria())) {
-            throw badRequest("Nova senha temporaria e obrigatoria.");
+            throw badRequest("Nova senha temporária é obrigatória.");
         }
 
         if (request.novaSenhaTemporaria().length() < MIN_PASSWORD_LENGTH) {
-            throw badRequest("A nova senha temporaria deve ter no minimo 8 caracteres.");
+            throw badRequest("A nova senha temporária deve ter no mínimo 8 caracteres.");
         }
 
         Usuario usuario = getUsuario(id);
@@ -176,11 +176,11 @@ public class UsuarioAdminService {
         Usuario usuario = getUsuario(id);
         Long usuarioAutenticadoId = getUsuarioAutenticadoId();
         if (usuario.getId().equals(usuarioAutenticadoId)) {
-            throw new BusinessException("Operacao invalida.", HttpStatus.BAD_REQUEST, List.of("Nao e permitido deletar o proprio usuario autenticado."));
+            throw new BusinessException("Operação inválida.", HttpStatus.BAD_REQUEST, List.of("Não é permitido excluir o próprio usuário autenticado."));
         }
 
         if (ADMIN_EMAIL.equalsIgnoreCase(usuario.getEmail())) {
-            throw new BusinessException("Operacao invalida.", HttpStatus.BAD_REQUEST, List.of("Nao e permitido remover o usuario admin padrao."));
+            throw new BusinessException("Operação inválida.", HttpStatus.BAD_REQUEST, List.of("Não é permitido remover o usuário admin padrão."));
         }
 
         refreshTokenService.removerPorUsuario(usuario);
@@ -192,23 +192,23 @@ public class UsuarioAdminService {
 
     private Usuario getUsuario(Long id) {
         if (id == null) {
-            throw new BusinessException("Usuario nao encontrado.", HttpStatus.NOT_FOUND, List.of("Usuario nao encontrado."));
+            throw new BusinessException("Usuário não encontrado.", HttpStatus.NOT_FOUND, List.of("Usuário não encontrado."));
         }
 
         return usuarioRepository.findById(id)
-                .orElseThrow(() -> new BusinessException("Usuario nao encontrado.", HttpStatus.NOT_FOUND, List.of("Usuario nao encontrado.")));
+                .orElseThrow(() -> new BusinessException("Usuário não encontrado.", HttpStatus.NOT_FOUND, List.of("Usuário não encontrado.")));
     }
 
     private Long getUsuarioAutenticadoId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal() == null) {
-            throw new BusinessException("Acesso nao autorizado.", HttpStatus.UNAUTHORIZED, List.of("Autenticacao obrigatoria."));
+            throw new BusinessException("Acesso não autorizado.", HttpStatus.UNAUTHORIZED, List.of("Autenticação obrigatória."));
         }
 
         try {
             return Long.valueOf(authentication.getPrincipal().toString());
         } catch (NumberFormatException exception) {
-            throw new BusinessException("Acesso nao autorizado.", HttpStatus.UNAUTHORIZED, List.of("Token invalido."));
+            throw new BusinessException("Acesso não autorizado.", HttpStatus.UNAUTHORIZED, List.of("Token inválido."));
         }
     }
 
@@ -258,18 +258,18 @@ public class UsuarioAdminService {
         Set<Long> uniqueRoleIds = new HashSet<>();
         for (Long roleId : roleIds) {
             if (roleId == null) {
-                throw new BusinessException("Perfil nao encontrado.", HttpStatus.NOT_FOUND, List.of("Perfil nao encontrado."));
+                throw new BusinessException("Perfil não encontrado.", HttpStatus.NOT_FOUND, List.of("Perfil não encontrado."));
             }
 
             if (!uniqueRoleIds.add(roleId)) {
-                throw new BusinessException("Perfis duplicados.", HttpStatus.BAD_REQUEST, List.of("Nao envie o mesmo perfil mais de uma vez."));
+                throw new BusinessException("Perfis duplicados.", HttpStatus.BAD_REQUEST, List.of("Não envie o mesmo perfil mais de uma vez."));
             }
         }
 
         Set<Role> nextRoles = new HashSet<>();
         for (Long roleId : uniqueRoleIds) {
             nextRoles.add(roleRepository.findById(roleId)
-                    .orElseThrow(() -> new BusinessException("Perfil nao encontrado.", HttpStatus.NOT_FOUND, List.of("Perfil nao encontrado."))));
+                    .orElseThrow(() -> new BusinessException("Perfil não encontrado.", HttpStatus.NOT_FOUND, List.of("Perfil não encontrado."))));
         }
 
         boolean removingAdmin = usuario.getRoles()
@@ -277,7 +277,7 @@ public class UsuarioAdminService {
                 .anyMatch(role -> "ADMIN".equalsIgnoreCase(role.getName()))
                 && nextRoles.stream().noneMatch(role -> "ADMIN".equalsIgnoreCase(role.getName()));
         if (removingAdmin && usuarioRepository.countByRoles_NameIgnoreCase("ADMIN") <= 1) {
-            throw new BusinessException("Operacao invalida.", HttpStatus.BAD_REQUEST, List.of("Nao e permitido remover o ultimo usuario ADMIN."));
+            throw new BusinessException("Operação inválida.", HttpStatus.BAD_REQUEST, List.of("Não é permitido remover o último usuário ADMIN."));
         }
 
         usuario.getRoles().clear();

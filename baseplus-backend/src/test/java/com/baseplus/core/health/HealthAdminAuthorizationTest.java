@@ -40,7 +40,7 @@ class HealthAdminAuthorizationTest {
         mockMvc.perform(get("/health/admin"))
                 .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("$.success").value(false))
-                .andExpect(jsonPath("$.message").value("Acesso nao autorizado."));
+                .andExpect(jsonPath("$.message").value("Acesso não autorizado."));
     }
 
     @Test
@@ -52,7 +52,7 @@ class HealthAdminAuthorizationTest {
                 .andExpect(status().isForbidden())
                 .andExpect(jsonPath("$.success").value(false))
                 .andExpect(jsonPath("$.message").value("Acesso negado."))
-                .andExpect(jsonPath("$.errors[0]").value("Permissao insuficiente."));
+                .andExpect(jsonPath("$.errors[0]").value("Permissão insuficiente."));
     }
 
     @Test
@@ -74,7 +74,7 @@ class HealthAdminAuthorizationTest {
         mockMvc.perform(get("/health/permission"))
                 .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("$.success").value(false))
-                .andExpect(jsonPath("$.message").value("Acesso nao autorizado."));
+                .andExpect(jsonPath("$.message").value("Acesso não autorizado."));
     }
 
     @Test
@@ -86,7 +86,7 @@ class HealthAdminAuthorizationTest {
                 .andExpect(status().isForbidden())
                 .andExpect(jsonPath("$.success").value(false))
                 .andExpect(jsonPath("$.message").value("Acesso negado."))
-                .andExpect(jsonPath("$.errors[0]").value("Permissao insuficiente."));
+                .andExpect(jsonPath("$.errors[0]").value("Permissão insuficiente."));
     }
 
     @Test
@@ -99,7 +99,7 @@ class HealthAdminAuthorizationTest {
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.data.status").value("UP"))
                 .andExpect(jsonPath("$.data.permission").value("ADMIN_ACCESS"))
-                .andExpect(jsonPath("$.message").value("Health por permissao."))
+                .andExpect(jsonPath("$.message").value("Health por permissão."))
                 .andExpect(jsonPath("$.errors").value(empty()));
     }
 

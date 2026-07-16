@@ -102,12 +102,12 @@ public class RoleService {
     @Transactional
     public RoleResponse criar(CreateRoleRequest request) {
         if (request == null || isBlank(request.name())) {
-            throw new BusinessException("Dados invalidos.", HttpStatus.BAD_REQUEST, List.of("Nome da role e obrigatorio."));
+            throw new BusinessException("Dados inválidos.", HttpStatus.BAD_REQUEST, List.of("Nome do perfil é obrigatório."));
         }
 
         String name = normalizarNome(request.name());
         if (roleRepository.existsByNameIgnoreCase(name)) {
-            throw new BusinessException("Role ja cadastrada.", HttpStatus.CONFLICT, List.of("Ja existe uma role com este nome."));
+            throw new BusinessException("Perfil já cadastrado.", HttpStatus.CONFLICT, List.of("Já existe um perfil com este nome."));
         }
 
         Role role = new Role(name, normalizarDescricao(request.description()));
@@ -126,13 +126,13 @@ public class RoleService {
     @Transactional
     public RoleResponse atualizar(Long id, UpdateRoleRequest request) {
         if (request == null || isBlank(request.name())) {
-            throw new BusinessException("Dados invalidos.", HttpStatus.BAD_REQUEST, List.of("Nome da role e obrigatorio."));
+            throw new BusinessException("Dados inválidos.", HttpStatus.BAD_REQUEST, List.of("Nome do perfil é obrigatório."));
         }
 
         Role role = getRole(id);
         String name = normalizarNome(request.name());
         if (roleRepository.existsByNameIgnoreCaseAndIdNot(name, role.getId())) {
-            throw new BusinessException("Role ja cadastrada.", HttpStatus.CONFLICT, List.of("Ja existe uma role com este nome."));
+            throw new BusinessException("Perfil já cadastrado.", HttpStatus.CONFLICT, List.of("Já existe um perfil com este nome."));
         }
 
         role.setName(name);
@@ -152,7 +152,7 @@ public class RoleService {
     @Transactional
     public RoleResponse atualizarStatus(Long id, UpdateRoleStatusRequest request) {
         if (request == null || request.ativo() == null) {
-            throw new BusinessException("Dados invalidos.", HttpStatus.BAD_REQUEST, List.of("Status ativo e obrigatorio."));
+            throw new BusinessException("Dados inválidos.", HttpStatus.BAD_REQUEST, List.of("Status ativo é obrigatório."));
         }
 
         Role role = getRole(id);
@@ -192,7 +192,7 @@ public class RoleService {
         Role role = getRole(id);
         Usuario usuario = getUsuario(usuarioId);
         if (usuario.getRoles().contains(role)) {
-            throw new BusinessException("Usuario ja vinculado.", HttpStatus.CONFLICT, List.of("Usuario ja esta vinculado a este perfil."));
+            throw new BusinessException("Usuário já vinculado.", HttpStatus.CONFLICT, List.of("Usuário já está vinculado a este perfil."));
         }
 
         usuario.addRole(role);
@@ -206,11 +206,11 @@ public class RoleService {
         Role role = getRole(id);
         Usuario usuario = getUsuario(usuarioId);
         if (!usuario.getRoles().contains(role)) {
-            throw new BusinessException("Usuario nao vinculado.", HttpStatus.BAD_REQUEST, List.of("Usuario nao esta vinculado a este perfil."));
+            throw new BusinessException("Usuário não vinculado.", HttpStatus.BAD_REQUEST, List.of("Usuário não está vinculado a este perfil."));
         }
 
         if ("ADMIN".equalsIgnoreCase(role.getName()) && usuarioRepository.countByRoles_NameIgnoreCase("ADMIN") <= 1) {
-            throw new BusinessException("Operacao invalida.", HttpStatus.BAD_REQUEST, List.of("Nao e permitido remover o ultimo usuario ADMIN."));
+            throw new BusinessException("Operação inválida.", HttpStatus.BAD_REQUEST, List.of("Não é permitido remover o último usuário ADMIN."));
         }
 
         usuario.removeRole(role);
@@ -223,11 +223,11 @@ public class RoleService {
     public void remover(Long id) {
         Role role = getRole(id);
         if (role.isSistema()) {
-            throw new BusinessException("Operacao invalida.", HttpStatus.BAD_REQUEST, List.of("Nao e permitido remover um perfil de sistema."));
+            throw new BusinessException("Operação inválida.", HttpStatus.BAD_REQUEST, List.of("Não é permitido remover um perfil de sistema."));
         }
 
         if (usuarioRepository.existsByRoles_Id(role.getId())) {
-            throw new BusinessException("Perfil em uso.", HttpStatus.CONFLICT, List.of("Nao e permitido remover um perfil vinculado a usuarios."));
+            throw new BusinessException("Perfil em uso.", HttpStatus.CONFLICT, List.of("Não é permitido remover um perfil vinculado a usuários."));
         }
 
         roleRepository.delete(role);
@@ -239,7 +239,7 @@ public class RoleService {
         Role role = getRole(id);
         ensureOrganizationalRole(role);
         if (request == null || request.organizationUnitId() == null) {
-            throw new BusinessException("Dados invalidos.", HttpStatus.BAD_REQUEST, List.of("Unidade organizacional e obrigatoria."));
+            throw new BusinessException("Dados inválidos.", HttpStatus.BAD_REQUEST, List.of("Unidade organizacional é obrigatória."));
         }
 
         OrganizationUnit unit = organizationUnitService.getUnit(request.organizationUnitId());
@@ -259,7 +259,7 @@ public class RoleService {
         ensureOrganizationalRole(role);
         RoleOrganizationScope scope = roleOrganizationScopeRepository.findById(scopeId)
                 .filter(existing -> existing.getRole().getId().equals(role.getId()))
-                .orElseThrow(() -> new BusinessException("Escopo nao encontrado.", HttpStatus.NOT_FOUND, List.of("Escopo organizacional nao encontrado.")));
+                .orElseThrow(() -> new BusinessException("Escopo não encontrado.", HttpStatus.NOT_FOUND, List.of("Escopo organizacional não encontrado.")));
         roleOrganizationScopeRepository.delete(scope);
 
         auditLogService.registrarAutenticado("REMOVE_ORGANIZATION_SCOPE", "ROLE", role.getId());
@@ -268,11 +268,11 @@ public class RoleService {
 
     private Role getRole(Long id) {
         if (id == null) {
-            throw new BusinessException("Role nao encontrada.", HttpStatus.NOT_FOUND, List.of("Role nao encontrada."));
+            throw new BusinessException("Perfil não encontrado.", HttpStatus.NOT_FOUND, List.of("Perfil não encontrado."));
         }
 
         return roleRepository.findById(id)
-                .orElseThrow(() -> new BusinessException("Role nao encontrada.", HttpStatus.NOT_FOUND, List.of("Role nao encontrada.")));
+                .orElseThrow(() -> new BusinessException("Perfil não encontrado.", HttpStatus.NOT_FOUND, List.of("Perfil não encontrado.")));
     }
 
     private Set<Permission> getPermissions(List<Long> permissionIds) {
@@ -283,7 +283,7 @@ public class RoleService {
 
         for (Long permissionId : permissionIds) {
             if (permissionId == null) {
-                throw new BusinessException("Permissao nao encontrada.", HttpStatus.NOT_FOUND, List.of("Permissao nao encontrada."));
+                throw new BusinessException("Permissão não encontrada.", HttpStatus.NOT_FOUND, List.of("Permissão não encontrada."));
             }
 
             permissions.add(getPermission(permissionId));
@@ -301,10 +301,10 @@ public class RoleService {
         Set<Long> seenUnits = new HashSet<>();
         for (RoleOrganizationScopeRequest request : requests) {
             if (request == null || request.organizationUnitId() == null) {
-                throw new BusinessException("Dados invalidos.", HttpStatus.BAD_REQUEST, List.of("Unidade organizacional e obrigatoria."));
+                throw new BusinessException("Dados inválidos.", HttpStatus.BAD_REQUEST, List.of("Unidade organizacional é obrigatória."));
             }
             if (!seenUnits.add(request.organizationUnitId())) {
-                throw new BusinessException("Escopo duplicado.", HttpStatus.CONFLICT, List.of("Nao repita a mesma unidade organizacional no perfil."));
+                throw new BusinessException("Escopo duplicado.", HttpStatus.CONFLICT, List.of("Não repita a mesma unidade organizacional no perfil."));
             }
 
             OrganizationUnit unit = organizationUnitService.getUnit(request.organizationUnitId());
@@ -322,7 +322,7 @@ public class RoleService {
         try {
             return RoleType.valueOf(type.trim().toUpperCase());
         } catch (IllegalArgumentException exception) {
-            throw new BusinessException("Tipo de perfil invalido.", HttpStatus.BAD_REQUEST, List.of("Use FUNCTIONAL ou ORGANIZATIONAL."));
+            throw new BusinessException("Tipo de perfil inválido.", HttpStatus.BAD_REQUEST, List.of("Use FUNCTIONAL ou ORGANIZATIONAL."));
         }
     }
 
@@ -333,38 +333,38 @@ public class RoleService {
         try {
             return OrganizationScopeLevel.valueOf(scopeLevel.trim().toUpperCase());
         } catch (IllegalArgumentException exception) {
-            throw new BusinessException("Nivel de escopo invalido.", HttpStatus.BAD_REQUEST, List.of("Use VIEW, EDIT ou ADMIN."));
+            throw new BusinessException("Nível de escopo inválido.", HttpStatus.BAD_REQUEST, List.of("Use VIEW, EDIT ou ADMIN."));
         }
     }
 
     private void ensureFunctionalRole(Role role) {
         if (role.getType() == RoleType.ORGANIZATIONAL) {
-            throw new BusinessException("Operacao invalida.", HttpStatus.BAD_REQUEST, List.of("Perfil organizacional nao recebe permissoes funcionais."));
+            throw new BusinessException("Operação inválida.", HttpStatus.BAD_REQUEST, List.of("Perfil organizacional não recebe permissões funcionais."));
         }
     }
 
     private void ensureOrganizationalRole(Role role) {
         if (role.getType() != RoleType.ORGANIZATIONAL) {
-            throw new BusinessException("Operacao invalida.", HttpStatus.BAD_REQUEST, List.of("Apenas perfil organizacional recebe escopos."));
+            throw new BusinessException("Operação inválida.", HttpStatus.BAD_REQUEST, List.of("Apenas perfil organizacional recebe escopos."));
         }
     }
 
     private Permission getPermission(Long permissionId) {
         if (permissionId == null) {
-            throw new BusinessException("Permissao nao encontrada.", HttpStatus.NOT_FOUND, List.of("Permissao nao encontrada."));
+            throw new BusinessException("Permissão não encontrada.", HttpStatus.NOT_FOUND, List.of("Permissão não encontrada."));
         }
 
         return permissionRepository.findById(permissionId)
-                .orElseThrow(() -> new BusinessException("Permissao nao encontrada.", HttpStatus.NOT_FOUND, List.of("Permissao nao encontrada.")));
+                .orElseThrow(() -> new BusinessException("Permissão não encontrada.", HttpStatus.NOT_FOUND, List.of("Permissão não encontrada.")));
     }
 
     private Usuario getUsuario(Long usuarioId) {
         if (usuarioId == null) {
-            throw new BusinessException("Usuario nao encontrado.", HttpStatus.NOT_FOUND, List.of("Usuario nao encontrado."));
+            throw new BusinessException("Usuário não encontrado.", HttpStatus.NOT_FOUND, List.of("Usuário não encontrado."));
         }
 
         return usuarioRepository.findById(usuarioId)
-                .orElseThrow(() -> new BusinessException("Usuario nao encontrado.", HttpStatus.NOT_FOUND, List.of("Usuario nao encontrado.")));
+                .orElseThrow(() -> new BusinessException("Usuário não encontrado.", HttpStatus.NOT_FOUND, List.of("Usuário não encontrado.")));
     }
 
     private RoleResponse toResponse(Role role) {

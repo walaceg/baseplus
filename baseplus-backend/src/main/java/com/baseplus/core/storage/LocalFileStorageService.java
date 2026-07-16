@@ -25,11 +25,11 @@ public class LocalFileStorageService implements FileStorageService {
     @Override
     public StoredFile saveImage(MultipartFile file, String subdirectory, long maxSizeBytes) {
         if (file == null || file.isEmpty()) {
-            throw new BusinessException("Arquivo invalido.", HttpStatus.BAD_REQUEST, java.util.List.of("O arquivo e obrigatorio."));
+            throw new BusinessException("Arquivo inválido.", HttpStatus.BAD_REQUEST, java.util.List.of("O arquivo é obrigatório."));
         }
 
         if (file.getSize() > maxSizeBytes) {
-            throw new BusinessException("Arquivo invalido.", HttpStatus.BAD_REQUEST, java.util.List.of("O arquivo excede o tamanho maximo permitido."));
+            throw new BusinessException("Arquivo inválido.", HttpStatus.BAD_REQUEST, java.util.List.of("O arquivo excede o tamanho máximo permitido."));
         }
 
         String contentType = normalizeContentType(file.getContentType());
@@ -45,7 +45,7 @@ public class LocalFileStorageService implements FileStorageService {
             file.transferTo(destination);
             return new StoredFile(buildUrl(subdirectory, filename));
         } catch (IOException exception) {
-            throw new BusinessException("Nao foi possivel salvar arquivo.", HttpStatus.INTERNAL_SERVER_ERROR, java.util.List.of("Falha ao gravar arquivo local."));
+            throw new BusinessException("Não foi possível salvar arquivo.", HttpStatus.INTERNAL_SERVER_ERROR, java.util.List.of("Falha ao gravar arquivo local."));
         }
     }
 
@@ -61,7 +61,7 @@ public class LocalFileStorageService implements FileStorageService {
         try {
             Files.deleteIfExists(file);
         } catch (IOException exception) {
-            throw new BusinessException("Nao foi possivel remover arquivo.", HttpStatus.INTERNAL_SERVER_ERROR, java.util.List.of("Falha ao remover arquivo local."));
+            throw new BusinessException("Não foi possível remover arquivo.", HttpStatus.INTERNAL_SERVER_ERROR, java.util.List.of("Falha ao remover arquivo local."));
         }
     }
 
@@ -117,15 +117,15 @@ public class LocalFileStorageService implements FileStorageService {
 
     private BusinessException invalidImageFile() {
         return new BusinessException(
-                "Arquivo invalido.",
+                "Arquivo inválido.",
                 HttpStatus.BAD_REQUEST,
-                java.util.List.of("O arquivo deve ser uma imagem PNG, JPG, JPEG ou ICO valida.")
+                java.util.List.of("O arquivo deve ser uma imagem PNG, JPG, JPEG ou ICO válida.")
         );
     }
 
     private void ensureWithinRoot(Path path) {
         if (!path.normalize().startsWith(rootDirectory)) {
-            throw new BusinessException("Arquivo invalido.", HttpStatus.BAD_REQUEST, java.util.List.of("Caminho de armazenamento invalido."));
+            throw new BusinessException("Arquivo inválido.", HttpStatus.BAD_REQUEST, java.util.List.of("Caminho de armazenamento inválido."));
         }
     }
 }

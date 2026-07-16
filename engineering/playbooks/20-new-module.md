@@ -77,6 +77,14 @@ Resultado esperado: checklist de testes e docs.
 
 Nao deve ser feito: dispensar teste por ser modulo simples.
 
+## 8. Revisao de UX
+
+Objetivo: validar Manifesto Base+, Nielsen, consistencia, feedback, acessibilidade, formularios, tabelas e navegacao antes da geracao do prompt.
+
+Resultado esperado: decisao de UX consolidada para o modulo.
+
+Nao deve ser feito: gerar prompt de implementacao sem revisar a experiencia esperada.
+
 # Perguntas Obrigatorias
 
 - Qual responsabilidade unica do modulo?
@@ -88,6 +96,8 @@ Nao deve ser feito: dispensar teste por ser modulo simples.
 - Existe reutilizacao real com outro modulo?
 - Quais fluxos precisam de testes?
 - Qual documentacao deve ser atualizada?
+- O modulo segue o Manifesto UX da Base+?
+- A experiencia foi revisada antes do prompt?
 
 # Criterios de Decisao
 
@@ -108,6 +118,7 @@ A conversa esta concluida quando:
 - permissoes foram definidas;
 - impacto no banco e API foi compreendido;
 - validacoes foram definidas.
+- revisao de UX foi concluida.
 
 # Resultado Esperado
 
@@ -128,4 +139,5 @@ Decisao consolidada para criacao do modulo e prompt de implementacao pronto para
 - [ ] Frontend conceitual definido.
 - [ ] Testes planejados.
 - [ ] Documentacao planejada.
+- [ ] Revisao de UX concluida.
 - [ ] Agora solicitar ao ChatGPT a geracao do Prompt para o Codex.

@@ -130,7 +130,7 @@ export function UsuarioFormPage({ mode = 'create' }) {
   const [rolesLoading, setRolesLoading] = useState(false);
   const [rolesError, setRolesError] = useState('');
   const debouncedRoleSearch = useDebouncedValue(roleSearch, 300);
-  const title = isEdit ? 'Editar usuario' : 'Novo usuario';
+  const title = isEdit ? 'Editar usuário' : 'Novo usuário';
 
   useEffect(() => {
     if (!isEdit) {
@@ -155,7 +155,7 @@ export function UsuarioFormPage({ mode = 'create' }) {
         }
       } catch (requestError) {
         if (active) {
-          setError(getApiError(requestError, 'Nao foi possivel carregar o usuario.'));
+          setError(getApiError(requestError, 'Não foi possível carregar o usuário.'));
         }
       } finally {
         if (active) {
@@ -196,7 +196,7 @@ export function UsuarioFormPage({ mode = 'create' }) {
         }
       } catch (requestError) {
         if (active) {
-          setRolesError(getApiError(requestError, 'Nao foi possivel carregar os perfis.')); 
+          setRolesError(getApiError(requestError, 'Não foi possível carregar os perfis.'));
         }
       } finally {
         if (active) {
@@ -218,7 +218,7 @@ export function UsuarioFormPage({ mode = 'create' }) {
 
   function validate() {
     if (!form.nome.trim() || !form.email.trim()) {
-      return 'Informe nome e email.';
+      return 'Informe nome e e-mail.';
     }
 
     if (!isEdit && !form.senha.trim()) {
@@ -248,13 +248,13 @@ export function UsuarioFormPage({ mode = 'create' }) {
         setUser(updated);
         setForm(toForm(updated));
         setSelectedRoles(normalizeUserRoles(updated));
-        setMessage('Usuario atualizado com sucesso.');
+        setMessage('Usuário atualizado com sucesso.');
       } else {
         await usuarioService.createUsuario(toPayload(form, 'create'));
-        navigate('/app/usuarios', { replace: true, state: { message: 'Usuario criado com sucesso.' } });
+        navigate('/app/usuarios', { replace: true, state: { message: 'Usuário criado com sucesso.' } });
       }
     } catch (requestError) {
-      setError(getApiError(requestError, 'Nao foi possivel salvar o usuario.'));
+      setError(getApiError(requestError, 'Não foi possível salvar o usuário.'));
     } finally {
       setSaving(false);
     }
@@ -293,9 +293,9 @@ export function UsuarioFormPage({ mode = 'create' }) {
       setUser(updated);
       setForm(toForm(updated));
       setSelectedRoles(normalizeUserRoles(updated));
-      setMessage(blockTarget ? 'Usuario bloqueado com sucesso.' : 'Usuario desbloqueado com sucesso.');
+      setMessage(blockTarget ? 'Usuário bloqueado com sucesso.' : 'Usuário desbloqueado com sucesso.');
     } catch (requestError) {
-      setError(getApiError(requestError, 'Nao foi possivel atualizar o bloqueio do usuario.'));
+      setError(getApiError(requestError, 'Não foi possível atualizar o bloqueio do usuário.'));
     } finally {
       setSaving(false);
       setBlockTarget(null);
@@ -324,7 +324,7 @@ export function UsuarioFormPage({ mode = 'create' }) {
       <section className="bp-list-page__header">
         <div>
           <h1>{title}</h1>
-          <p>{isEdit ? 'Atualize cadastro, acesso e dados corporativos.' : 'Cadastre acesso e dados corporativos do usuario.'}</p>
+          <p>{isEdit ? 'Atualize cadastro, acesso e dados corporativos.' : 'Cadastre acesso e dados corporativos do usuário.'}</p>
         </div>
       </section>
 
@@ -334,7 +334,7 @@ export function UsuarioFormPage({ mode = 'create' }) {
       {loading ? (
         <Card>
           <Card.Body>
-            <Loading label="Carregando usuario..." />
+            <Loading label="Carregando usuário..." />
           </Card.Body>
         </Card>
       ) : (
@@ -349,13 +349,13 @@ export function UsuarioFormPage({ mode = 'create' }) {
                   <Input id="usuario-nome" label="Nome" value={form.nome} onChange={(event) => updateField('nome', event.target.value)} />
                   <Input
                     id="usuario-nome-exibicao"
-                    label="Nome de exibicao"
+                    label="Nome de exibição"
                     value={form.nomeExibicao}
                     onChange={(event) => updateField('nomeExibicao', event.target.value)}
                   />
                   <Input
                     id="usuario-email"
-                    label="Email"
+                    label="E-mail"
                     type="email"
                     value={form.email}
                     onChange={(event) => updateField('email', event.target.value)}
@@ -379,7 +379,7 @@ export function UsuarioFormPage({ mode = 'create' }) {
               <section className="bp-usuario-form-section">
                 <div className="bp-usuario-form-section__header bp-usuario-form-section__header--split">
                   <div>
-                    <h2>Seguranca</h2>
+                    <h2>Segurança</h2>
                     {isEdit ? (
                       <p>
                         Status atual:{' '}
@@ -417,7 +417,7 @@ export function UsuarioFormPage({ mode = 'create' }) {
                   <SwitchField
                     checked={form.trocarSenhaPrimeiroAcesso}
                     id="usuario-trocar-senha"
-                    label="Forcar troca de senha no primeiro acesso"
+                    label="Forçar troca de senha no primeiro acesso"
                     onChange={(checked) => updateField('trocarSenhaPrimeiroAcesso', checked)}
                   />
                 </div>
@@ -441,10 +441,10 @@ export function UsuarioFormPage({ mode = 'create' }) {
                   />
                   <Input id="usuario-telefone" label="Telefone" value={form.telefone} onChange={(event) => updateField('telefone', event.target.value)} />
                   <Input id="usuario-celular" label="Celular" value={form.celular} onChange={(event) => updateField('celular', event.target.value)} />
-                  <Input id="usuario-matricula" label="Matricula" value={form.matricula} onChange={(event) => updateField('matricula', event.target.value)} />
+                  <Input id="usuario-matricula" label="Matrícula" value={form.matricula} onChange={(event) => updateField('matricula', event.target.value)} />
                   <Input
                     id="usuario-observacoes-internas"
-                    label="Observacoes internas"
+                    label="Observações internas"
                     value={form.observacoesInternas}
                     onChange={(event) => updateField('observacoesInternas', event.target.value)}
                   />
@@ -459,19 +459,19 @@ export function UsuarioFormPage({ mode = 'create' }) {
                 <div className="bp-usuario-form-section__header bp-usuario-form-section__header--split">
                   <div>
                     <h2>Perfis</h2>
-                    <p>Vincule perfis administrativos ao usuario sem sair da edicao.</p>
+                    <p>Vincule perfis administrativos ao usuário sem sair da edição.</p>
                   </div>
                   {selectedRoles.length ? <Badge variant="primary">{selectedRoles.length} vinculados</Badge> : null}
                 </div>
                 {!isEdit ? (
-                  <p className="bp-usuario-empty">Perfis podem ser vinculados depois que o usuario for criado.</p>
+                  <p className="bp-usuario-empty">Perfis podem ser vinculados depois que o usuário for criado.</p>
                 ) : (
                   <div className="bp-usuario-role-manager">
                     <div className="bp-usuario-role-manager__search">
                       <Input
                         id="usuario-role-search"
                         label="Buscar perfis"
-                        placeholder="Nome ou descricao"
+                        placeholder="Nome ou descrição"
                         value={roleSearch}
                         onChange={(event) => setRoleSearch(event.target.value)}
                       />
@@ -483,7 +483,7 @@ export function UsuarioFormPage({ mode = 'create' }) {
                     <div className="bp-usuario-role-manager__grid">
                       <div className="bp-usuario-role-panel">
                         <div className="bp-usuario-role-panel__header">
-                          <h3>Disponiveis</h3>
+                          <h3>Disponíveis</h3>
                           {rolesLoading ? <span>Carregando...</span> : null}
                         </div>
                         {rolesLoading ? (
@@ -494,7 +494,7 @@ export function UsuarioFormPage({ mode = 'create' }) {
                               <div className="bp-usuario-role-row" data-system={role.sistema ? 'true' : undefined} key={role.id}>
                                 <div className="bp-usuario-role-row__content">
                                   <strong>{role.name}</strong>
-                                  <span>{role.description || 'Sem descricao cadastrada.'}</span>
+                                  <span>{role.description || 'Sem descrição cadastrada.'}</span>
                                   <div className="bp-usuario-role-row__badges">
                                     <RoleTypeBadge role={role} />
                                     {!role.ativo ? <Badge variant="warning">Inativo</Badge> : null}
@@ -505,7 +505,7 @@ export function UsuarioFormPage({ mode = 'create' }) {
                             ))}
                           </div>
                         ) : (
-                          <p className="bp-usuario-empty">Nenhum perfil disponivel para esta busca.</p>
+                          <p className="bp-usuario-empty">Nenhum perfil disponível para esta busca.</p>
                         )}
                       </div>
 
@@ -519,7 +519,7 @@ export function UsuarioFormPage({ mode = 'create' }) {
                               <div className="bp-usuario-role-row" data-system={role.sistema ? 'true' : undefined} key={role.id ?? role.name}>
                                 <div className="bp-usuario-role-row__content">
                                   <strong>{role.name}</strong>
-                                  <span>{role.description || 'Sem descricao cadastrada.'}</span>
+                                  <span>{role.description || 'Sem descrição cadastrada.'}</span>
                                   <div className="bp-usuario-role-row__badges">
                                     <RoleTypeBadge role={role} />
                                     {!role.ativo ? <Badge variant="warning">Inativo</Badge> : null}
@@ -536,7 +536,7 @@ export function UsuarioFormPage({ mode = 'create' }) {
                             ))}
                           </div>
                         ) : (
-                          <p className="bp-usuario-empty">Nenhum perfil vinculado. Use a busca para adicionar perfis a este usuario.</p>
+                          <p className="bp-usuario-empty">Nenhum perfil vinculado. Use a busca para adicionar perfis a este usuário.</p>
                         )}
                       </div>
                     </div>
@@ -551,7 +551,7 @@ export function UsuarioFormPage({ mode = 'create' }) {
               Cancelar
             </Button>
             <Button disabled={saving} type="submit">
-              {saving ? 'Salvando...' : 'Salvar usuario'}
+              {saving ? 'Salvando...' : 'Salvar usuário'}
             </Button>
           </div>
         </form>
@@ -567,11 +567,11 @@ export function UsuarioFormPage({ mode = 'create' }) {
       <ConfirmDialog
         cancelLabel="Cancelar"
         confirmLabel={blockTarget ? 'Bloquear' : 'Desbloquear'}
-        message={blockTarget ? 'Esta acao vai bloquear o acesso do usuario.' : 'Esta acao vai liberar o acesso do usuario.'}
+        message={blockTarget ? 'Esta ação vai bloquear o acesso do usuário.' : 'Esta ação vai liberar o acesso do usuário.'}
         onCancel={() => setBlockTarget(null)}
         onConfirm={confirmBlockToggle}
         open={blockTarget !== null}
-        title={blockTarget ? 'Bloquear usuario' : 'Desbloquear usuario'}
+        title={blockTarget ? 'Bloquear usuário' : 'Desbloquear usuário'}
       />
     </div>
   );

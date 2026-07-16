@@ -59,7 +59,7 @@ export function DashboardPage() {
         });
       } catch (requestError) {
         if (active) {
-          setError(requestError.response?.data?.message ?? 'Nao foi possivel carregar o dashboard.');
+          setError(requestError.response?.data?.message ?? 'Não foi possível carregar o dashboard.');
         }
       } finally {
         if (active) {
@@ -77,29 +77,29 @@ export function DashboardPage() {
 
   const metrics = [
     {
-      label: 'Usuarios',
+      label: 'Usuários',
       value: state.usuariosCount ?? 'Restrito',
-      hint: canViewUsers ? 'Total cadastrado no sistema' : 'Sem permissao para visualizar',
+      hint: canViewUsers ? 'Total cadastrado no sistema' : 'Sem permissão para visualizar',
     },
     {
-      label: 'Roles',
+      label: 'Perfis',
       value: state.rolesCount ?? 'Restrito',
-      hint: canViewRoles ? 'Perfis configurados' : 'Sem permissao para visualizar',
+      hint: canViewRoles ? 'Perfis configurados' : 'Sem permissão para visualizar',
     },
     {
-      label: 'Permissions',
+      label: 'Permissões',
       value: state.permissionsCount ?? 'Restrito',
-      hint: canViewPermissions ? 'Permissoes disponiveis' : 'Sem permissao para visualizar',
+      hint: canViewPermissions ? 'Permissões disponíveis' : 'Sem permissão para visualizar',
     },
     {
-      label: 'Sessoes ativas',
+      label: 'Sessões ativas',
       value: state.sessoes.length,
-      hint: 'Sessoes abertas na conta autenticada',
+      hint: 'Sessões abertas na conta autenticada',
     },
   ];
 
   const sessionColumns = [
-    { key: 'id', header: 'Sessao', render: (row) => `#${row.id}` },
+    { key: 'id', header: 'Sessão', render: (row) => `#${row.id}` },
     {
       key: 'criadaEm',
       header: 'Criada em',
@@ -123,15 +123,15 @@ export function DashboardPage() {
         <div className="bp-dashboard__hero-main">
           <Badge variant="primary">Base+</Badge>
           <h1>Dashboard</h1>
-          <p>Visao inicial da operacao administrativa com dados reais quando disponiveis.</p>
+          <p>Visão inicial da operação administrativa com dados reais quando disponíveis.</p>
         </div>
         <div className="bp-dashboard__hero-user">
-          <Avatar alt={user?.nome ?? user?.email ?? 'Usuario'} name={user?.nome ?? user?.email ?? 'Usuario'} size="lg" />
+          <Avatar alt={user?.nome ?? user?.email ?? 'Usuário'} name={user?.nome ?? user?.email ?? 'Usuário'} size="lg" />
           <div>
-            <strong>{user?.nome ?? user?.email ?? 'Usuario'}</strong>
+            <strong>{user?.nome ?? user?.email ?? 'Usuário'}</strong>
             <span>{user?.email ?? ''}</span>
             <div className="bp-dashboard__chips">
-              {currentRoles.length ? currentRoles.map((role) => <Badge key={role}>{role}</Badge>) : <Badge variant="warning">Sem role</Badge>}
+              {currentRoles.length ? currentRoles.map((role) => <Badge key={role}>{role}</Badge>) : <Badge variant="warning">Sem perfil</Badge>}
             </div>
           </div>
         </div>
@@ -155,11 +155,11 @@ export function DashboardPage() {
         <Card>
           <Card.Body>
             <div className="bp-dashboard__section-head">
-              <h2>Usuario autenticado</h2>
+              <h2>Usuário autenticado</h2>
               <Badge variant="success">{state.conta ? 'Sincronizado' : 'Local'}</Badge>
             </div>
             <div className="bp-dashboard__profile">
-              <strong>{state.conta?.nome ?? user?.nome ?? 'Usuario'}</strong>
+              <strong>{state.conta?.nome ?? user?.nome ?? 'Usuário'}</strong>
               <span>{state.conta?.email ?? user?.email ?? ''}</span>
             </div>
             <div className="bp-dashboard__quick-actions">
@@ -168,17 +168,17 @@ export function DashboardPage() {
               </Button>
               {canViewUsers ? (
                 <Button variant="secondary" onClick={() => navigate('/app/usuarios')}>
-                  Usuarios
+                  Usuários
                 </Button>
               ) : null}
               {canViewRoles ? (
                 <Button variant="secondary" onClick={() => navigate('/app/roles')}>
-                  Roles
+                  Perfis
                 </Button>
               ) : null}
               {canViewPermissions ? (
                 <Button variant="secondary" onClick={() => navigate('/app/permissions')}>
-                  Permissions
+                  Permissões
                 </Button>
               ) : null}
             </div>
@@ -188,13 +188,13 @@ export function DashboardPage() {
         <Card>
           <Card.Body>
             <div className="bp-dashboard__section-head">
-              <h2>Sessoes ativas</h2>
+              <h2>Sessões ativas</h2>
               <Badge variant="primary">{state.sessoes.length}</Badge>
             </div>
             {state.sessoes.length ? (
-              <Table columns={sessionColumns} rows={state.sessoes.slice(0, 3)} emptyMessage="Nenhuma sessao encontrada." />
+              <Table columns={sessionColumns} rows={state.sessoes.slice(0, 3)} emptyMessage="Nenhuma sessão encontrada." />
             ) : (
-              <EmptyState description="Nao ha sessoes ativas no momento." title="Nenhuma sessao ativa" />
+              <EmptyState description="Não há sessões ativas no momento." title="Nenhuma sessão ativa" />
             )}
           </Card.Body>
         </Card>

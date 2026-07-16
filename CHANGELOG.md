@@ -2,6 +2,21 @@
 
 Todas as mudancas relevantes do projeto devem ser registradas neste arquivo.
 
+## 2026-07-16
+
+### Release v1.2.0
+
+- Base+ oficializada como versao `1.2.0`.
+- Backend Maven e frontend sincronizados na versao `1.2.0`.
+- v1.1.0 preservada como baseline anterior da plataforma.
+- Evolucao incremental dos componentes compartilhados do frontend.
+- UX, elegancia visual, acessibilidade e heuristicas de Nielsen institucionalizadas como pilares da plataforma.
+- Novos componentes de formulario compartilhados adicionados ao frontend.
+- Melhorias em EmptyState, Table, Button, Alert, Loading e Modal.
+- Correcoes de acentuacao, ortografia e consistencia linguistica em textos do frontend e mensagens do backend.
+- Documentacao de UX, Quality Gates, playbooks, runbooks operacionais e governanca de engenharia ampliada.
+- Processo oficial de versionamento documentado em `engineering/release/versioning.md`.
+
 ## 2026-06-26
 
 ### Release v1.1.0

@@ -12,7 +12,7 @@ import {
 import { PERMISSIONS } from '../../shared/auth/permissions.js';
 
 export const moduleNavigation = {
-  title: 'Administracao',
+  title: 'Administração',
   subtitle: 'Admin',
   icon: Building2,
 };
@@ -27,9 +27,9 @@ export const navigationGroups = [
     title: 'Acesso',
     icon: Shield,
     items: [
-      { icon: Users, label: 'Usuarios', permission: PERMISSIONS.USERS_VIEW, to: '/app/usuarios' },
+      { icon: Users, label: 'Usuários', permission: PERMISSIONS.USERS_VIEW, to: '/app/usuarios' },
       { icon: Shield, label: 'Perfis', permission: PERMISSIONS.ROLES_VIEW, to: '/app/roles' },
-      { icon: ShieldCheck, label: 'Permissoes', permission: PERMISSIONS.PERMISSIONS_VIEW, to: '/app/permissions' },
+      { icon: ShieldCheck, label: 'Permissões', permission: PERMISSIONS.PERMISSIONS_VIEW, to: '/app/permissions' },
     ],
   },
   {

@@ -99,12 +99,12 @@ public class SecurityConfig {
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> {
-            throw new UsernameNotFoundException("Usuario nao encontrado.");
+            throw new UsernameNotFoundException("Usuário não encontrado.");
         };
     }
 
     private void writeUnauthorizedResponse(HttpServletResponse response) throws IOException {
-        ApiResponse<Void> body = ApiResponse.failure("Acesso nao autorizado.", List.of("Autenticacao obrigatoria."));
+        ApiResponse<Void> body = ApiResponse.failure("Acesso não autorizado.", List.of("Autenticação obrigatória."));
 
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
@@ -112,7 +112,7 @@ public class SecurityConfig {
     }
 
     private void writeForbiddenResponse(HttpServletResponse response) throws IOException {
-        ApiResponse<Void> body = ApiResponse.failure("Acesso negado.", List.of("Permissao insuficiente."));
+        ApiResponse<Void> body = ApiResponse.failure("Acesso negado.", List.of("Permissão insuficiente."));
 
         response.setStatus(HttpStatus.FORBIDDEN.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);

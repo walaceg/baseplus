@@ -55,12 +55,12 @@ public class OrganizationUnitTypeService {
     @Transactional
     public OrganizationUnitTypeResponse criar(CreateOrganizationUnitTypeRequest request) {
         if (request == null || isBlank(request.code()) || isBlank(request.name())) {
-            throw new BusinessException("Dados invalidos.", HttpStatus.BAD_REQUEST, List.of("Codigo e nome sao obrigatorios."));
+            throw new BusinessException("Dados inválidos.", HttpStatus.BAD_REQUEST, List.of("Código e nome são obrigatórios."));
         }
 
         String code = normalizeCode(request.code());
         if (repository.existsByCodeIgnoreCase(code)) {
-            throw new BusinessException("Tipo ja cadastrado.", HttpStatus.CONFLICT, List.of("Ja existe um tipo organizacional com este codigo."));
+            throw new BusinessException("Tipo já cadastrado.", HttpStatus.CONFLICT, List.of("Já existe um tipo organizacional com este código."));
         }
 
         OrganizationUnitType type = new OrganizationUnitType(code, request.name().trim());
@@ -73,13 +73,13 @@ public class OrganizationUnitTypeService {
     @Transactional
     public OrganizationUnitTypeResponse atualizar(Long id, UpdateOrganizationUnitTypeRequest request) {
         if (request == null || isBlank(request.code()) || isBlank(request.name())) {
-            throw new BusinessException("Dados invalidos.", HttpStatus.BAD_REQUEST, List.of("Codigo e nome sao obrigatorios."));
+            throw new BusinessException("Dados inválidos.", HttpStatus.BAD_REQUEST, List.of("Código e nome são obrigatórios."));
         }
 
         OrganizationUnitType type = getType(id);
         String code = normalizeCode(request.code());
         if (repository.existsByCodeIgnoreCaseAndIdNot(code, type.getId())) {
-            throw new BusinessException("Tipo ja cadastrado.", HttpStatus.CONFLICT, List.of("Ja existe um tipo organizacional com este codigo."));
+            throw new BusinessException("Tipo já cadastrado.", HttpStatus.CONFLICT, List.of("Já existe um tipo organizacional com este código."));
         }
 
         type.setCode(code);
@@ -96,7 +96,7 @@ public class OrganizationUnitTypeService {
     public void excluir(Long id) {
         OrganizationUnitType type = getType(id);
         if (organizationUnitRepository.existsByType_Id(type.getId())) {
-            throw new BusinessException("Tipo em uso.", HttpStatus.CONFLICT, List.of("Nao e possivel excluir tipo com unidades organizacionais vinculadas."));
+            throw new BusinessException("Tipo em uso.", HttpStatus.CONFLICT, List.of("Não é possível excluir tipo com unidades organizacionais vinculadas."));
         }
 
         repository.delete(type);
@@ -105,10 +105,10 @@ public class OrganizationUnitTypeService {
 
     public OrganizationUnitType getType(Long id) {
         if (id == null) {
-            throw new BusinessException("Tipo nao encontrado.", HttpStatus.NOT_FOUND, List.of("Tipo organizacional nao encontrado."));
+            throw new BusinessException("Tipo não encontrado.", HttpStatus.NOT_FOUND, List.of("Tipo organizacional não encontrado."));
         }
         return repository.findById(id)
-                .orElseThrow(() -> new BusinessException("Tipo nao encontrado.", HttpStatus.NOT_FOUND, List.of("Tipo organizacional nao encontrado.")));
+                .orElseThrow(() -> new BusinessException("Tipo não encontrado.", HttpStatus.NOT_FOUND, List.of("Tipo organizacional não encontrado.")));
     }
 
     private OrganizationUnitTypeResponse toResponse(OrganizationUnitType type) {

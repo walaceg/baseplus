@@ -61,12 +61,12 @@ public class PermissionService {
     @Transactional
     public PermissionResponse criar(CreatePermissionRequest request) {
         if (request == null || isBlank(request.name())) {
-            throw new BusinessException("Dados invalidos.", HttpStatus.BAD_REQUEST, List.of("Nome da permission e obrigatorio."));
+            throw new BusinessException("Dados inválidos.", HttpStatus.BAD_REQUEST, List.of("Nome da permissão é obrigatório."));
         }
 
         String name = normalizarNome(request.name());
         if (permissionRepository.existsByNameIgnoreCase(name)) {
-            throw new BusinessException("Permission ja cadastrada.", HttpStatus.CONFLICT, List.of("Ja existe uma permission com este nome."));
+            throw new BusinessException("Permissão já cadastrada.", HttpStatus.CONFLICT, List.of("Já existe uma permissão com este nome."));
         }
 
         Permission permission = new Permission(name, normalizarDescricao(request.description()));
@@ -78,7 +78,7 @@ public class PermissionService {
     @Transactional
     public PermissionResponse atualizar(Long id, UpdatePermissionRequest request) {
         if (request == null || isBlank(request.name())) {
-            throw new BusinessException("Dados invalidos.", HttpStatus.BAD_REQUEST, List.of("Nome da permission e obrigatorio."));
+            throw new BusinessException("Dados inválidos.", HttpStatus.BAD_REQUEST, List.of("Nome da permissão é obrigatório."));
         }
 
         Permission permission = getPermission(id);
@@ -86,7 +86,7 @@ public class PermissionService {
         permissionRepository.findByNameIgnoreCase(name)
                 .filter(outraPermission -> !outraPermission.getId().equals(permission.getId()))
                 .ifPresent(outraPermission -> {
-                    throw new BusinessException("Permission ja cadastrada.", HttpStatus.CONFLICT, List.of("Ja existe uma permission com este nome."));
+                    throw new BusinessException("Permissão já cadastrada.", HttpStatus.CONFLICT, List.of("Já existe uma permissão com este nome."));
                 });
 
         permission.setName(name);
@@ -101,7 +101,7 @@ public class PermissionService {
     public void remover(Long id) {
         Permission permission = getPermission(id);
         if (isProtectedPermission(permission)) {
-            throw new BusinessException("Operacao invalida.", HttpStatus.BAD_REQUEST, List.of("Nao e permitido remover a permission ADMIN_ACCESS."));
+            throw new BusinessException("Operação inválida.", HttpStatus.BAD_REQUEST, List.of("Não é permitido remover a permissão ADMIN_ACCESS."));
         }
 
         for (Role role : roleRepository.findAll()) {
@@ -116,11 +116,11 @@ public class PermissionService {
 
     private Permission getPermission(Long id) {
         if (id == null) {
-            throw new BusinessException("Permission nao encontrada.", HttpStatus.NOT_FOUND, List.of("Permission nao encontrada."));
+            throw new BusinessException("Permissão não encontrada.", HttpStatus.NOT_FOUND, List.of("Permissão não encontrada."));
         }
 
         return permissionRepository.findById(id)
-                .orElseThrow(() -> new BusinessException("Permission nao encontrada.", HttpStatus.NOT_FOUND, List.of("Permission nao encontrada.")));
+                .orElseThrow(() -> new BusinessException("Permissão não encontrada.", HttpStatus.NOT_FOUND, List.of("Permissão não encontrada.")));
     }
 
     private PermissionResponse toResponse(Permission permission) {

@@ -53,7 +53,7 @@ export function OrganizationPage() {
         }
       } catch (requestError) {
         if (active) {
-          setError(getApiError(requestError, 'Nao foi possivel carregar a estrutura organizacional.'));
+          setError(getApiError(requestError, 'Não foi possível carregar a estrutura organizacional.'));
         }
       } finally {
         if (active) {
@@ -110,7 +110,7 @@ export function OrganizationPage() {
 
   async function handleTypeSubmit(form) {
     if (!form.code || !form.name) {
-      setError('Informe codigo e nome do tipo organizacional.');
+      setError('Informe código e nome do tipo organizacional.');
       return;
     }
 
@@ -128,7 +128,7 @@ export function OrganizationPage() {
       setTypeModal({ open: false, mode: 'create', item: null });
       refreshData();
     } catch (requestError) {
-      setError(getApiError(requestError, 'Nao foi possivel salvar o tipo organizacional.'));
+      setError(getApiError(requestError, 'Não foi possível salvar o tipo organizacional.'));
     } finally {
       setSaving(false);
     }
@@ -136,7 +136,7 @@ export function OrganizationPage() {
 
   async function handleUnitSubmit(form) {
     if (!form.typeId || !form.code || !form.name) {
-      setError('Informe tipo, codigo e nome da unidade organizacional.');
+      setError('Informe tipo, código e nome da unidade organizacional.');
       return;
     }
 
@@ -154,7 +154,7 @@ export function OrganizationPage() {
       setUnitModal({ open: false, mode: 'create', item: null });
       refreshData();
     } catch (requestError) {
-      setError(getApiError(requestError, 'Nao foi possivel salvar a unidade organizacional.'));
+      setError(getApiError(requestError, 'Não foi possível salvar a unidade organizacional.'));
     } finally {
       setSaving(false);
     }
@@ -179,7 +179,7 @@ export function OrganizationPage() {
       setDeleteTarget(null);
       refreshData();
     } catch (requestError) {
-      setError(getApiError(requestError, 'Nao foi possivel remover o registro.'));
+      setError(getApiError(requestError, 'Não foi possível remover o registro.'));
     } finally {
       setSaving(false);
     }
@@ -208,7 +208,7 @@ export function OrganizationPage() {
     },
     {
       key: 'actions',
-      header: 'Acoes',
+      header: 'Ações',
       render: (row) => (
         <div className="bp-action-group">
           {canEdit ? <ActionIconButton icon={Pencil} label="Editar tipo" title="Editar tipo" onClick={() => openTypeEdit(row)} /> : null}
@@ -251,7 +251,7 @@ export function OrganizationPage() {
     },
     {
       key: 'actions',
-      header: 'Acoes',
+      header: 'Ações',
       render: (row) => (
         <div className="bp-action-group">
           {canEdit ? <ActionIconButton icon={Pencil} label="Editar unidade" title="Editar unidade" onClick={() => openUnitEdit(row)} /> : null}
@@ -284,7 +284,7 @@ export function OrganizationPage() {
                 </div>
                 {canCreate ? <Button onClick={openTypeCreate}>Novo tipo</Button> : null}
               </header>
-              <Input id="organization-type-search" label="Buscar tipos" placeholder="Buscar codigo ou nome..." value={typeSearch} onChange={(event) => setTypeSearch(event.target.value)} />
+              <Input id="organization-type-search" label="Buscar tipos" placeholder="Buscar código ou nome..." value={typeSearch} onChange={(event) => setTypeSearch(event.target.value)} />
               {loading ? (
                 <Loading label="Carregando tipos..." />
               ) : filteredTypes.length ? (
@@ -302,12 +302,12 @@ export function OrganizationPage() {
               <header className="bp-organization-section__header">
                 <div>
                   <h2>Unidades</h2>
-                  <p>Registros reais que poderao ser vinculados a perfis organizacionais.</p>
+                  <p>Registros reais que poderão ser vinculados a perfis organizacionais.</p>
                 </div>
                 {canCreate ? <Button disabled={!types.length} onClick={openUnitCreate}>Nova unidade</Button> : null}
               </header>
               <div className="bp-organization-toolbar">
-                <Input id="organization-unit-search" label="Buscar unidades" placeholder="Buscar codigo, nome ou tipo..." value={unitSearch} onChange={(event) => setUnitSearch(event.target.value)} />
+                <Input id="organization-unit-search" label="Buscar unidades" placeholder="Buscar código, nome ou tipo..." value={unitSearch} onChange={(event) => setUnitSearch(event.target.value)} />
                 <Select
                   id="organization-unit-type-filter"
                   label="Filtrar por tipo"
@@ -352,11 +352,11 @@ export function OrganizationPage() {
       <ConfirmDialog
         cancelLabel="Cancelar"
         confirmLabel="Remover"
-        message="Esta acao vai remover o registro selecionado quando ele nao possuir dependencias."
+        message="Esta ação vai remover o registro selecionado quando ele não possuir dependências."
         onCancel={() => setDeleteTarget(null)}
         onConfirm={confirmDelete}
         open={Boolean(deleteTarget)}
-        title="Confirmar remocao"
+        title="Confirmar remoção"
       />
     </div>
   );

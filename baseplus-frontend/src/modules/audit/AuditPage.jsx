@@ -143,7 +143,7 @@ export function AuditPage() {
         }
       } catch (requestError) {
         if (active) {
-          setError(requestError.response?.data?.message ?? 'Nao foi possivel carregar a auditoria.');
+          setError(requestError.response?.data?.message ?? 'Não foi possível carregar a auditoria.');
         }
       } finally {
         if (active) {
@@ -206,12 +206,12 @@ export function AuditPage() {
     },
     {
       key: 'usuario',
-      header: 'Usuario',
+      header: 'Usuário',
       render: (row) => <span>{row.usuario || '-'}</span>,
     },
     {
       key: 'acao',
-      header: 'Acao',
+      header: 'Ação',
       render: (row) => <Badge variant={getActionVariant(row.acao)}>{row.acao || '-'}</Badge>,
     },
     {
@@ -233,7 +233,7 @@ export function AuditPage() {
       <section className="bp-list-page__header">
         <div>
           <h1>Auditoria</h1>
-          <p>Registro inicial de eventos sensiveis da Base+.</p>
+          <p>Registro inicial de eventos sensíveis da Base+.</p>
         </div>
       </section>
 
@@ -245,7 +245,7 @@ export function AuditPage() {
                 <Input
                   id="audit-search"
                   label="Buscar auditoria"
-                  placeholder="Buscar usuario, acao ou entidade..."
+                  placeholder="Buscar usuário, ação ou entidade..."
                   value={searchInput}
                   onChange={(event) => setSearchInput(event.target.value)}
                 />

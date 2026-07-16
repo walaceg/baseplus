@@ -122,7 +122,7 @@ class BrandingSettingsControllerTest {
                 .andExpect(jsonPath("$.data.whiteLabelSubtitle").value("Acesso externo"))
                 .andExpect(jsonPath("$.data.compactLogoUrl").doesNotExist())
                 .andExpect(jsonPath("$.data.id").doesNotExist())
-                .andExpect(jsonPath("$.message").value("Branding publico carregado."))
+                .andExpect(jsonPath("$.message").value("Branding público carregado."))
                 .andExpect(jsonPath("$.errors").value(empty()));
     }
 
@@ -345,7 +345,7 @@ class BrandingSettingsControllerTest {
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.success").value(false))
-                .andExpect(jsonPath("$.message").value("Arquivo invalido."));
+                .andExpect(jsonPath("$.message").value("Arquivo inválido."));
     }
 
     @Test
@@ -363,7 +363,7 @@ class BrandingSettingsControllerTest {
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.success").value(false))
-                .andExpect(jsonPath("$.message").value("Arquivo invalido."));
+                .andExpect(jsonPath("$.message").value("Arquivo inválido."));
     }
 
     @Test
@@ -381,7 +381,7 @@ class BrandingSettingsControllerTest {
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.success").value(false))
-                .andExpect(jsonPath("$.message").value("Arquivo invalido."));
+                .andExpect(jsonPath("$.message").value("Arquivo inválido."));
     }
 
     @Test
@@ -412,7 +412,7 @@ class BrandingSettingsControllerTest {
 
         mockMvc.perform(get("/branding"))
                 .andExpect(status().isUnauthorized())
-                .andExpect(jsonPath("$.message").value("Acesso nao autorizado."));
+                .andExpect(jsonPath("$.message").value("Acesso não autorizado."));
 
         mockMvc.perform(get("/branding")
                         .header("Authorization", "Bearer " + editToken))

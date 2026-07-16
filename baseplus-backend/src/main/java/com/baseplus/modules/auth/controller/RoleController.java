@@ -46,14 +46,14 @@ public class RoleController {
             @PageableDefault(size = 10, sort = {"name", "id"}, direction = Sort.Direction.ASC) Pageable pageable
     ) {
         PageResponse<RoleResponse> response = roleService.listar(search, ativo, sistema, pageable);
-        return ResponseEntity.ok(ApiResponse.success(response, "Roles carregadas."));
+        return ResponseEntity.ok(ApiResponse.success(response, "Perfis carregados."));
     }
 
     @GetMapping("/{id}")
     @PreAuthorize("@authorizationService.hasPermission('ROLES_VIEW')")
     public ResponseEntity<ApiResponse<RoleResponse>> buscar(@PathVariable Long id) {
         RoleResponse response = roleService.buscar(id);
-        return ResponseEntity.ok(ApiResponse.success(response, "Role carregada."));
+        return ResponseEntity.ok(ApiResponse.success(response, "Perfil carregado."));
     }
 
     @GetMapping("/{id}/usuarios")
@@ -65,14 +65,14 @@ public class RoleController {
             @PageableDefault(size = 10, sort = {"nome", "id"}, direction = Sort.Direction.ASC) Pageable pageable
     ) {
         PageResponse<RoleUserResponse> response = roleService.listarUsuarios(id, search, vinculado, pageable);
-        return ResponseEntity.ok(ApiResponse.success(response, "Usuarios do perfil carregados."));
+        return ResponseEntity.ok(ApiResponse.success(response, "Usuários do perfil carregados."));
     }
 
     @PostMapping
     @PreAuthorize("@authorizationService.hasPermission('ROLES_CREATE')")
     public ResponseEntity<ApiResponse<RoleResponse>> criar(@RequestBody CreateRoleRequest request) {
         RoleResponse response = roleService.criar(request);
-        return ResponseEntity.ok(ApiResponse.success(response, "Role criada com sucesso."));
+        return ResponseEntity.ok(ApiResponse.success(response, "Perfil criado com sucesso."));
     }
 
     @PutMapping("/{id}")
@@ -82,7 +82,7 @@ public class RoleController {
             @RequestBody UpdateRoleRequest request
     ) {
         RoleResponse response = roleService.atualizar(id, request);
-        return ResponseEntity.ok(ApiResponse.success(response, "Role atualizada com sucesso."));
+        return ResponseEntity.ok(ApiResponse.success(response, "Perfil atualizado com sucesso."));
     }
 
     @PatchMapping("/{id}/status")
@@ -92,7 +92,7 @@ public class RoleController {
             @RequestBody UpdateRoleStatusRequest request
     ) {
         RoleResponse response = roleService.atualizarStatus(id, request);
-        return ResponseEntity.ok(ApiResponse.success(response, request.ativo() ? "Role ativada com sucesso." : "Role desativada com sucesso."));
+        return ResponseEntity.ok(ApiResponse.success(response, request.ativo() ? "Perfil ativado com sucesso." : "Perfil desativado com sucesso."));
     }
 
     @PostMapping("/{id}/permissions/{permissionId}")
@@ -102,7 +102,7 @@ public class RoleController {
             @PathVariable Long permissionId
     ) {
         RoleResponse response = roleService.associarPermissao(id, permissionId);
-        return ResponseEntity.ok(ApiResponse.success(response, "Permissao associada com sucesso."));
+        return ResponseEntity.ok(ApiResponse.success(response, "Permissão associada com sucesso."));
     }
 
     @DeleteMapping("/{id}/permissions/{permissionId}")
@@ -112,7 +112,7 @@ public class RoleController {
             @PathVariable Long permissionId
     ) {
         RoleResponse response = roleService.removerPermissao(id, permissionId);
-        return ResponseEntity.ok(ApiResponse.success(response, "Permissao removida com sucesso."));
+        return ResponseEntity.ok(ApiResponse.success(response, "Permissão removida com sucesso."));
     }
 
     @PostMapping("/{id}/organization-scopes")
@@ -142,7 +142,7 @@ public class RoleController {
             @PathVariable Long usuarioId
     ) {
         UsuarioResponse response = roleService.associarUsuario(id, usuarioId);
-        return ResponseEntity.ok(ApiResponse.success(response, "Usuario vinculado ao perfil com sucesso."));
+        return ResponseEntity.ok(ApiResponse.success(response, "Usuário vinculado ao perfil com sucesso."));
     }
 
     @DeleteMapping("/{id}/usuarios/{usuarioId}")
@@ -152,13 +152,13 @@ public class RoleController {
             @PathVariable Long usuarioId
     ) {
         UsuarioResponse response = roleService.removerUsuario(id, usuarioId);
-        return ResponseEntity.ok(ApiResponse.success(response, "Usuario removido do perfil com sucesso."));
+        return ResponseEntity.ok(ApiResponse.success(response, "Usuário removido do perfil com sucesso."));
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("@authorizationService.hasPermission('ROLES_DELETE')")
     public ResponseEntity<ApiResponse<Void>> remover(@PathVariable Long id) {
         roleService.remover(id);
-        return ResponseEntity.ok(ApiResponse.success(null, "Role removida com sucesso."));
+        return ResponseEntity.ok(ApiResponse.success(null, "Perfil removido com sucesso."));
     }
 }
