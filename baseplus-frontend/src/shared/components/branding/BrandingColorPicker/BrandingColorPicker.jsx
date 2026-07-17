@@ -1,19 +1,20 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Badge, Button, Input } from '../../index.js';
+import { Badge, Button, Input, Select } from '../../index.js';
 import { calculateContrast, hexToRgb, normalizeHex, rgbToHex } from '../../../utils/color/index.js';
 import './BrandingColorPicker.css';
 
 const DEFAULT_PRESETS = [
   { label: 'Base+', value: '#2563EB' },
   { label: 'Azul oceano', value: '#0EA5E9' },
-  { label: 'Índigo', value: '#4F46E5' },
+  { label: 'Indigo', value: '#4F46E5' },
   { label: 'Verde', value: '#0F766E' },
   { label: 'Grafite', value: '#334155' },
   { label: 'Vermelho', value: '#B42318' },
 ];
 
 const DEFAULT_HEX = '#2563eb';
-const HEX_ERROR_MESSAGE = 'Use um hexadecimal válido em #RGB ou #RRGGBB.';
+const CUSTOM_COLOR_VALUE = '__custom__';
+const HEX_ERROR_MESSAGE = 'Use um hexadecimal valido em #RGB ou #RRGGBB.';
 
 export function BrandingColorPicker({
   id,
@@ -22,7 +23,8 @@ export function BrandingColorPicker({
   value,
   onChange,
   onValidityChange,
-  hint = 'Seleção visual, HEX e RGB sincronizados.',
+  hint = 'Selecao visual, HEX e RGB sincronizados.',
+  disabled = false,
 }) {
   const rootRef = useRef(null);
   const squareRef = useRef(null);
@@ -35,6 +37,32 @@ export function BrandingColorPicker({
   const [hexDraft, setHexDraft] = useState(lastValidHexRef.current.toUpperCase());
   const [localError, setLocalError] = useState('');
   const [color, setColor] = useState(() => createColorState(lastValidHexRef.current));
+
+  const normalizedPresets = useMemo(
+    () => presets
+      .map((preset) => ({
+        label: preset.label,
+        value: normalizeHex(preset.value),
+      }))
+      .filter((preset) => Boolean(preset.value)),
+    [presets],
+  );
+
+  const colorSourceOptions = useMemo(
+    () => [
+      { label: 'Personalizada', value: CUSTOM_COLOR_VALUE },
+      ...normalizedPresets.map((preset) => ({
+        label: preset.label,
+        value: preset.value,
+      })),
+    ],
+    [normalizedPresets],
+  );
+
+  const selectedColorSource = useMemo(() => {
+    const activePreset = normalizedPresets.find((preset) => preset.value === color.hex);
+    return activePreset?.value ?? CUSTOM_COLOR_VALUE;
+  }, [color.hex, normalizedPresets]);
 
   useEffect(() => {
     if (isHexFocused || localError || externalHex === lastValidHexRef.current) {
@@ -89,7 +117,7 @@ export function BrandingColorPicker({
       window.removeEventListener('pointermove', handleMove);
       window.removeEventListener('pointerup', handleUp);
     };
-  }, []);
+  }, [color.hsl, disabled, isHexFocused]);
 
   const contrast = useMemo(() => {
     const surface = readCssVariable('--color-surface', '#ffffff');
@@ -106,7 +134,7 @@ export function BrandingColorPicker({
     return calculateContrast(color.hex, primaryText) >= calculateContrast(color.hex, text) ? primaryText : text;
   }, [color.hex]);
 
-  function commitHex(nextHex) {
+  function setValidColor(nextHex, options = {}) {
     const normalized = normalizeHex(nextHex);
     if (!normalized) {
       return;
@@ -115,11 +143,20 @@ export function BrandingColorPicker({
     const nextColor = createColorState(normalized);
     lastValidHexRef.current = normalized;
     setColor(nextColor);
-    setHexDraft(nextColor.hexDisplay);
     setLocalError('');
-    setIsHexFocused(false);
     onValidityChange?.(true);
     onChange?.(normalized);
+
+    if (options.keepFocus) {
+      return;
+    }
+
+    setHexDraft(nextColor.hexDisplay);
+    setIsHexFocused(false);
+  }
+
+  function commitHex(nextHex) {
+    setValidColor(nextHex);
   }
 
   function revertToLastValid(message) {
@@ -128,23 +165,15 @@ export function BrandingColorPicker({
   }
 
   function applyPreset(preset) {
-    if (isHexFocused) {
+    if (disabled || isHexFocused) {
       return;
     }
 
-    const normalized = normalizeHex(preset.value) ?? DEFAULT_HEX;
-    const nextColor = createColorState(normalized);
-    lastValidHexRef.current = normalized;
-    setColor(nextColor);
-    setHexDraft(nextColor.hexDisplay);
-    setLocalError('');
-    setIsHexFocused(false);
-    onValidityChange?.(true);
-    onChange?.(normalized);
+    commitHex(preset.value ?? DEFAULT_HEX);
   }
 
   function updateFromPointer(clientX, clientY) {
-    if (isHexFocused) {
+    if (disabled || isHexFocused) {
       return;
     }
 
@@ -166,13 +195,17 @@ export function BrandingColorPicker({
   }
 
   function handlePickerPointerDown(event) {
+    if (disabled) {
+      return;
+    }
+
     draggingRef.current = true;
     updateFromPointer(event.clientX, event.clientY);
     event.preventDefault();
   }
 
   function handleHueChange(event) {
-    if (isHexFocused) {
+    if (disabled || isHexFocused) {
       return;
     }
 
@@ -182,7 +215,7 @@ export function BrandingColorPicker({
   }
 
   function handleRgbChange(channel, rawValue) {
-    if (isHexFocused) {
+    if (disabled || isHexFocused) {
       return;
     }
 
@@ -194,23 +227,28 @@ export function BrandingColorPicker({
   }
 
   function handleHexChange(event) {
+    if (disabled) {
+      return;
+    }
+
     const raw = event.target.value;
     setHexDraft(raw);
     setIsHexFocused(true);
 
-    onValidityChange?.(false);
-
     const trimmed = raw.trim();
     if (trimmed === '') {
       setLocalError('');
+      onValidityChange?.(false);
       return;
     }
 
     const normalized = normalizeHex(trimmed);
     if (normalized) {
-      setLocalError('');
+      setValidColor(normalized, { keepFocus: true });
       return;
     }
+
+    onValidityChange?.(false);
 
     if (isPotentialHexDraft(trimmed)) {
       setLocalError('');
@@ -218,10 +256,13 @@ export function BrandingColorPicker({
     }
 
     setLocalError(HEX_ERROR_MESSAGE);
-    onValidityChange?.(false);
   }
 
   function handleHexBlur() {
+    if (disabled) {
+      return;
+    }
+
     const normalized = normalizeHex(hexDraft);
     if (normalized) {
       commitHex(normalized);
@@ -233,7 +274,7 @@ export function BrandingColorPicker({
   }
 
   function handleHexKeyDown(event) {
-    if (event.key !== 'Enter') {
+    if (disabled || event.key !== 'Enter') {
       return;
     }
 
@@ -242,6 +283,10 @@ export function BrandingColorPicker({
   }
 
   function handleApplyHex() {
+    if (disabled) {
+      return;
+    }
+
     const normalized = normalizeHex(hexDraft);
     if (normalized) {
       commitHex(normalized);
@@ -250,6 +295,23 @@ export function BrandingColorPicker({
 
     setIsHexFocused(false);
     revertToLastValid(HEX_ERROR_MESSAGE);
+  }
+
+  function handleColorSourceChange(event) {
+    const nextValue = event.target.value;
+    if (disabled || nextValue === CUSTOM_COLOR_VALUE) {
+      return;
+    }
+
+    commitHex(nextValue);
+  }
+
+  function handleNativeColorChange(event) {
+    if (disabled) {
+      return;
+    }
+
+    commitHex(event.target.value);
   }
 
   return (
@@ -265,6 +327,7 @@ export function BrandingColorPicker({
           </Badge>
           <Button
             className="bp-branding-color-picker__trigger"
+            disabled={disabled}
             size="sm"
             variant="secondary"
             type="button"
@@ -300,6 +363,7 @@ export function BrandingColorPicker({
                 <span>Matiz</span>
                 <input
                   aria-label="Matiz"
+                  disabled={disabled}
                   max="360"
                   min="0"
                   type="range"
@@ -310,22 +374,22 @@ export function BrandingColorPicker({
             </div>
 
             <div className="bp-branding-color-picker__content">
-              <div className="bp-branding-color-picker__presets" aria-label="Presets rápidos">
-                {presets.map((preset) => {
-                  const presetHex = normalizeHex(preset.value) ?? DEFAULT_HEX;
-                  const isActive = presetHex === color.hex;
+              <div className="bp-branding-color-picker__presets" aria-label="Presets rapidos">
+                {normalizedPresets.map((preset) => {
+                  const isActive = preset.value === color.hex;
 
                   return (
                     <button
-                      key={`${preset.label}-${presetHex}`}
+                      key={`${preset.label}-${preset.value}`}
                       aria-pressed={isActive}
                       className={['bp-branding-color-picker__preset', isActive ? 'bp-branding-color-picker__preset--active' : '']
                         .filter(Boolean)
                         .join(' ')}
+                      disabled={disabled}
                       type="button"
                       onClick={() => applyPreset(preset)}
                     >
-                      <span className="bp-branding-color-picker__preset-swatch" style={{ background: presetHex }} />
+                      <span className="bp-branding-color-picker__preset-swatch" style={{ background: preset.value }} />
                       <span className="bp-branding-color-picker__preset-label">{preset.label}</span>
                     </button>
                   );
@@ -333,9 +397,32 @@ export function BrandingColorPicker({
               </div>
 
               <div className="bp-branding-color-picker__fields">
+                <div className="bp-branding-color-picker__source-row">
+                  <Select
+                    id={`${id}-source`}
+                    label="Origem da cor"
+                    disabled={disabled}
+                    helperText="Use um preset para preencher automaticamente ou mantenha Personalizada."
+                    options={colorSourceOptions}
+                    value={selectedColorSource}
+                    onChange={handleColorSourceChange}
+                  />
+                  <label className="bp-branding-color-picker__native">
+                    <span>Seletor visual</span>
+                    <input
+                      aria-label={`Escolher ${label.toLowerCase()}`}
+                      disabled={disabled}
+                      type="color"
+                      value={color.hex}
+                      onChange={handleNativeColorChange}
+                    />
+                  </label>
+                </div>
+
                 <div className="bp-branding-color-picker__hex-row">
                   <Input
                     error={localError}
+                    disabled={disabled}
                     id={`${id}-hex`}
                     label="Hexadecimal"
                     placeholder="#FFFFFF"
@@ -351,6 +438,7 @@ export function BrandingColorPicker({
                   />
                   <Button
                     className="bp-branding-color-picker__apply"
+                    disabled={disabled}
                     type="button"
                     variant="secondary"
                     onClick={handleApplyHex}
@@ -370,7 +458,7 @@ export function BrandingColorPicker({
                       type="number"
                       value={color.rgb[channel]}
                       onChange={(event) => handleRgbChange(channel, event.target.value)}
-                      disabled={isHexFocused}
+                      disabled={disabled || isHexFocused}
                     />
                   ))}
                 </div>
@@ -387,7 +475,7 @@ export function BrandingColorPicker({
                   </span>
                 </div>
                 <div className="bp-branding-color-picker__contrast">
-                  <span>Contraste com superfície</span>
+                  <span>Contraste com superficie</span>
                   <strong>{contrast.ratio.toFixed(2)}:1</strong>
                 </div>
               </div>

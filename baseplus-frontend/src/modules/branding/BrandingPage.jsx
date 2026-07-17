@@ -36,6 +36,15 @@ const loginBackgroundOptions = [
   { label: 'Gradiente institucional', value: 'INSTITUTIONAL_GRADIENT', description: 'Reforça cor primária e secundária.' },
   { label: 'Superfície neutra', value: 'NEUTRAL_SURFACE', description: 'Reduz o peso visual do fundo.' },
 ];
+const primaryColorPresets = brandingPresets.map((preset) => ({
+  label: preset.name,
+  value: preset.corPrimaria,
+}));
+
+const secondaryColorPresets = brandingPresets.map((preset) => ({
+  label: preset.name,
+  value: preset.corSecundaria,
+}));
 
 export function BrandingPage() {
   const { branding, assetVersion, isLoading, refreshBranding } = useBranding();
@@ -1019,6 +1028,8 @@ export function BrandingPage() {
                         <BrandingColorPicker
                           id="branding-primary"
                           label="Cor primária"
+                          disabled={!canEditBranding}
+                          presets={primaryColorPresets}
                           value={draft.corPrimaria}
                           onChange={(nextColor) => {
                             setDraft((current) => ({ ...current, corPrimaria: nextColor }));
@@ -1031,6 +1042,8 @@ export function BrandingPage() {
                         <BrandingColorPicker
                           id="branding-secondary"
                           label="Cor secundária"
+                          disabled={!canEditBranding}
+                          presets={secondaryColorPresets}
                           value={draft.corSecundaria}
                           onChange={(nextColor) => {
                             setDraft((current) => ({ ...current, corSecundaria: nextColor }));
