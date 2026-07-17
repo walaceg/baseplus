@@ -2,6 +2,17 @@
 
 Todas as mudancas relevantes do projeto devem ser registradas neste arquivo.
 
+## v1.2.2
+
+### Correcoes
+
+- Correcao da personalizacao manual de cores HEX no modulo Branding.
+- Correcao do editor de cores para permitir edicao direta dos valores HEX.
+- Correcao do layout da secao Branding, eliminando o corte do conteudo.
+- Preservacao dos presets existentes.
+- Sincronizacao correta entre Preview, HEX e RGB.
+- Compatibilidade total com o Branding configuravel.
+
 ## 2026-07-16
 
 ### Release v1.2.1

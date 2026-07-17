@@ -1,8 +1,8 @@
 # Base+
 
-Versao publicada: `1.2.1`
+Versao publicada: `1.2.2`
 
-Estado atual: Release oficial `v1.2.1`.
+Estado atual: Release oficial `v1.2.2`.
 
 A branch master representa sempre a versao oficial mais recente da Base+.
 
@@ -319,8 +319,8 @@ docker compose up --detach --build --wait
 
 ## Release
 
-A versao publicada atual e `1.2.1`.
+A versao publicada atual e `1.2.2`.
 
-A `v1.2.1` consolida a Base+ como release oficial atual, mantendo a v1.2.0 como release anterior e incorporando principios fundamentais, arquitetura de engenharia, playbooks, guias para IA e separacao entre Plataforma e Aplicacao.
+A `v1.2.2` consolida a Base+ como release oficial atual, mantendo a v1.2.1 como release anterior e incorporando correcoes na personalizacao manual de cores HEX do Branding, preservacao dos presets existentes e sincronizacao correta entre Preview, HEX e RGB.
 
 Antes de iniciar novos modulos de negocio, use `MODULE_TEMPLATE.md`, `TASK_PROMPT.md` e `docs/module-development.md`.

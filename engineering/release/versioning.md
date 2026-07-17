@@ -89,13 +89,13 @@ Use para mudancas incompativeis ou revisoes estruturais profundas:
 1.2.0 -> 2.0.0
 ```
 
-## Release Oficial v1.2.1
+## Release Oficial v1.2.2
 
-A Base+ `v1.2.1` e registrada como release oficial atual da plataforma.
+A Base+ `v1.2.2` e registrada como release oficial atual da plataforma.
 
-A `v1.2.0` permanece como release anterior e referencia historica.
+A `v1.2.1` permanece como release anterior e referencia historica.
 
-Apos a criacao da tag Git `v1.2.1`, essa versao deve ser tratada como imutavel. Correcoes posteriores devem gerar nova versao PATCH, como `v1.2.2`.
+Apos a criacao da tag Git `v1.2.2`, essa versao deve ser tratada como imutavel. Correcoes posteriores devem gerar nova versao PATCH, como `v1.2.3`.
 
 ## Regras de Governanca
 

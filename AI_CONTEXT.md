@@ -26,8 +26,9 @@ Base+ e uma plataforma corporativa modular para construcao de aplicacoes adminis
 
 Nome tecnico: `baseplus`
 Namespace backend: `com.baseplus`
-Versao publicada: `1.2.1`
-Estado atual: release oficial `v1.2.1`, pronta para novos projetos de negocio.
+Versao publicada: `1.2.2`
+Estado atual: release oficial `v1.2.2`, pronta para novos projetos de negocio.
+Branding v1.2.2: personalizacao manual de cores HEX corrigida, com presets preservados e Preview, HEX e RGB sincronizados.
 
 ## Stack oficial
 

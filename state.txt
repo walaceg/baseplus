@@ -4,7 +4,7 @@ Atualizado em: 2026-07-16
 
 ## Estado atual
 
-- Release oficial atual: `v1.2.1`.
+- Release oficial atual: `v1.2.2`.
 - Plataforma pronta para servir como fundacao de novos projetos de negocio.
 - Base+ permanece como fundacao administrativa reutilizavel, sem modulo real de negocio acoplado.
 - Backend Spring Boot funcional.
@@ -60,6 +60,12 @@ Atualizado em: 2026-07-16
   - Componentes compartilhados do frontend evoluidos.
   - Correcoes de linguagem e mensagens em portugues aplicadas no frontend e backend.
   - Processo oficial de versionamento documentado em engineering/release/versioning.md.
+- Release oficial v1.2.2 consolidada:
+  - Personalizacao manual de cores HEX no modulo Branding corrigida.
+  - Editor de cores permite edicao direta dos valores HEX.
+  - Layout da secao Branding corrigido para evitar corte de conteudo.
+  - Presets existentes preservados.
+  - Preview, HEX e RGB sincronizados corretamente.
 - Release oficial v1.2.1 consolidada:
   - Principios fundamentais da Base+ documentados.
   - Separacao entre Plataforma e Aplicacao consolidada na documentacao de engenharia.
@@ -79,16 +85,16 @@ Atualizado em: 2026-07-16
 
 ## Ultima etapa concluida
 
-- Base+ `v1.2.1` oficializada como release atual da plataforma.
+- Base+ `v1.2.2` oficializada como release atual da plataforma.
 
 ## Proxima evolucao prevista
 
-- v1.3.0: proximas evolucoes incrementais da fundacao apos validacao da v1.2.1 em novos projetos de negocio.
+- v1.3.0: proximas evolucoes incrementais da fundacao apos validacao da v1.2.2 em novos projetos de negocio.
 - Manter `docs/release-1.1-checklist.md` como referencia historica de validacao da baseline anterior.
 
 ## Proxima etapa recomendada
 
-- Iniciar novos projetos de negocio a partir da release oficial `v1.2.1`.
+- Iniciar novos projetos de negocio a partir da release oficial `v1.2.2`.
 - Em seguida, criar o primeiro modulo real de negocio, como Empresas, usando CRUD Completo.
 - Aplicar validacao de escopo organizacional no primeiro modulo de negocio que possuir dados por empresa, filial, equipe ou outro contexto parametrizado.
 - Separar `app-icons-source.png` em icones individuais se eles forem usados como favicon/app icon final.
@@ -96,7 +102,7 @@ Atualizado em: 2026-07-16
 ## Atencoes
 
 - `Promptbaseplus.txt` foi preservado como documento legado de contexto original.
-- O repositorio Git possui release inicial publica `v1.0.0`; a correcao Flyway foi publicada em `v1.0.1`; as correcoes de seguranca foram publicadas como `v1.0.2`; a Baseline Oficial da plataforma foi consolidada em `v1.1.0`; a release oficial atual e `v1.2.1`.
+- O repositorio Git possui release inicial publica `v1.0.0`; a correcao Flyway foi publicada em `v1.0.1`; as correcoes de seguranca foram publicadas como `v1.0.2`; a Baseline Oficial da plataforma foi consolidada em `v1.1.0`; a release oficial atual e `v1.2.2`.
 - O segredo JWT padrao permanece apenas no perfil `dev`; esse perfil contem credenciais locais conhecidas e nao deve ser publicado ou exposto externamente.
 - Tuneis locais devem ser configurados apenas por `.env` local ou variaveis de ambiente; nao fixar dominios temporarios no codigo.
 - Evitar versionar logs, `target`, `dist`, `node_modules`, dumps, backups e uploads locais.
