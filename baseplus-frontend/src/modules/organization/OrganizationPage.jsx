@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { ActionIconButton, Alert, Badge, Button, Card, ConfirmDialog, EmptyState, Input, Loading, Select, Table } from '../../shared/components/index.js';
+import { ActionIconButton, Alert, Badge, Button, Card, ConfirmDialog, EmptyState, Input, Loading, PageHeader, Select, Table } from '../../shared/components/index.js';
 import { GitBranch, Pencil, Tags, Trash2 } from 'lucide-react';
 import { useAuthorization } from '../../core/auth/useAuthorization.js';
 import { PERMISSIONS } from '../../shared/auth/permissions.js';
@@ -31,6 +31,7 @@ export function OrganizationPage() {
   const [reloadToken, setReloadToken] = useState(0);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
+  const [loadError, setLoadError] = useState('');
   const [typeModal, setTypeModal] = useState({ open: false, mode: 'create', item: null });
   const [unitModal, setUnitModal] = useState({ open: false, mode: 'create', item: null });
   const [deleteTarget, setDeleteTarget] = useState(null);
@@ -41,19 +42,20 @@ export function OrganizationPage() {
     async function loadData() {
       try {
         setLoading(true);
-        setError('');
+        setLoadError('');
         const [typesData, unitsData] = await Promise.all([
           organizationService.getOrganizationUnitTypes({ size: 1000 }),
           organizationService.getOrganizationUnits({ size: 1000 }),
         ]);
 
         if (active) {
+          setLoadError('');
           setTypes(typesData.content ?? []);
           setUnits(unitsData.content ?? []);
         }
       } catch (requestError) {
         if (active) {
-          setError(getApiError(requestError, 'Não foi possível carregar a estrutura organizacional.'));
+          setLoadError(getApiError(requestError, 'Não foi possível carregar a estrutura organizacional.'));
         }
       } finally {
         if (active) {
@@ -263,15 +265,22 @@ export function OrganizationPage() {
 
   return (
     <div className="bp-organization-page bp-list-page">
-      <section className="bp-list-page__header">
-        <div>
-          <h1>Estrutura organizacional</h1>
-          <p>Cadastre tipos e unidades usados pelos perfis organizacionais.</p>
-        </div>
-      </section>
+      <PageHeader
+        title="Estrutura organizacional"
+        description="Cadastre tipos e unidades usados pelos perfis organizacionais."
+      />
 
       {message ? <Alert variant="success">{message}</Alert> : null}
       {error ? <Alert variant="error">{error}</Alert> : null}
+
+      {!loading && loadError ? (
+        <Alert title="Erro de carregamento" variant="error">
+          <p>{loadError}</p>
+          <Button size="sm" variant="secondary" onClick={refreshData}>
+            Tentar novamente
+          </Button>
+        </Alert>
+      ) : null}
 
       <div className="bp-organization-grid">
         <Card>
@@ -287,10 +296,15 @@ export function OrganizationPage() {
               <Input id="organization-type-search" label="Buscar tipos" placeholder="Buscar código ou nome..." value={typeSearch} onChange={(event) => setTypeSearch(event.target.value)} />
               {loading ? (
                 <Loading label="Carregando tipos..." />
-              ) : filteredTypes.length ? (
+              ) : loadError ? null : filteredTypes.length ? (
                 <Table columns={typeColumns} rows={filteredTypes} />
               ) : (
-                <EmptyState title="Nenhum tipo encontrado" description="Cadastre o primeiro tipo organizacional para liberar unidades." />
+                <EmptyState
+                  title="Nenhum tipo encontrado"
+                  description={debouncedTypeSearch.trim()
+                    ? 'Nenhum tipo corresponde aos filtros atuais. Limpe os filtros para ampliar os resultados.'
+                    : 'Ainda não existem tipos organizacionais cadastrados.'}
+                />
               )}
             </section>
           </Card.Body>
@@ -319,10 +333,15 @@ export function OrganizationPage() {
               </div>
               {loading ? (
                 <Loading label="Carregando unidades..." />
-              ) : filteredUnits.length ? (
+              ) : loadError ? null : filteredUnits.length ? (
                 <Table columns={unitColumns} rows={filteredUnits} />
               ) : (
-                <EmptyState title="Nenhuma unidade encontrada" description="Cadastre unidades para que os perfis organizacionais possam usar escopos." />
+                <EmptyState
+                  title="Nenhuma unidade encontrada"
+                  description={debouncedUnitSearch.trim() || typeFilter
+                    ? 'Nenhuma unidade corresponde aos filtros atuais. Limpe os filtros para ampliar os resultados.'
+                    : 'Ainda não existem unidades organizacionais cadastradas.'}
+                />
               )}
             </section>
           </Card.Body>

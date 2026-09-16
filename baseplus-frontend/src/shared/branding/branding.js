@@ -1,5 +1,5 @@
 import { apiBaseURL } from '../api/apiClient.js';
-import { hexToRgb as parseHexToRgb, normalizeHex, rgbToHex as formatRgbToHex } from '../utils/color/index.js';
+import { calculateContrast, hexToRgb as parseHexToRgb, normalizeHex } from '../utils/color/index.js';
 
 let faviconUpdateSequence = 0;
 
@@ -82,6 +82,9 @@ export function applyBrandingSettings(settings = {}) {
   const root = document.documentElement;
   const visualTokens = buildBrandingVisualTokens(branding, settings.assetVersion);
 
+  // Remove legacy inline derivations so the effective CSS theme owns them.
+  ['--color-primary-hover', '--color-primary-muted', '--color-secondary-hover', '--color-secondary-muted', '--color-focus-ring']
+    .forEach((token) => root.style.removeProperty(token));
   root.dataset.loginBackgroundMode = branding.loginBackgroundMode;
   root.dataset.loginBackgroundHasImage = branding.loginBackgroundUrl ? 'true' : 'false';
   applyVisualTokens(root.style, visualTokens);
@@ -130,7 +133,6 @@ export function buildBrandingPreviewStyle(settings = {}) {
 export function isPresetActive(settings = {}, preset = {}) {
   const branding = normalizeBrandingSettings(settings);
   return (
-    branding.tema === preset.tema &&
     branding.corPrimaria === normalizeHexColor(preset.corPrimaria) &&
     branding.corSecundaria === normalizeHexColor(preset.corSecundaria)
   );
@@ -153,6 +155,8 @@ export function resetBrandingSettings() {
   root.style.removeProperty('--color-secondary-hover');
   root.style.removeProperty('--color-secondary-muted');
   root.style.removeProperty('--color-primary-text');
+  root.style.removeProperty('--brand-primary-hover-target');
+  root.style.removeProperty('--color-focus-ring');
   root.style.removeProperty('--brand-login-background-mode');
   root.style.removeProperty('--brand-login-background-image');
   root.style.removeProperty('--brand-login-background-image-has');
@@ -408,18 +412,17 @@ function escapeXml(value) {
 
 function buildBrandingVisualTokens(branding, assetVersion = 0) {
   const loginBackgroundTokens = buildLoginBackgroundTokens(branding, assetVersion);
+  const primaryText = calculateContrast(branding.corPrimaria, '#ffffff') >= calculateContrast(branding.corPrimaria, '#000000')
+    ? '#ffffff'
+    : '#000000';
 
   return {
     '--brand-platform-name': branding.nomePlataforma,
     '--brand-platform-subtitle': branding.subtituloInstitucional,
     '--color-primary': branding.corPrimaria,
-    '--color-primary-hover': shadeColor(branding.corPrimaria, branding.tema === 'dark' ? 0.18 : -0.08),
-    '--color-primary-muted': tintColor(branding.corPrimaria, branding.tema === 'dark' ? 0.18 : 0.88),
     '--color-secondary': branding.corSecundaria,
-    '--color-secondary-hover': shadeColor(branding.corSecundaria, branding.tema === 'dark' ? 0.18 : -0.08),
-    '--color-secondary-muted': tintColor(branding.corSecundaria, branding.tema === 'dark' ? 0.18 : 0.88),
-    '--color-primary-text': branding.tema === 'dark' ? '#0b1220' : '#ffffff',
-    '--color-focus-ring': withAlpha(branding.corPrimaria, branding.tema === 'dark' ? 0.28 : 0.24),
+    '--color-primary-text': primaryText,
+    '--brand-primary-hover-target': primaryText === '#ffffff' ? '#000000' : '#ffffff',
     ...loginBackgroundTokens,
   };
 }
@@ -491,41 +494,6 @@ function applyVisualTokens(style, tokens) {
   });
 }
 
-function expandHexColor(value) {
-  return normalizeHex(value) ?? value;
-}
-
-function shadeColor(hex, amount) {
-  const rgb = parseHexToRgb(expandHexColor(hex));
-  if (!rgb) {
-    return hex;
-  }
-
-  const factor = 1 + amount;
-  return rgbToHex(
-    clamp(rgb.r * factor),
-    clamp(rgb.g * factor),
-    clamp(rgb.b * factor),
-  );
-}
-
-function tintColor(hex, amount) {
-  const rgb = parseHexToRgb(expandHexColor(hex));
-  if (!rgb) {
-    return hex;
-  }
-
-  return rgbToHex(
-    clamp(rgb.r + (255 - rgb.r) * amount),
-    clamp(rgb.g + (255 - rgb.g) * amount),
-    clamp(rgb.b + (255 - rgb.b) * amount),
-  );
-}
-
-function rgbToHex(r, g, b) {
-  return formatRgbToHex({ r, g, b });
-}
-
 function withAlpha(hex, alpha) {
   const rgb = parseHexToRgb(hex);
   const safeAlpha = clampAlpha(alpha);
@@ -544,10 +512,6 @@ function clampAlpha(value) {
   }
 
   return Math.min(1, Math.max(0, numeric));
-}
-
-function clamp(value) {
-  return Math.max(0, Math.min(255, value));
 }
 
 function buildLoginBackgroundImageToken(value, assetVersion = 0) {
