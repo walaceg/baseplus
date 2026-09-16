@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import {
   ActionIconButton,
+  PageHeader,
   Alert,
   Avatar,
   Badge,
@@ -9,6 +10,7 @@ import {
   Card,
   ConfirmDialog,
   EmptyState,
+  FilterBar,
   Input,
   Loading,
   Pagination,
@@ -46,6 +48,7 @@ export function PermissionsPage() {
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
+  const [loadError, setLoadError] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState('create');
   const [selectedPermission, setSelectedPermission] = useState(null);
@@ -82,6 +85,7 @@ export function PermissionsPage() {
     async function loadPermissions() {
       try {
         setLoading(true);
+        setLoadError('');
         const data = await permissionService.getPermissions({
           search: searchValue || undefined,
           page: Number.isFinite(pageValue) ? pageValue : 0,
@@ -89,6 +93,7 @@ export function PermissionsPage() {
         });
 
         if (active) {
+          setLoadError('');
           setPermissionsPage({
             content: data.content ?? [],
             page: data.page ?? 0,
@@ -99,7 +104,7 @@ export function PermissionsPage() {
         }
       } catch (requestError) {
         if (active) {
-          setError(requestError.response?.data?.message ?? 'Não foi possível carregar as permissões.');
+          setLoadError(requestError.response?.data?.message ?? 'Não foi possível carregar as permissões.');
         }
       } finally {
         if (active) {
@@ -262,19 +267,17 @@ export function PermissionsPage() {
 
   return (
     <div className="bp-permissions-page bp-list-page">
-      <section className="bp-list-page__header">
-        <div>
-          <h1>Permissões</h1>
-          <p>Gestão de permissões da Base+.</p>
-        </div>
-        {canCreate ? <Button onClick={openCreate}>Nova permissão</Button> : null}
-      </section>
+      <PageHeader
+        title="Permissões"
+        description="Gestão de permissões da Base+."
+        action={canCreate ? <Button onClick={openCreate}>Nova permissão</Button> : null}
+      />
 
       <Card>
         <Card.Body>
-          <div className="bp-list-page__toolbar">
-            <div className="bp-list-page__toolbar-row">
-              <div className="bp-list-page__search">
+          <FilterBar>
+            <FilterBar.Row>
+              <FilterBar.Search>
                 <Input
                   id="permissions-search"
                   label="Buscar permissões"
@@ -282,14 +285,14 @@ export function PermissionsPage() {
                   value={searchInput}
                   onChange={(event) => setSearchInput(event.target.value)}
                 />
-              </div>
-              <div className="bp-list-page__actions">
+              </FilterBar.Search>
+              <FilterBar.Actions>
                 <Button disabled={!hasFilters} size="sm" variant="secondary" onClick={clearFilters}>
                   Limpar filtros
                 </Button>
-              </div>
-            </div>
-          </div>
+              </FilterBar.Actions>
+            </FilterBar.Row>
+          </FilterBar>
         </Card.Body>
       </Card>
 
@@ -300,6 +303,13 @@ export function PermissionsPage() {
         <Card.Body>
           {loading ? (
             <Loading label="Carregando permissões..." />
+          ) : loadError ? (
+            <Alert title="Erro de carregamento" variant="error">
+              <p>{loadError}</p>
+              <Button size="sm" variant="secondary" onClick={refreshPermissions}>
+                Tentar novamente
+              </Button>
+            </Alert>
           ) : permissionsPage.content.length ? (
             <>
               <Table columns={columns} rows={permissionsPage.content} />
@@ -313,9 +323,11 @@ export function PermissionsPage() {
             </>
           ) : (
             <EmptyState
+              actionLabel={hasFilters ? 'Limpar filtros' : undefined}
+              onAction={clearFilters}
               description={
                 hasFilters
-                  ? 'Nenhuma permissão corresponde aos filtros atuais. Limpe a busca para ampliar os resultados.'
+                  ? 'Nenhuma permissão corresponde aos filtros atuais. Limpe os filtros para ampliar os resultados.'
                   : 'Ainda não existem permissões cadastradas.'
               }
               title="Nenhuma permissão encontrada"

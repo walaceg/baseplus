@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Upload, Trash2 } from 'lucide-react';
-import { ActionIconButton, Alert, Badge, Button, BrandingColorPicker, BrandingLogo, Card, Input, Loading, Select } from '../../shared/components/index.js';
+import { ActionIconButton, Alert, Badge, Button, BrandingColorPicker, BrandingLogo, Card, Input, Loading, PageHeader, Select } from '../../shared/components/index.js';
 import { useBranding } from '../../shared/branding/useBranding.js';
 import {
   brandingPresets,
@@ -396,13 +396,12 @@ export function BrandingPage() {
 
   function applyPreset(preset) {
     if (!canEditBranding) {
-      setError('Permissão BRANDING_EDIT necessária para alterar o tema.');
+      setError('Permissão BRANDING_EDIT necessária para alterar a identidade.');
       return;
     }
 
     setDraft((current) => ({
       ...current,
-      tema: preset.tema,
       corPrimaria: preset.corPrimaria.toLowerCase(),
       corSecundaria: preset.corSecundaria.toLowerCase(),
     }));
@@ -453,10 +452,10 @@ export function BrandingPage() {
   return (
     <div className="bp-branding-page">
       <header className="bp-branding-page__header">
-        <div>
-          <h1>Branding</h1>
-          <p>Estruture a identidade institucional e o login de forma separada para reduzir ruído visual.</p>
-        </div>
+        <PageHeader
+          title="Branding"
+          description="Estruture a identidade institucional e o login de forma separada para reduzir ruído visual."
+        />
       </header>
 
       {message ? <Alert variant="success">{message}</Alert> : null}
@@ -952,8 +951,8 @@ export function BrandingPage() {
                   <Card className="bp-branding-subsection">
                     <Card.Header>
                       <div>
-                        <strong>Tema</strong>
-                        <p>Variantes visuais que moldam o contraste e a atmosfera do login.</p>
+                        <strong>Identidade e tema</strong>
+                        <p>Paleta institucional e aparência clara ou escura.</p>
                       </div>
                     </Card.Header>
                     <Card.Body>
@@ -982,7 +981,7 @@ export function BrandingPage() {
                               </span>
                               <span className="bp-branding-preset__name">{preset.name}</span>
                               <span className="bp-branding-preset__meta">
-                                {preset.tema === 'dark' ? 'Tema escuro' : 'Tema claro'}
+                                Paleta de identidade
                               </span>
                             </button>
                           );

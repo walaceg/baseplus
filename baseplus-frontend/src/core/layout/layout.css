@@ -15,8 +15,9 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-6);
-  border-right: 1px solid var(--color-border);
-  background: var(--color-surface);
+  border-right: 1px solid var(--color-shell-border);
+  background: var(--color-shell-background);
+  color: var(--color-shell-text);
   padding: var(--space-6);
   width: var(--sidebar-width, 260px);
   height: 100vh;
@@ -108,34 +109,34 @@
   font-weight: 800;
 }
 
-.bp-sidebar__toggle {
+.bp-sidebar .bp-sidebar__toggle {
   margin-left: auto;
   width: 40px;
   min-width: 40px;
   height: 40px;
   padding: 0;
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-shell-border);
   border-radius: var(--radius-full);
-  background: var(--color-surface);
-  color: var(--color-text);
+  background: var(--color-shell-background);
+  color: var(--color-shell-text);
   box-shadow: none;
   flex: 0 0 auto;
 }
 
-.bp-sidebar__toggle:hover:not(:disabled) {
-  background: var(--color-surface-muted);
-  border-color: var(--color-primary-muted);
-  color: var(--color-text);
+.bp-sidebar .bp-sidebar__toggle:hover:not(:disabled) {
+  background: var(--color-shell-hover);
+  border-color: var(--color-shell-text-muted);
+  color: var(--color-shell-text);
 }
 
-.bp-sidebar__toggle:active:not(:disabled) {
-  background: var(--color-primary-muted);
-  border-color: var(--color-primary-muted);
-  color: var(--color-primary);
+.bp-sidebar .bp-sidebar__toggle:active:not(:disabled) {
+  background: var(--color-shell-active-background);
+  border-color: var(--color-primary);
+  color: var(--color-shell-active-text);
 }
 
-.bp-sidebar__toggle:focus-visible {
-  outline: 3px solid var(--color-focus-ring);
+.bp-sidebar .bp-sidebar__toggle:focus-visible {
+  outline: 3px solid var(--color-shell-focus-ring);
   outline-offset: 2px;
 }
 
@@ -170,7 +171,7 @@
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  color: var(--color-text-muted);
+  color: var(--color-shell-text-muted);
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0;
@@ -183,8 +184,8 @@
   display: inline-grid;
   place-items: center;
   border-radius: var(--radius-sm);
-  background: var(--color-surface-muted);
-  color: var(--color-text-muted);
+  background: var(--color-shell-hover);
+  color: var(--color-shell-text-muted);
   flex: 0 0 auto;
 }
 
@@ -302,8 +303,69 @@
   background: transparent;
 }
 
-.bp-nav-item--topbar:hover {
-  background: var(--color-surface-muted);
+/* Navigation in the structural rail is distinct from floating functional menus. */
+.bp-sidebar .bp-nav-item {
+  color: var(--color-shell-text);
+}
+
+.bp-sidebar .bp-nav-item:hover {
+  background: color-mix(in srgb, var(--color-shell-hover) 65%, var(--color-shell-background));
+}
+
+.bp-sidebar .bp-nav-item__icon {
+  background: var(--color-shell-hover);
+  color: var(--color-shell-text-muted);
+}
+
+.bp-sidebar .bp-nav-item--active {
+  background: var(--color-shell-active-background);
+  color: var(--color-shell-active-text);
+  font-weight: 600;
+}
+
+.bp-sidebar .bp-nav-item--active .bp-nav-item__icon {
+  background: var(--color-shell-hover);
+  color: var(--color-shell-active-text);
+}
+
+/* A group discloses navigation; only a route carries the active indicator. */
+.bp-sidebar .bp-sidebar__module {
+  background: transparent;
+  color: var(--color-shell-text-muted);
+  font-weight: 500;
+  box-shadow: none;
+}
+
+.bp-sidebar .bp-sidebar__module[aria-expanded="true"] {
+  background: color-mix(in srgb, var(--color-shell-hover) 35%, var(--color-shell-background));
+}
+
+.bp-sidebar .bp-sidebar__module:hover {
+  background: color-mix(in srgb, var(--color-shell-hover) 65%, var(--color-shell-background));
+}
+
+.bp-sidebar .bp-sidebar__module .bp-nav-item__icon {
+  background: transparent;
+  color: var(--color-shell-text-muted);
+}
+
+.bp-sidebar .bp-nav-item:focus-visible,
+.bp-topbar .bp-topbar__admin-trigger:focus-visible,
+.bp-topbar .bp-account-menu__trigger:focus-visible {
+  outline: 3px solid var(--color-shell-focus-ring);
+  outline-offset: 2px;
+}
+
+.bp-sidebar__brand-logo .bp-branding-logo__name {
+  color: var(--color-shell-text);
+}
+
+.bp-sidebar__brand-logo .bp-branding-logo__subtitle {
+  color: var(--color-shell-text-muted);
+}
+
+.bp-topbar__admin-menu .bp-nav-item--topbar:hover {
+  background: color-mix(in srgb, var(--color-surface-muted) 55%, var(--color-surface));
 }
 
 .bp-nav-item--topbar .bp-nav-item__icon {
@@ -311,18 +373,26 @@
   height: 24px;
 }
 
-.bp-nav-item--topbar.bp-nav-item--active {
-  background: var(--color-primary-muted);
-  box-shadow: none;
-  border-color: color-mix(in srgb, var(--color-primary) 25%, transparent);
+.bp-topbar__admin-menu .bp-nav-item--topbar.bp-nav-item--active {
+  background: color-mix(in srgb, var(--color-primary) 10%, var(--color-surface));
+  color: var(--color-text);
+  font-weight: 600;
+  box-shadow: inset 3px 0 0 var(--color-primary);
+  border-color: color-mix(in srgb, var(--color-primary) 20%, var(--color-border));
+}
+
+.bp-topbar__admin-menu .bp-nav-item--active .bp-nav-item__icon {
+  background: color-mix(in srgb, var(--color-primary) 12%, var(--color-surface));
+  color: var(--color-text);
 }
 
 .bp-topbar {
   min-height: 72px;
   display: grid;
   gap: var(--space-4);
-  border-bottom: 1px solid var(--color-border);
-  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-shell-border);
+  background: color-mix(in srgb, var(--color-shell-background) 70%, var(--color-shell-hover));
+  color: var(--color-shell-text);
   padding: var(--space-4) var(--space-6);
   position: sticky;
   top: 0;
@@ -342,6 +412,17 @@
   gap: 2px;
 }
 
+.bp-topbar__navigation-context {
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--color-shell-text-muted);
+  font-size: 14px;
+  font-weight: 500;
+}
+
 .bp-topbar__left {
   display: flex;
   align-items: center;
@@ -354,7 +435,7 @@
   align-items: center;
   gap: var(--space-2);
   min-width: 0;
-  color: var(--color-text);
+  color: var(--color-shell-text);
   font-size: 18px;
   font-weight: 800;
 }
@@ -365,7 +446,6 @@
   white-space: nowrap;
 }
 
-.bp-topbar__subtitle,
 .bp-topbar__identity span {
   margin: 0;
   color: var(--color-text-muted);
@@ -373,6 +453,9 @@
 }
 
 .bp-topbar__subtitle {
+  margin: 0;
+  color: var(--color-shell-text-muted);
+  font-size: 13px;
   max-width: 480px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -385,21 +468,21 @@
   align-items: center;
 }
 
-.bp-topbar__admin-trigger {
+.bp-topbar .bp-topbar__admin-trigger {
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
   min-width: 0;
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-shell-border);
   border-radius: var(--radius-md);
   padding: var(--space-2) var(--space-3);
-  background: var(--color-surface);
-  color: var(--color-text);
+  background: var(--color-shell-background);
+  color: var(--color-shell-text);
 }
 
-.bp-topbar__admin-trigger:hover:not(:disabled) {
-  border-color: var(--color-primary-muted);
-  background: var(--color-surface-muted);
+.bp-topbar .bp-topbar__admin-trigger:hover:not(:disabled) {
+  border-color: var(--color-shell-text-muted);
+  background: var(--color-shell-hover);
 }
 
 .bp-topbar__admin-trigger-icon {
@@ -408,8 +491,8 @@
   display: inline-grid;
   place-items: center;
   border-radius: var(--radius-sm);
-  background: var(--color-primary-muted);
-  color: var(--color-primary);
+  background: var(--color-shell-active-background);
+  color: var(--color-shell-active-text);
 }
 
 .bp-topbar__admin-trigger-label {
@@ -421,6 +504,7 @@
 }
 
 .bp-topbar__admin-menu {
+  color: var(--color-text);
   position: absolute;
   top: calc(100% + var(--space-2));
   left: 0;
@@ -511,6 +595,7 @@
 }
 
 .bp-account-menu__panel {
+  color: var(--color-text);
   position: absolute;
   top: calc(100% + var(--space-2));
   right: 0;
@@ -894,7 +979,7 @@
     z-index: 30;
     gap: var(--surface-gap);
     border-right: 0;
-    border-bottom: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-shell-border);
     padding: var(--layout-padding-x);
     height: auto;
     max-height: 100vh;

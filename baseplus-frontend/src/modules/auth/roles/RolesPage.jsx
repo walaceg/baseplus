@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import {
   ActionIconButton,
+  PageHeader,
   Alert,
   Avatar,
   Badge,
@@ -9,6 +10,7 @@ import {
   Card,
   ConfirmDialog,
   EmptyState,
+  FilterBar,
   Input,
   Loading,
   Pagination,
@@ -58,6 +60,7 @@ export function RolesPage() {
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState(location.state?.message ?? '');
   const [error, setError] = useState('');
+  const [loadError, setLoadError] = useState('');
   const [deleteTarget, setDeleteTarget] = useState(null);
   const [statusTarget, setStatusTarget] = useState(null);
 
@@ -96,6 +99,7 @@ export function RolesPage() {
     async function loadRoles() {
       try {
         setLoading(true);
+        setLoadError('');
         const rolesData = await roleService.getRoles({
           search: searchValue || undefined,
           ativo: toBooleanParam(ativoValue),
@@ -105,6 +109,7 @@ export function RolesPage() {
         });
 
         if (active) {
+          setLoadError('');
           setRolesPage({
             content: rolesData.content ?? [],
             page: rolesData.page ?? 0,
@@ -115,7 +120,7 @@ export function RolesPage() {
         }
       } catch (requestError) {
         if (active) {
-          setError(requestError.response?.data?.errors?.[0] ?? requestError.response?.data?.message ?? 'Não foi possível carregar os perfis.');
+          setLoadError(requestError.response?.data?.errors?.[0] ?? requestError.response?.data?.message ?? 'Não foi possível carregar os perfis.');
         }
       } finally {
         if (active) {
@@ -286,19 +291,17 @@ export function RolesPage() {
 
   return (
     <div className="bp-roles-page bp-list-page">
-      <section className="bp-list-page__header">
-        <div>
-          <h1>Perfis</h1>
-          <p>Gestão de perfis, status e permissões da Base+.</p>
-        </div>
-        {canCreate ? <Button onClick={() => navigate('/app/roles/novo')}>Novo perfil</Button> : null}
-      </section>
+      <PageHeader
+        title="Perfis"
+        description="Gestão de perfis, status e permissões da Base+."
+        action={canCreate ? <Button onClick={() => navigate('/app/roles/novo')}>Novo perfil</Button> : null}
+      />
 
       <Card>
         <Card.Body>
-          <div className="bp-list-page__toolbar">
-            <div className="bp-list-page__toolbar-row">
-              <div className="bp-list-page__search">
+          <FilterBar>
+            <FilterBar.Row>
+              <FilterBar.Search>
                 <Input
                   id="roles-search"
                   label="Buscar perfis"
@@ -306,14 +309,14 @@ export function RolesPage() {
                   value={searchInput}
                   onChange={(event) => setSearchInput(event.target.value)}
                 />
-              </div>
-              <div className="bp-list-page__actions">
+              </FilterBar.Search>
+              <FilterBar.Actions>
                 <Button disabled={!hasFilters} size="sm" variant="secondary" onClick={clearFilters}>
                   Limpar filtros
                 </Button>
-              </div>
-            </div>
-            <div className="bp-list-page__filters bp-role-filters">
+              </FilterBar.Actions>
+            </FilterBar.Row>
+            <FilterBar.Filters className="bp-role-filters">
               <label className="bp-role-filter-option">
                 <input checked={ativoValue === 'true'} type="checkbox" onChange={(event) => toggleExclusiveBooleanFilter('ativo', true, event.target.checked)} />
                 <span>Ativos</span>
@@ -330,8 +333,8 @@ export function RolesPage() {
                 <input checked={sistemaValue === 'false'} type="checkbox" onChange={(event) => toggleExclusiveBooleanFilter('sistema', false, event.target.checked)} />
                 <span>Customizados</span>
               </label>
-            </div>
-          </div>
+            </FilterBar.Filters>
+          </FilterBar>
         </Card.Body>
       </Card>
 
@@ -342,6 +345,13 @@ export function RolesPage() {
         <Card.Body>
           {loading ? (
             <Loading label="Carregando perfis..." />
+          ) : loadError ? (
+            <Alert title="Erro de carregamento" variant="error">
+              <p>{loadError}</p>
+              <Button size="sm" variant="secondary" onClick={refreshRoles}>
+                Tentar novamente
+              </Button>
+            </Alert>
           ) : rolesPage.content.length ? (
             <>
               <Table columns={columns} rows={rolesPage.content} />
@@ -355,9 +365,11 @@ export function RolesPage() {
             </>
           ) : (
             <EmptyState
+              actionLabel={hasFilters ? 'Limpar filtros' : undefined}
+              onAction={clearFilters}
               description={
                 hasFilters
-                  ? 'Nenhum perfil corresponde aos filtros atuais. Limpe a busca para ampliar os resultados.'
+                  ? 'Nenhum perfil corresponde aos filtros atuais. Limpe os filtros para ampliar os resultados.'
                   : 'Ainda não existem perfis cadastrados.'
               }
               title="Nenhum perfil encontrado"

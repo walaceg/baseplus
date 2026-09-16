@@ -19,7 +19,7 @@ export function Pagination({
   }
 
   return (
-    <div className={classes}>
+    <nav aria-label="Paginação" className={classes}>
       <p className="bp-pagination__summary">
         Mostrando {start}-{end} de {totalElements}
       </p>
@@ -27,13 +27,13 @@ export function Pagination({
         <Button disabled={!hasPrevious} size="sm" variant="secondary" onClick={() => onChangePage(page - 1)}>
           Anterior
         </Button>
-        <span className="bp-pagination__page">
-          Pagina {page + 1} de {Math.max(totalPages, 1)}
+        <span aria-current="page" className="bp-pagination__page">
+          Página {page + 1} de {Math.max(totalPages, 1)}
         </span>
         <Button disabled={!hasNext} size="sm" variant="secondary" onClick={() => onChangePage(page + 1)}>
-          Proxima
+          Próxima
         </Button>
       </div>
-    </div>
+    </nav>
   );
 }

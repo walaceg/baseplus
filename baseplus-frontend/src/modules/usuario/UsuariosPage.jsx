@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import {
   ActionIconButton,
+  PageHeader,
   Alert,
   Avatar,
   Badge,
@@ -9,6 +10,7 @@ import {
   Card,
   ConfirmDialog,
   EmptyState,
+  FilterBar,
   Input,
   Loading,
   Pagination,
@@ -66,6 +68,7 @@ export function UsuariosPage() {
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState(location.state?.message ?? '');
   const [error, setError] = useState('');
+  const [loadError, setLoadError] = useState('');
   const [deleteTarget, setDeleteTarget] = useState(null);
 
   useEffect(() => {
@@ -103,6 +106,7 @@ export function UsuariosPage() {
     async function loadUsuarios() {
       try {
         setLoading(true);
+        setLoadError('');
         const data = await usuarioService.getUsuarios({
           search: searchValue || undefined,
           ativo: toBooleanParam(ativoValue),
@@ -113,6 +117,7 @@ export function UsuariosPage() {
         });
 
         if (active) {
+          setLoadError('');
           setPageData({
             content: data.content ?? [],
             page: data.page ?? 0,
@@ -123,7 +128,7 @@ export function UsuariosPage() {
         }
       } catch (requestError) {
         if (active) {
-          setError(requestError.response?.data?.message ?? 'Não foi possível carregar os usuários.');
+          setLoadError(requestError.response?.data?.message ?? 'Não foi possível carregar os usuários.');
         }
       } finally {
         if (active) {
@@ -302,19 +307,17 @@ export function UsuariosPage() {
 
   return (
     <div className="bp-usuarios-page bp-list-page">
-      <section className="bp-list-page__header">
-        <div>
-          <h1>Usuários</h1>
-          <p>Gestão inicial de contas administrativas da Base+.</p>
-        </div>
-        {canCreate ? <Button onClick={() => navigate('/app/usuarios/novo')}>Novo usuário</Button> : null}
-      </section>
+      <PageHeader
+        title="Usuários"
+        description="Gestão inicial de contas administrativas da Base+."
+        action={canCreate ? <Button onClick={() => navigate('/app/usuarios/novo')}>Novo usuário</Button> : null}
+      />
 
       <Card>
         <Card.Body>
-          <div className="bp-list-page__toolbar">
-            <div className="bp-list-page__toolbar-row">
-              <div className="bp-list-page__search">
+          <FilterBar>
+            <FilterBar.Row>
+              <FilterBar.Search>
                 <Input
                   id="usuarios-search"
                   label="Buscar usuários"
@@ -322,14 +325,14 @@ export function UsuariosPage() {
                   value={searchInput}
                   onChange={(event) => setSearchInput(event.target.value)}
                 />
-              </div>
-              <div className="bp-list-page__actions">
+              </FilterBar.Search>
+              <FilterBar.Actions>
                 <Button disabled={!hasFilters} size="sm" variant="secondary" onClick={clearFilters}>
                   Limpar filtros
                 </Button>
-              </div>
-            </div>
-            <div className="bp-list-page__filters bp-usuario-filters">
+              </FilterBar.Actions>
+            </FilterBar.Row>
+            <FilterBar.Filters className="bp-usuario-filters">
               <label className="bp-usuario-filter-option">
                 <input
                   checked={ativoValue === 'true'}
@@ -354,8 +357,8 @@ export function UsuariosPage() {
                 />
                 <span>Primeiro acesso</span>
               </label>
-            </div>
-          </div>
+            </FilterBar.Filters>
+          </FilterBar>
         </Card.Body>
       </Card>
 
@@ -366,6 +369,13 @@ export function UsuariosPage() {
         <Card.Body>
           {loading ? (
             <Loading label="Carregando usuários..." />
+          ) : loadError ? (
+            <Alert title="Erro de carregamento" variant="error">
+              <p>{loadError}</p>
+              <Button size="sm" variant="secondary" onClick={refreshUsuarios}>
+                Tentar novamente
+              </Button>
+            </Alert>
           ) : pageData.content.length ? (
             <>
               <Table columns={columns} rows={pageData.content} />
@@ -379,9 +389,11 @@ export function UsuariosPage() {
             </>
           ) : (
             <EmptyState
+              actionLabel={hasFilters ? 'Limpar filtros' : undefined}
+              onAction={clearFilters}
               description={
                 hasFilters
-                  ? 'Nenhum usuário corresponde aos filtros atuais. Limpe a busca para ampliar os resultados.'
+                  ? 'Nenhum usuário corresponde aos filtros atuais. Limpe os filtros para ampliar os resultados.'
                   : 'Ainda não existem usuários cadastrados.'
               }
               title="Nenhum usuário encontrado"

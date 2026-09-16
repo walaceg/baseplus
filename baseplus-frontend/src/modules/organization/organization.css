@@ -27,6 +27,11 @@
   font-size: 16px;
 }
 
+.bp-organization-section__header > .bp-button--primary {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
 .bp-organization-section__header p {
   margin: var(--space-1) 0 0;
   color: var(--color-text-muted);

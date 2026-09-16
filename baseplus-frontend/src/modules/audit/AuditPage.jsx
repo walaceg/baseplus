@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Alert, Badge, Button, Card, EmptyState, Input, Loading, Pagination, Table } from '../../shared/components/index.js';
+import { Alert, Badge, Button, Card, EmptyState, FilterBar, Input, Loading, PageHeader, Pagination, Table } from '../../shared/components/index.js';
 import { useDebouncedValue } from '../../shared/hooks/useDebouncedValue.js';
 import * as auditService from './auditService.js';
 import './audit.css';
@@ -85,7 +85,7 @@ export function AuditPage() {
     totalPages: 0,
   });
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [loadError, setLoadError] = useState('');
 
   useEffect(() => {
     setSearchInput(searchValue);
@@ -124,6 +124,7 @@ export function AuditPage() {
     async function loadAuditLogs() {
       try {
         setLoading(true);
+        setLoadError('');
         const data = await auditService.getAuditLogs({
           search: searchValue || undefined,
           dataInicial: dataInicialValue || undefined,
@@ -133,6 +134,7 @@ export function AuditPage() {
         });
 
         if (active) {
+          setLoadError('');
           setPageData({
             content: data.content ?? [],
             page: data.page ?? 0,
@@ -143,7 +145,7 @@ export function AuditPage() {
         }
       } catch (requestError) {
         if (active) {
-          setError(requestError.response?.data?.message ?? 'Não foi possível carregar a auditoria.');
+          setLoadError(requestError.response?.data?.message ?? 'Não foi possível carregar a auditoria.');
         }
       } finally {
         if (active) {
@@ -230,18 +232,16 @@ export function AuditPage() {
 
   return (
     <div className="bp-audit-page bp-list-page">
-      <section className="bp-list-page__header">
-        <div>
-          <h1>Auditoria</h1>
-          <p>Registro inicial de eventos sensíveis da Base+.</p>
-        </div>
-      </section>
+      <PageHeader
+        title="Auditoria"
+        description="Registro inicial de eventos sensíveis da Base+."
+      />
 
       <Card>
         <Card.Body>
-          <div className="bp-list-page__toolbar">
-            <div className="bp-list-page__toolbar-row">
-              <div className="bp-list-page__search">
+          <FilterBar>
+            <FilterBar.Row>
+              <FilterBar.Search>
                 <Input
                   id="audit-search"
                   label="Buscar auditoria"
@@ -249,13 +249,13 @@ export function AuditPage() {
                   value={searchInput}
                   onChange={(event) => setSearchInput(event.target.value)}
                 />
-              </div>
-              <div className="bp-list-page__actions">
+              </FilterBar.Search>
+              <FilterBar.Actions>
                 <Button disabled={!hasFilters} size="sm" variant="secondary" onClick={clearFilters}>
                   Limpar filtros
                 </Button>
-              </div>
-            </div>
+              </FilterBar.Actions>
+            </FilterBar.Row>
 
             <div className="bp-audit-page__filters">
               <Input
@@ -281,16 +281,21 @@ export function AuditPage() {
                 }}
               />
             </div>
-          </div>
+          </FilterBar>
         </Card.Body>
       </Card>
-
-      {error ? <Alert variant="error">{error}</Alert> : null}
 
       <Card>
         <Card.Body>
           {loading ? (
             <Loading label="Carregando auditoria..." />
+          ) : loadError ? (
+            <Alert title="Erro de carregamento" variant="error">
+              <p>{loadError}</p>
+              <Button size="sm" variant="secondary" onClick={() => setReloadToken((current) => current + 1)}>
+                Tentar novamente
+              </Button>
+            </Alert>
           ) : pageData.content.length ? (
             <>
               <Table columns={columns} rows={pageData.content} />
@@ -304,12 +309,14 @@ export function AuditPage() {
             </>
           ) : (
             <EmptyState
+              actionLabel={hasFilters ? 'Limpar filtros' : undefined}
+              onAction={clearFilters}
               description={
                 hasFilters
-                  ? 'Nenhum evento corresponde aos filtros atuais. Limpe a busca para ampliar os resultados.'
+                  ? 'Nenhum evento corresponde aos filtros atuais. Limpe os filtros para ampliar os resultados.'
                   : 'Nenhum evento de auditoria foi registrado ainda.'
               }
-              title="Auditoria vazia"
+              title={hasFilters ? 'Nenhum evento encontrado' : 'Auditoria vazia'}
             />
           )}
         </Card.Body>

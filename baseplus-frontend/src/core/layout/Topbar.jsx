@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Building2, ChevronDown } from 'lucide-react';
 import { BrandingLogo, Button } from '../../shared/components/index.js';
 import { useBranding } from '../../shared/branding/useBranding.js';
@@ -7,7 +7,7 @@ import { useAuth } from '../auth/useAuth.js';
 import { useTheme } from '../theme/useTheme.js';
 import { AccountMenu } from './AccountMenu.jsx';
 import { NavItem } from './NavItem.jsx';
-import { getAuthorizedNavigationGroups } from './navigation.js';
+import { getAuthorizedNavigationGroups, moduleNavigation } from './navigation.js';
 import { useAuthorization } from '../auth/useAuthorization.js';
 
 export function Topbar({ menuPrincipal = 'sidebar' }) {
@@ -16,12 +16,17 @@ export function Topbar({ menuPrincipal = 'sidebar' }) {
   const { branding, assetVersion } = useBranding();
   const { menuPrincipal: activeMenuPrincipal, setMenuPrincipal } = useTheme();
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   const adminMenuRef = useRef(null);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [adminMenuOpen, setAdminMenuOpen] = useState(false);
   const showPrimaryNavigation = menuPrincipal === 'topbar';
   const compactBrandLogoUrl = branding.compactLogoUrl || branding.logoUrl;
   const navigationGroups = useMemo(() => getAuthorizedNavigationGroups(hasPermission), [hasPermission]);
+  const hasNavigationContext = navigationGroups.some((group) =>
+    group.items.some((item) => pathname === item.to || pathname.startsWith(`${item.to}/`)),
+  );
+  const navigationContext = hasNavigationContext ? moduleNavigation.title : 'Área de trabalho';
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -77,23 +82,31 @@ export function Topbar({ menuPrincipal = 'sidebar' }) {
     <header className={['bp-topbar', showPrimaryNavigation ? 'bp-topbar--navigation' : ''].filter(Boolean).join(' ')}>
       <div className="bp-topbar__header-row">
         <div className="bp-topbar__left">
-          <BrandingLogo
-            className="bp-topbar__brand-logo"
-            logoUrl={compactBrandLogoUrl}
-            assetVersion={assetVersion}
-            name={branding.nomePlataforma}
-            subtitle={branding.subtituloInstitucional}
-            showSubtitle={false}
-            showText={false}
-            size="sm"
-            variant="mark"
-          />
-          <div className="bp-topbar__context">
-            <span className="bp-topbar__title">
-              <span>{branding.nomePlataforma}</span>
+          {showPrimaryNavigation ? (
+            <>
+              <BrandingLogo
+                className="bp-topbar__brand-logo"
+                logoUrl={compactBrandLogoUrl}
+                assetVersion={assetVersion}
+                name={branding.nomePlataforma}
+                subtitle={branding.subtituloInstitucional}
+                showSubtitle={false}
+                showText={false}
+                size="sm"
+                variant="mark"
+              />
+              <div className="bp-topbar__context">
+                <span className="bp-topbar__title">
+                  <span>{branding.nomePlataforma}</span>
+                </span>
+                <span className="bp-topbar__subtitle">{branding.subtituloInstitucional}</span>
+              </div>
+            </>
+          ) : (
+            <span className="bp-topbar__navigation-context" title={navigationContext}>
+              {navigationContext}
             </span>
-            <span className="bp-topbar__subtitle">{branding.subtituloInstitucional}</span>
-          </div>
+          )}
 
           {showPrimaryNavigation ? (
             <div className="bp-topbar__admin" ref={adminMenuRef}>

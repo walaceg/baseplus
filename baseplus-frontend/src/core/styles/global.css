@@ -1,4 +1,5 @@
-:root {
+:root,
+[data-theme="light"] {
   color-scheme: light;
   --color-background: #f6f7f9;
   --color-surface: #ffffff;
@@ -6,6 +7,15 @@
   --color-border: #d9dee7;
   --color-text: #1f2933;
   --color-text-muted: #697386;
+  /* Structural shell neutrals stay independent of functional surfaces. */
+  --color-shell-background: #202124;
+  --color-shell-text: #f5f5f5;
+  --color-shell-text-muted: #bfc1c5;
+  --color-shell-border: color-mix(in srgb, var(--color-shell-text) 16%, var(--color-shell-background));
+  --color-shell-hover: color-mix(in srgb, var(--color-shell-text) 8%, var(--color-shell-background));
+  --color-shell-active-background: color-mix(in srgb, var(--color-primary) 16%, var(--color-shell-background));
+  --color-shell-active-text: var(--color-shell-text);
+  --color-shell-focus-ring: color-mix(in srgb, var(--color-primary) 55%, var(--color-shell-text));
   --color-primary: #2563eb;
   --color-primary-hover: #1d4ed8;
   --color-primary-muted: #dbeafe;
@@ -13,6 +23,7 @@
   --color-secondary-hover: #111827;
   --color-secondary-muted: #e2e8f0;
   --color-primary-text: #ffffff;
+  --brand-primary-hover-target: #000000;
   --color-success: #067647;
   --color-success-muted: #dcfae6;
   --color-warning: #b54708;
@@ -77,19 +88,13 @@
 
 [data-theme="dark"] {
   color-scheme: dark;
+  --color-shell-background: #141517;
   --color-background: #101828;
   --color-surface: #182230;
   --color-surface-muted: #243247;
   --color-border: #344054;
   --color-text: #f2f4f7;
   --color-text-muted: #98a2b3;
-  --color-primary: #60a5fa;
-  --color-primary-hover: #93c5fd;
-  --color-primary-muted: #1e3a5f;
-  --color-secondary: #cbd5e1;
-  --color-secondary-hover: #e2e8f0;
-  --color-secondary-muted: #334155;
-  --color-primary-text: #0b1220;
   --color-success: #75e0a7;
   --color-success-muted: #054f31;
   --color-warning: #fdb022;
@@ -97,7 +102,6 @@
   --color-danger: #f97066;
   --color-danger-muted: #7a271a;
   --color-overlay: rgba(0, 0, 0, 0.64);
-  --color-focus-ring: rgba(96, 165, 250, 0.28);
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.24);
   --shadow-md: 0 12px 24px rgba(0, 0, 0, 0.32);
   --brand-login-background-base:
@@ -109,6 +113,16 @@
   --brand-login-background-panel: color-mix(in srgb, var(--color-surface) 92%, transparent);
   --brand-login-background-panel-border: color-mix(in srgb, var(--color-border) 78%, transparent);
   --brand-login-background-panel-shadow: 0 20px 44px rgba(0, 0, 0, 0.24);
+}
+
+/* Recompute at each theme boundary, including the isolated branding preview. */
+:root,
+[data-theme] {
+  --color-primary-hover: color-mix(in srgb, var(--color-primary) 92%, var(--brand-primary-hover-target));
+  --color-primary-muted: color-mix(in srgb, var(--color-primary) 14%, var(--color-surface));
+  --color-secondary-hover: color-mix(in srgb, var(--color-secondary) 92%, var(--color-text));
+  --color-secondary-muted: color-mix(in srgb, var(--color-secondary) 14%, var(--color-surface));
+  --color-focus-ring: color-mix(in srgb, var(--color-primary) 45%, transparent);
 }
 
 [data-density="compact"] {
