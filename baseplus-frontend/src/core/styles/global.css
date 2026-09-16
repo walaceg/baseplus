@@ -6,6 +6,15 @@
   --color-border: #d9dee7;
   --color-text: #1f2933;
   --color-text-muted: #697386;
+  /* Structural shell neutrals stay independent of functional surfaces. */
+  --color-shell-background: #202124;
+  --color-shell-text: #f5f5f5;
+  --color-shell-text-muted: #bfc1c5;
+  --color-shell-border: color-mix(in srgb, var(--color-shell-text) 16%, var(--color-shell-background));
+  --color-shell-hover: color-mix(in srgb, var(--color-shell-text) 8%, var(--color-shell-background));
+  --color-shell-active-background: color-mix(in srgb, var(--color-primary) 16%, var(--color-shell-background));
+  --color-shell-active-text: var(--color-shell-text);
+  --color-shell-focus-ring: color-mix(in srgb, var(--color-primary) 55%, var(--color-shell-text));
   --color-primary: #2563eb;
   --color-primary-hover: #1d4ed8;
   --color-primary-muted: #dbeafe;
@@ -77,6 +86,7 @@
 
 [data-theme="dark"] {
   color-scheme: dark;
+  --color-shell-background: #141517;
   --color-background: #101828;
   --color-surface: #182230;
   --color-surface-muted: #243247;
