@@ -408,6 +408,17 @@ class AuthControllerTest {
     }
 
     @Test
+    void shouldIncludeIssuerAndAudienceInNewAccessTokens() throws Exception {
+        String token = loginAndGetToken();
+        JsonNode payload = objectMapper.readTree(Base64.getUrlDecoder().decode(token.split("\\.")[1]));
+
+        org.assertj.core.api.Assertions.assertThat(payload.path("iss").asText()).isEqualTo("https://baseplus.local");
+        JsonNode audience = payload.path("aud");
+        String audienceValue = audience.isArray() ? audience.get(0).asText() : audience.asText();
+        org.assertj.core.api.Assertions.assertThat(audienceValue).isEqualTo("baseplus-api");
+    }
+
+    @Test
     void shouldIncludeAdminRoleInJwt() throws Exception {
         String token = loginAndGetToken();
         String payload = new String(Base64.getUrlDecoder().decode(token.split("\\.")[1]));

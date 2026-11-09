@@ -1,33 +1,38 @@
 package com.baseplus.modules.auth.service;
 
-import java.nio.charset.StandardCharsets;
 import java.time.Instant;
-import java.util.Base64;
 import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
+import org.springframework.security.oauth2.jwt.JwsHeader;
+import org.springframework.security.oauth2.jwt.JwtClaimsSet;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.JwtEncoder;
+import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.stereotype.Service;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class JwtService {
 
-    private static final String HMAC_ALGORITHM = "HmacSHA256";
     private static final long EXPIRATION_SECONDS = 3600L;
 
-    private final ObjectMapper objectMapper;
-    private final String secret;
+    private final JwtEncoder jwtEncoder;
+    private final JwtDecoder jwtDecoder;
+    private final String issuer;
+    private final String audience;
 
-    public JwtService(ObjectMapper objectMapper, @Value("${jwt.secret}") String secret) {
-        this.objectMapper = objectMapper;
-        this.secret = secret;
+    public JwtService(
+            JwtEncoder jwtEncoder,
+            JwtDecoder jwtDecoder,
+            @Value("${jwt.issuer}") String issuer,
+            @Value("${jwt.audience}") String audience
+    ) {
+        this.jwtEncoder = jwtEncoder;
+        this.jwtDecoder = jwtDecoder;
+        this.issuer = issuer;
+        this.audience = audience;
     }
 
     public String generateToken(String subject) {
@@ -40,56 +45,32 @@ public class JwtService {
 
     public String generateToken(String subject, List<String> roles, List<String> permissions) {
         Instant now = Instant.now();
-
-        Map<String, Object> header = new LinkedHashMap<>();
-        header.put("alg", "HS256");
-        header.put("typ", "JWT");
-
-        Map<String, Object> payload = new LinkedHashMap<>();
-        payload.put("sub", subject);
-        payload.put("iat", now.getEpochSecond());
-        payload.put("exp", now.plusSeconds(EXPIRATION_SECONDS).getEpochSecond());
-        payload.put("roles", roles == null ? Collections.emptyList() : roles);
-        payload.put("permissions", permissions == null ? Collections.emptyList() : permissions);
-
-        String encodedHeader = encodeJson(header);
-        String encodedPayload = encodeJson(payload);
-        String signature = sign(encodedHeader + "." + encodedPayload);
-
-        return encodedHeader + "." + encodedPayload + "." + signature;
+        JwtClaimsSet claims = JwtClaimsSet.builder()
+                .issuer(issuer)
+                .audience(List.of(audience))
+                .subject(subject)
+                .issuedAt(now)
+                .expiresAt(now.plusSeconds(EXPIRATION_SECONDS))
+                .claim("roles", roles == null ? Collections.emptyList() : roles)
+                .claim("permissions", permissions == null ? Collections.emptyList() : permissions)
+                .build();
+        JwsHeader header = JwsHeader.with(MacAlgorithm.HS256).type("JWT").build();
+        return jwtEncoder.encode(JwtEncoderParameters.from(header, claims)).getTokenValue();
     }
 
     public boolean isTokenValid(String token) {
         try {
-            String[] parts = token.split("\\.");
-            if (parts.length != 3) {
-                return false;
-            }
-
-            String expectedSignature = sign(parts[0] + "." + parts[1]);
-            if (!constantTimeEquals(expectedSignature, parts[2])) {
-                return false;
-            }
-
-            Map<?, ?> payload = objectMapper.readValue(decode(parts[1]), Map.class);
-            Object expiration = payload.get("exp");
-            if (!(expiration instanceof Number number)) {
-                return false;
-            }
-
-            return Instant.now().getEpochSecond() < number.longValue();
-        } catch (Exception exception) {
+            jwtDecoder.decode(token);
+            return true;
+        } catch (RuntimeException exception) {
             return false;
         }
     }
 
     public String getSubject(String token) {
         try {
-            String[] parts = token.split("\\.");
-            Map<?, ?> payload = objectMapper.readValue(decode(parts[1]), Map.class);
-            Object subject = payload.get("sub");
-            return subject == null ? null : subject.toString();
-        } catch (Exception exception) {
+            return jwtDecoder.decode(token).getSubject();
+        } catch (RuntimeException exception) {
             return null;
         }
     }
@@ -104,60 +85,14 @@ public class JwtService {
 
     private List<String> getStringListClaim(String token, String claim) {
         try {
-            String[] parts = token.split("\\.");
-            Map<?, ?> payload = objectMapper.readValue(decode(parts[1]), Map.class);
-            Object value = payload.get(claim);
-            if (!(value instanceof List<?> values)) {
-                return Collections.emptyList();
-            }
-
-            return values.stream()
-                    .map(Object::toString)
-                    .toList();
-        } catch (Exception exception) {
+            List<String> values = jwtDecoder.decode(token).getClaimAsStringList(claim);
+            return values == null ? Collections.emptyList() : values;
+        } catch (RuntimeException exception) {
             return Collections.emptyList();
         }
     }
 
     public long getExpirationSeconds() {
         return EXPIRATION_SECONDS;
-    }
-
-    private String encodeJson(Map<String, Object> value) {
-        try {
-            return encode(objectMapper.writeValueAsBytes(value));
-        } catch (Exception exception) {
-            throw new IllegalStateException("Não foi possível gerar o token JWT.", exception);
-        }
-    }
-
-    private String sign(String value) {
-        try {
-            Mac mac = Mac.getInstance(HMAC_ALGORITHM);
-            SecretKeySpec key = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), HMAC_ALGORITHM);
-            mac.init(key);
-            return encode(mac.doFinal(value.getBytes(StandardCharsets.UTF_8)));
-        } catch (Exception exception) {
-            throw new IllegalStateException("Não foi possível assinar o token JWT.", exception);
-        }
-    }
-
-    private String encode(byte[] value) {
-        return Base64.getUrlEncoder().withoutPadding().encodeToString(value);
-    }
-
-    private byte[] decode(String value) {
-        return Base64.getUrlDecoder().decode(value);
-    }
-
-    private boolean constantTimeEquals(String first, String second) {
-        return MessageDigestHolder.equals(first.getBytes(StandardCharsets.UTF_8), second.getBytes(StandardCharsets.UTF_8));
-    }
-
-    private static class MessageDigestHolder {
-
-        static boolean equals(byte[] first, byte[] second) {
-            return java.security.MessageDigest.isEqual(first, second);
-        }
     }
 }

@@ -8,6 +8,11 @@ spring:
 
 jwt:
   secret: ${JWT_SECRET}
+  issuer: ${JWT_ISSUER:https://baseplus.local}
+  audience: ${JWT_AUDIENCE:baseplus-api}
+  clock-skew: ${JWT_CLOCK_SKEW:PT30S}
+  legacy:
+    accept-until: ${JWT_LEGACY_ACCEPT_UNTIL:2026-11-10T00:00:00Z}
 
 server:
   port: 8080

@@ -46,6 +46,8 @@ O Docker Compose carrega `baseplus-backend/.env` automaticamente. O Spring Boot 
 | `prod` | `DB_PASSWORD` | Senha do PostgreSQL. |
 | `prod` | `JWT_SECRET` | Assinatura dos tokens JWT. |
 
+O issuer, audience e tolerancia de relogio JWT sao configuraveis por `JWT_ISSUER`, `JWT_AUDIENCE` e `JWT_CLOCK_SKEW`. A aceitacao temporaria de tokens legados usa `JWT_LEGACY_ACCEPT_UNTIL`; veja [docs/jwt-token-transition.md](jwt-token-transition.md) para definir o prazo de implantacao e remover a compatibilidade.
+
 ### Opcionais
 
 | Profile | Variavel | Padrao | Finalidade |
@@ -53,6 +55,10 @@ O Docker Compose carrega `baseplus-backend/.env` automaticamente. O Spring Boot 
 | todos | `SPRING_PROFILES_ACTIVE` | `dev` | Seleciona `dev`, `docker` ou `prod`. |
 | todos | `BASEPLUS_CORS_ALLOWED_ORIGINS` | `http://localhost:5173,http://127.0.0.1:5173` | Origens exatas permitidas pelo CORS do backend. |
 | `dev` | `JWT_SECRET` | segredo local conhecido | Permite substituir o segredo exclusivo de desenvolvimento. |
+| todos | `JWT_ISSUER` | `https://baseplus.local` | Issuer validado e incluido nos tokens novos. |
+| todos | `JWT_AUDIENCE` | `baseplus-api` | Audience validada e incluida nos tokens novos. |
+| todos | `JWT_CLOCK_SKEW` | `PT30S` | Tolerancia para diferencas de relogio na validacao JWT. |
+| todos | `JWT_LEGACY_ACCEPT_UNTIL` | `2026-11-10T00:00:00Z` | Prazo final da aceitacao temporaria de tokens legados sem issuer/audience. |
 | `docker` | `DB_HOST` | `localhost` | Host do PostgreSQL local. |
 | `docker` | `DB_PORT` | `5432` | Porta publicada pelo PostgreSQL. |
 | `docker` | `DB_NAME` | `baseplus` | Nome do banco local. |

@@ -27,6 +27,15 @@ Obrigatorias para a stack Docker:
 | `JWT_SECRET` | Assinatura dos tokens JWT. Use valor longo e aleatorio. |
 | `DB_PASSWORD` | Senha do usuario PostgreSQL da stack local. |
 
+| Variavel JWT | Padrao | Finalidade |
+| --- | --- | --- |
+| `JWT_ISSUER` | `https://baseplus.local` | Issuer exigido em tokens novos. |
+| `JWT_AUDIENCE` | `baseplus-api` | Audience exigida em tokens novos. |
+| `JWT_CLOCK_SKEW` | `PT30S` | Tolerancia de relogio para timestamps. |
+| `JWT_LEGACY_ACCEPT_UNTIL` | `2026-11-10T00:00:00Z` | Prazo maximo para aceitar tokens assinados sem issuer/audience. |
+
+Issuer, audience, tolerancia de relogio e prazo temporario para tokens legados podem ser configurados por `JWT_ISSUER`, `JWT_AUDIENCE`, `JWT_CLOCK_SKEW` e `JWT_LEGACY_ACCEPT_UNTIL`. Consulte [docs/jwt-token-transition.md](jwt-token-transition.md) para a janela de compatibilidade.
+
 Principais opcionais:
 
 | Variavel | Padrao | Finalidade |
