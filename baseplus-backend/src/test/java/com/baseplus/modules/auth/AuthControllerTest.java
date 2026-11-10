@@ -21,6 +21,8 @@ import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 
+import com.baseplus.modules.auth.repository.RefreshTokenRepository;
+import com.baseplus.modules.auth.service.RefreshTokenHasher;
 import com.baseplus.modules.usuario.domain.Usuario;
 import com.baseplus.modules.usuario.service.UsuarioService;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -42,6 +44,9 @@ class AuthControllerTest {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private RefreshTokenRepository refreshTokenRepository;
 
     @Test
     void shouldLoginWithPersistedAdminUser() throws Exception {
@@ -459,6 +464,17 @@ class AuthControllerTest {
                 .andExpect(jsonPath("$.data.refreshToken").doesNotExist())
                 .andExpect(jsonPath("$.message").value("Token renovado com sucesso."))
                 .andExpect(jsonPath("$.errors").value(empty()));
+    }
+
+    @Test
+    void shouldPersistOnlyHashOfRefreshTokenReturnedByLogin() throws Exception {
+        String rawRefreshToken = login().path("data").path("refreshToken").asText();
+        String hash = RefreshTokenHasher.sha256Hex(rawRefreshToken);
+
+        var stored = refreshTokenRepository.findByTokenHash(hash).orElseThrow();
+
+        org.assertj.core.api.Assertions.assertThat(stored.getTokenHash()).isEqualTo(hash);
+        org.assertj.core.api.Assertions.assertThat(stored.getTokenHash()).isNotEqualTo(rawRefreshToken);
     }
 
     @Test

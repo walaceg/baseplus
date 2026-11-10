@@ -28,8 +28,8 @@ public class RefreshToken {
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
-    @Column(nullable = false, unique = true, length = 120)
-    private String token;
+    @Column(name = "token_hash", nullable = false, unique = true, length = 64)
+    private String tokenHash;
 
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "session_id", nullable = false, unique = true)
@@ -41,10 +41,10 @@ public class RefreshToken {
     protected RefreshToken() {
     }
 
-    public RefreshToken(Usuario usuario, UserSession session, String token, OffsetDateTime expiresAt) {
+    public RefreshToken(Usuario usuario, UserSession session, String tokenHash, OffsetDateTime expiresAt) {
         this.usuario = usuario;
         this.session = session;
-        this.token = token;
+        this.tokenHash = tokenHash;
         this.expiresAt = expiresAt;
     }
 
@@ -56,8 +56,8 @@ public class RefreshToken {
         return usuario;
     }
 
-    public String getToken() {
-        return token;
+    public String getTokenHash() {
+        return tokenHash;
     }
 
     public UserSession getSession() {

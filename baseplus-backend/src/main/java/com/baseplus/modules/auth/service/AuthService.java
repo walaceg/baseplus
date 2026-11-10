@@ -100,7 +100,7 @@ public class AuthService {
 
         String token = jwtService.generateToken(usuario.getId().toString(), roles, permissions);
         UserSession session = userSessionRepository.save(new UserSession(usuario));
-        var refreshToken = refreshTokenService.criar(usuario, session);
+        String refreshToken = refreshTokenService.criar(usuario, session);
         auditLogService.registrar(
                 formatarUsuario(usuario),
                 "LOGIN",
@@ -112,7 +112,7 @@ public class AuthService {
                 token,
                 "Bearer",
                 jwtService.getExpirationSeconds(),
-                refreshToken.getToken(),
+                refreshToken,
                 refreshTokenService.getExpirationSeconds(),
                 roles,
                 permissions,

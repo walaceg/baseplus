@@ -27,7 +27,7 @@ public class RefreshTokenService {
     }
 
     @Transactional
-    public RefreshToken criar(Usuario usuario, UserSession session) {
+    public String criar(Usuario usuario, UserSession session) {
         byte[] tokenBytes = new byte[48];
         SECURE_RANDOM.nextBytes(tokenBytes);
         String token = Base64.getUrlEncoder().withoutPadding().encodeToString(tokenBytes);
@@ -35,11 +35,12 @@ public class RefreshTokenService {
         RefreshToken refreshToken = new RefreshToken(
                 usuario,
                 session,
-                token,
+                RefreshTokenHasher.sha256Hex(token),
                 OffsetDateTime.now().plusSeconds(EXPIRATION_SECONDS)
         );
 
-        return refreshTokenRepository.save(refreshToken);
+        refreshTokenRepository.save(refreshToken);
+        return token;
     }
 
     @Transactional
@@ -48,7 +49,7 @@ public class RefreshTokenService {
             throw invalidRefreshToken("Refresh token é obrigatório.");
         }
 
-        RefreshToken refreshToken = refreshTokenRepository.findByToken(token.trim())
+        RefreshToken refreshToken = refreshTokenRepository.findByTokenHash(RefreshTokenHasher.sha256Hex(token.trim()))
                 .orElseThrow(() -> invalidRefreshToken("Refresh token inválido."));
 
         if (refreshToken.isExpired()) {
