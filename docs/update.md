@@ -110,10 +110,10 @@ git status --short
 git fetch --tags
 ```
 
-4. Trocar para a tag de destino:
+4. Apos a publicacao da release e a criacao da tag, trocar para a tag de destino. A candidata atual e `v1.4.0`; nao execute este checkout antes da tag estar disponivel:
 
 ```powershell
-git checkout v1.2.0
+git checkout v1.4.0
 ```
 
 5. Recompilar backend e frontend conforme o modelo de deploy do ambiente:

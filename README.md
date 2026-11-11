@@ -1,8 +1,8 @@
 # Base+
 
-Versao publicada: `1.3.0`
+Versao em preparacao: `1.4.0`
 
-Estado atual: Release oficial `v1.3.0`.
+Estado atual: candidata `v1.4.0`; ultima release publicada `v1.3.0`.
 
 A branch master representa sempre a versao oficial mais recente da Base+.
 
@@ -319,7 +319,7 @@ docker compose up --detach --build --wait
 
 ## Release
 
-A versao publicada atual e `1.3.0`.
+A ultima versao oficial publicada e `1.3.0`; a release `1.4.0` esta em preparacao e sua tag ainda nao foi criada.
 
 A `v1.2.2` consolidou a Base+ como release oficial daquela etapa, mantendo a v1.2.1 como release anterior e incorporando correcoes na personalizacao manual de cores HEX do Branding, preservacao dos presets existentes e sincronizacao correta entre Preview, HEX e RGB.
 

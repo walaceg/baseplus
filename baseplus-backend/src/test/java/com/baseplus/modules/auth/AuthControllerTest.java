@@ -449,7 +449,7 @@ class AuthControllerTest {
     void shouldRefreshAccessToken() throws Exception {
         String refreshToken = loginAndGetRefreshToken();
 
-        mockMvc.perform(post("/auth/refresh")
+        var result = mockMvc.perform(post("/auth/refresh")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {
@@ -461,9 +461,16 @@ class AuthControllerTest {
                 .andExpect(jsonPath("$.data.token").value(notNullValue()))
                 .andExpect(jsonPath("$.data.tokenType").value("Bearer"))
                 .andExpect(jsonPath("$.data.expiresIn").value(3600))
-                .andExpect(jsonPath("$.data.refreshToken").doesNotExist())
                 .andExpect(jsonPath("$.message").value("Token renovado com sucesso."))
-                .andExpect(jsonPath("$.errors").value(empty()));
+                .andExpect(jsonPath("$.errors").value(empty()))
+                .andReturn();
+
+        String rotatedRefreshToken = objectMapper.readTree(result.getResponse().getContentAsString())
+                .path("data")
+                .path("refreshToken")
+                .asText();
+        org.assertj.core.api.Assertions.assertThat(rotatedRefreshToken).isNotBlank();
+        org.assertj.core.api.Assertions.assertThat(rotatedRefreshToken).isNotEqualTo(refreshToken);
     }
 
     @Test

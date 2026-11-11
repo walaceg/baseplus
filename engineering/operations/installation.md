@@ -67,7 +67,12 @@ cd C:\dev\baseplus
 ```powershell
 git clone https://github.com/walaceg/baseplus.git
 cd baseplus
-git checkout v1.3.0
+```
+
+Apos a publicacao oficial da release e a criacao da tag, selecione a versao estavel. Para a release candidata atual, a tag pretendida e `v1.4.0`; ela ainda nao esta disponivel.
+
+```powershell
+git checkout v1.4.0
 ```
 
 ### Configuracao

@@ -44,10 +44,10 @@ git clone https://github.com/walaceg/baseplus.git minha-aplicacao
 cd minha-aplicacao
 ```
 
-Use uma tag estavel:
+Use uma tag estavel. A candidata atual e `v1.4.0`; execute o checkout somente depois que a release for publicada e a tag estiver disponivel:
 
 ```powershell
-git checkout v1.2.0
+git checkout v1.4.0
 ```
 
 Remova o remote original:

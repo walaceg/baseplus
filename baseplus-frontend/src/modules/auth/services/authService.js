@@ -1,4 +1,4 @@
-import { apiClient } from '../../../shared/api/apiClient.js';
+import { apiClient, refreshSessionSingleFlight } from '../../../shared/api/apiClient.js';
 
 export async function login({ email, password }) {
   const response = await apiClient.post('/auth/login', { email, password });
@@ -6,12 +6,14 @@ export async function login({ email, password }) {
 }
 
 export async function refreshSession(refreshToken) {
-  const response = await apiClient.post('/auth/refresh', { refreshToken });
-  return response.data.data;
+  return refreshSessionSingleFlight(refreshToken);
 }
 
-export async function logout() {
-  await apiClient.post('/auth/logout');
+export async function logout(accessToken) {
+  await apiClient.post('/auth/logout', {}, {
+    headers: { Authorization: `Bearer ${accessToken}` },
+    _baseplusSkipAuthRefresh: true,
+  });
 }
 
 export async function changeInitialPassword(payload) {

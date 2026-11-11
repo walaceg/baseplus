@@ -11,6 +11,7 @@ import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
+import org.springframework.security.oauth2.jwt.BadJwtException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -44,16 +45,23 @@ public class JwtService {
     }
 
     public String generateToken(String subject, List<String> roles, List<String> permissions) {
+        return generateToken(subject, roles, permissions, null);
+    }
+
+    public String generateToken(String subject, List<String> roles, List<String> permissions, Long sessionId) {
         Instant now = Instant.now();
-        JwtClaimsSet claims = JwtClaimsSet.builder()
+        JwtClaimsSet.Builder claimsBuilder = JwtClaimsSet.builder()
                 .issuer(issuer)
                 .audience(List.of(audience))
                 .subject(subject)
                 .issuedAt(now)
                 .expiresAt(now.plusSeconds(EXPIRATION_SECONDS))
                 .claim("roles", roles == null ? Collections.emptyList() : roles)
-                .claim("permissions", permissions == null ? Collections.emptyList() : permissions)
-                .build();
+                .claim("permissions", permissions == null ? Collections.emptyList() : permissions);
+        if (sessionId != null) {
+            claimsBuilder.claim("sid", sessionId.toString());
+        }
+        JwtClaimsSet claims = claimsBuilder.build();
         JwsHeader header = JwsHeader.with(MacAlgorithm.HS256).type("JWT").build();
         return jwtEncoder.encode(JwtEncoderParameters.from(header, claims)).getTokenValue();
     }
@@ -72,6 +80,23 @@ public class JwtService {
             return jwtDecoder.decode(token).getSubject();
         } catch (RuntimeException exception) {
             return null;
+        }
+    }
+
+    public Long getSessionId(String token) {
+        var claims = jwtDecoder.decode(token).getClaims();
+        if (!claims.containsKey("sid")) {
+            return null;
+        }
+
+        Object claim = claims.get("sid");
+        if (!(claim instanceof String value) || !value.matches("[1-9][0-9]*")) {
+            throw new BadJwtException("Invalid session identifier claim.");
+        }
+        try {
+            return Long.valueOf(value);
+        } catch (NumberFormatException exception) {
+            throw new BadJwtException("Invalid session identifier claim.");
         }
     }
 

@@ -89,13 +89,17 @@ Use para mudancas incompativeis ou revisoes estruturais profundas:
 1.2.0 -> 2.0.0
 ```
 
-## Release Oficial v1.3.0
+## Release Oficial v1.3.0 (historica)
 
-A Base+ `v1.3.0` e registrada como release oficial atual da plataforma.
+A Base+ `v1.3.0` foi uma release oficial da plataforma e permanece como a ultima release publicada ate a publicacao da candidata seguinte.
 
 A `v1.2.2` permanece como release anterior e referencia historica.
 
 Apos a criacao da tag Git `v1.3.0`, essa versao deve ser tratada como imutavel. Correcoes posteriores devem gerar nova versao PATCH, como `v1.3.1`.
+
+## Release candidata v1.4.0
+
+A Base+ `v1.4.0` esta em preparacao. A ultima release publicada continua sendo `v1.3.0`; a tag Git `v1.4.0` ainda nao existe e somente deve ser criada apos a validacao e publicacao oficial.
 
 ## Regras de Governanca
 

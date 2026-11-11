@@ -13,7 +13,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -31,12 +30,15 @@ public class RefreshToken {
     @Column(name = "token_hash", nullable = false, unique = true, length = 64)
     private String tokenHash;
 
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "session_id", nullable = false, unique = true)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "session_id", nullable = false)
     private UserSession session;
 
     @Column(nullable = false)
     private OffsetDateTime expiresAt;
+
+    @Column
+    private OffsetDateTime consumedAt;
 
     protected RefreshToken() {
     }
@@ -66,6 +68,21 @@ public class RefreshToken {
 
     public OffsetDateTime getExpiresAt() {
         return expiresAt;
+    }
+
+    public OffsetDateTime getConsumedAt() {
+        return consumedAt;
+    }
+
+    public boolean isConsumed() {
+        return consumedAt != null;
+    }
+
+    public void consume(OffsetDateTime consumedAt) {
+        if (this.consumedAt != null) {
+            throw new IllegalStateException("Refresh token já consumido.");
+        }
+        this.consumedAt = consumedAt;
     }
 
     public boolean isExpired() {

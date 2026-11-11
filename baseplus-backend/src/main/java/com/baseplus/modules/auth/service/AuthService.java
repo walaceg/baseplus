@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.baseplus.core.exception.BusinessException;
+import com.baseplus.core.security.JwtAuthenticationDetails;
 import com.baseplus.modules.auth.domain.Permission;
 import com.baseplus.modules.auth.domain.Role;
 import com.baseplus.modules.auth.dto.AuthUserResponse;
@@ -98,8 +99,8 @@ public class AuthService {
                 .sorted()
                 .toList();
 
-        String token = jwtService.generateToken(usuario.getId().toString(), roles, permissions);
         UserSession session = userSessionRepository.save(new UserSession(usuario));
+        String token = jwtService.generateToken(usuario.getId().toString(), roles, permissions, session.getId());
         String refreshToken = refreshTokenService.criar(usuario, session);
         auditLogService.registrar(
                 formatarUsuario(usuario),
@@ -167,26 +168,34 @@ public class AuthService {
         usuarioService.salvar(usuario);
     }
 
-    @Transactional
+    @Transactional(noRollbackFor = RefreshTokenReuseException.class)
     public RefreshTokenResponse refresh(RefreshTokenRequest request) {
-        var refreshToken = refreshTokenService.validar(request == null ? null : request.refreshToken());
-        Usuario usuario = refreshToken.getUsuario();
-
-        if (!usuario.isAtivo()) {
-            throw new BusinessException("Refresh token inválido.", HttpStatus.UNAUTHORIZED, java.util.List.of("Usuário inativo."));
-        }
-        if (usuario.isBloqueado()) {
-            throw new BusinessException("Refresh token inválido.", HttpStatus.UNAUTHORIZED, java.util.List.of("Usuário bloqueado."));
+        RefreshTokenService.RotationAttempt attempt = refreshTokenService.rotate(
+                request == null ? null : request.refreshToken()
+        );
+        if (attempt.reuseDetected()) {
+            throw new RefreshTokenReuseException();
         }
 
-        String token = gerarAccessToken(usuario);
-        return new RefreshTokenResponse(token, "Bearer", jwtService.getExpirationSeconds());
+        RefreshTokenService.Rotation rotation = attempt.rotation();
+        Usuario usuario = rotation.usuario();
+        String token = gerarAccessToken(usuario, rotation.sessionId());
+        return new RefreshTokenResponse(
+                token,
+                "Bearer",
+                jwtService.getExpirationSeconds(),
+                rotation.refreshToken(),
+                rotation.refreshExpiresIn()
+        );
     }
 
     @Transactional
     public void logout() {
         Usuario usuario = getAuthenticatedUser();
-        refreshTokenService.removerPorUsuario(usuario);
+        Long sessionId = getAuthenticatedSessionId();
+        if (sessionId != null) {
+            refreshTokenService.removerPorSessao(sessionId, usuario);
+        }
         auditLogService.registrar(
                 formatarUsuario(usuario),
                 "LOGOUT",
@@ -241,11 +250,19 @@ public class AuthService {
         return new BusinessException(error, HttpStatus.BAD_REQUEST, java.util.List.of(error));
     }
 
-    private String gerarAccessToken(Usuario usuario) {
+    private String gerarAccessToken(Usuario usuario, Long sessionId) {
         List<String> roles = getActiveRoles(usuario);
         List<String> permissions = getActivePermissions(usuario);
 
-        return jwtService.generateToken(usuario.getId().toString(), roles, permissions);
+        return jwtService.generateToken(usuario.getId().toString(), roles, permissions, sessionId);
+    }
+
+    private Long getAuthenticatedSessionId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !(authentication.getDetails() instanceof JwtAuthenticationDetails details)) {
+            return null;
+        }
+        return details.sessionId();
     }
 
     private List<String> getActiveRoles(Usuario usuario) {

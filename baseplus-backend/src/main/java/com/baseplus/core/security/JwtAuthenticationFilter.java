@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.security.oauth2.jwt.JwtException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -44,6 +44,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String token = authorizationHeader.substring(7);
 
             if (jwtService.isTokenValid(token) && SecurityContextHolder.getContext().getAuthentication() == null) {
+                Long sessionId;
+                try {
+                    sessionId = jwtService.getSessionId(token);
+                } catch (JwtException exception) {
+                    filterChain.doFilter(request, response);
+                    return;
+                }
                 String subject = jwtService.getSubject(token);
                 getActiveUsuario(subject).ifPresent(usuario -> {
                     var authorities = new ArrayList<SimpleGrantedAuthority>();
@@ -69,7 +76,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                             null,
                             authorities
                     );
-                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    authentication.setDetails(new JwtAuthenticationDetails(sessionId));
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 });
             }

@@ -1,15 +1,18 @@
 # Base+ State
 
-Atualizado em: 2026-09-16
+Atualizado em: 2026-11-10
 
 ## Estado atual
 
-- Release oficial atual: `v1.3.0`.
+- Release candidata em preparacao: `v1.4.0`.
+- Ultima release oficial publicada: `v1.3.0`; a tag `v1.4.0` ainda nao foi criada.
 - Plataforma pronta para servir como fundacao de novos projetos de negocio.
 - Base+ permanece como fundacao administrativa reutilizavel, sem modulo real de negocio acoplado.
 - Backend Spring Boot funcional.
 - Frontend React/Vite funcional.
-- Auth JWT, refresh token e logout implementados.
+- Auth JWT, refresh token com hash SHA-256, rotacao de uso unico e logout por sessao com claim `sid` implementados.
+- Reutilizacao de refresh token auditada; expiracao original da familia preservada e limpeza programada configurada.
+- Coordenacao de refresh e sincronizacao do logout entre abas implementadas no frontend.
 - Troca de senha inicial implementada.
 - Conta do usuario, preferencias, avatar e sessoes implementados.
 - CRUD de usuarios implementado.
@@ -83,18 +86,23 @@ Atualizado em: 2026-09-16
 - Perfil prod: PostgreSQL externo por variaveis de ambiente
 - Admin dev: `admin@baseplus.com` / `Baseplus@123`
 
-## Ultima etapa concluida
+## Release em preparacao
 
-- Base+ `v1.2.2` oficializada como release da plataforma naquela etapa.
+- Etapa 3 de seguranca concluida para a candidata Base+ `v1.4.0`.
+- A migration Flyway V15 e aplicada durante a atualizacao; realizar backup e validar a migration antes de liberar trafego para a nova versao.
+- Drenar instancias antigas antes de ativar o logout por sessao, pois versoes anteriores podem revogar sessoes globalmente por usuario.
+- Access JWTs ja emitidos podem permanecer validos ate expirarem, por ate aproximadamente uma hora.
+- JWTs legados sem `sid` nao permitem revogacao remota pelo logout comum.
+- O fallback sem Web Locks pode encerrar a sessao local em concorrencia com rede lenta.
 
 ## Proxima evolucao prevista
 
-- Proximas evolucoes incrementais da fundacao apos validacao da v1.3.0 em novos projetos de negocio.
+- Definir a proxima evolucao incremental apos a publicacao e uso da v1.4.0.
 - Manter `docs/release-1.1-checklist.md` como referencia historica de validacao da baseline anterior.
 
 ## Proxima etapa recomendada
 
-- Iniciar novos projetos de negocio a partir da release oficial `v1.3.0`.
+- Concluir validacao e publicacao da release candidata `v1.4.0`; iniciar novos projetos a partir da tag somente depois que ela for criada.
 - Em seguida, criar o primeiro modulo real de negocio, como Empresas, usando CRUD Completo.
 - Aplicar validacao de escopo organizacional no primeiro modulo de negocio que possuir dados por empresa, filial, equipe ou outro contexto parametrizado.
 - Separar `app-icons-source.png` em icones individuais se eles forem usados como favicon/app icon final.
@@ -102,7 +110,7 @@ Atualizado em: 2026-09-16
 ## Atencoes
 
 - `Promptbaseplus.txt` foi preservado como documento legado de contexto original.
-- O repositorio Git possui release inicial publica `v1.0.0`; a correcao Flyway foi publicada em `v1.0.1`; as correcoes de seguranca foram publicadas como `v1.0.2`; a Baseline Oficial da plataforma foi consolidada em `v1.1.0`; a release oficial atual e `v1.3.0`.
+- O repositorio Git possui release inicial publica `v1.0.0`; a correcao Flyway foi publicada em `v1.0.1`; as correcoes de seguranca foram publicadas como `v1.0.2`; a Baseline Oficial da plataforma foi consolidada em `v1.1.0`; `v1.3.0` e a ultima release publicada enquanto `v1.4.0` permanece candidata.
 - O segredo JWT padrao permanece apenas no perfil `dev`; esse perfil contem credenciais locais conhecidas e nao deve ser publicado ou exposto externamente.
 - Tuneis locais devem ser configurados apenas por `.env` local ou variaveis de ambiente; nao fixar dominios temporarios no codigo.
 - Evitar versionar logs, `target`, `dist`, `node_modules`, dumps, backups e uploads locais.

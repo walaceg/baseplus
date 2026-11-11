@@ -200,7 +200,7 @@ public class ContaService {
         }
 
         Usuario usuario = getUsuarioAutenticado();
-        UserSession session = userSessionRepository.findByIdAndUsuario(id, usuario)
+        UserSession session = userSessionRepository.findByIdAndUsuarioForUpdate(id, usuario)
                 .orElseThrow(() -> new BusinessException("Sessão não encontrada.", HttpStatus.NOT_FOUND, List.of("Sessão não encontrada para o usuário autenticado.")));
 
         refreshTokenService.removerPorSessao(session);

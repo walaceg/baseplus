@@ -2,6 +2,38 @@
 
 Todas as mudancas relevantes do projeto devem ser registradas neste arquivo.
 
+## 2026-11-10
+
+### Release candidata v1.4.0 (em preparacao)
+
+#### Seguranca e autenticacao
+
+- Refresh tokens passam a ser armazenados como hashes SHA-256 e rotacionados a cada uso.
+- Reutilizacoes de refresh tokens sao detectadas e auditadas.
+- Logout comum revoga a sessao autenticada identificada pelo claim JWT `sid`.
+- Claims `sid` presentes, mas malformados, sao rejeitados; a compatibilidade com JWTs legados e controlada.
+
+#### Persistencia
+
+- Migration Flyway V15 adiciona suporte ao consumo e rotacao de refresh tokens.
+- Bloqueio da sessao serializa operacoes concorrentes de refresh e revogacao.
+- Limpeza programada remove tokens somente apos o periodo de retencao.
+
+#### Frontend
+
+- Renovacao de tokens coordenada por single-flight e Web Locks quando disponiveis.
+- Respostas atrasadas nao restauram nem sobrescrevem uma sessao mais recente.
+- Logout local imediato e sincronizacao do estado autenticado entre abas.
+- Cobertura automatizada de autenticacao e concorrencia ampliada.
+
+#### Observacoes operacionais
+
+- Antes de liberar a nova versao, fazer backup e confirmar a aplicacao da migration V15 pelo Flyway.
+- Drenar instancias antigas durante o rollout; elas podem revogar refresh tokens globalmente por usuario.
+- Access JWTs ja emitidos, inclusive os atuais com `sid`, podem permanecer validos ate expirarem, por ate aproximadamente uma hora.
+- JWTs legados sem `sid` nao permitem revogacao remota pelo logout comum; consulte `docs/jwt-token-transition.md`.
+- Os passos gerais de atualizacao e rollback estao em `docs/update.md`.
+
 ## v1.2.2
 
 ### Correcoes
